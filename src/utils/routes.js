@@ -1,6 +1,7 @@
 import Register from "../pages/Register";
 import Signup from "../pages/SignUp";
 import Dashboard from "../pages/Dashboard";
+import Paramettres from "../pages/Paramettres";
 const routes = [
   {
     name: "Register",
@@ -16,6 +17,11 @@ const routes = [
     name: "Dashboard",
     path: "/Dashboard",
     element: Dashboard,
+  },
+  {
+    name: "Paramettres",
+    path: "/Paramettres",
+    element: Paramettres,
   },
 ];
 

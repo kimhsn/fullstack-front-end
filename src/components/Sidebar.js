@@ -11,7 +11,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -33,13 +32,14 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const LinkItems = [
   { name: "Home", icon: FiHome, path: "/Dashboard" },
   { name: "Trending", icon: FiTrendingUp, path: "/trending" },
   { name: "Explore", icon: FiCompass, path: "/explore" },
   { name: "Favourites", icon: FiStar, path: "/favourites" },
-  { name: "Settings", icon: FiSettings, path: "/settings" },
+  { name: "Settings", icon: FiSettings, path: "/Paramettres" },
 ];
 
 export default function Sidebar({ children, firstName, lastName, pseudo }) {
@@ -115,10 +115,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
   );
 };
 
-const NavItem = ({ path, icon, children, ...rest }) => {
+const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <Link
-      href={path}
+      to={path}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
