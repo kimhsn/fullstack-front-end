@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.border {
+  border-bottom: 1px solid rgb(180, 180, 180);
+  width: 100%;
+}
+
+.content {
+  padding: 0 10px 0 10px;
+}

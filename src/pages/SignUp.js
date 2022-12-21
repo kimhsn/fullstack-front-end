@@ -1,84 +1,350 @@
 import React, { useState } from "react";
+import Diamond from "../images/LogoBG.png";
 import {
-  ChakraProvider,
-  Button,
-  Checkbox,
+  Box,
   Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  useBreakpointValue,
-  Link,
   Stack,
-  Image,
+  Heading,
+  Text,
+  Container,
+  Input,
+  Button,
+  SimpleGrid,
+  Link,
+  Center,
+  FormLabel,
+  useBreakpointValue,
   Icon,
+  ChakraProvider,
 } from "@chakra-ui/react";
+import Devider from "../components/Devider";
+import Register from "./Register";
+import axios from "axios";
+import validator from "validator";
+
+const SIGNUP_URL = "http://localhost:8080/user/create";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [mail, setMail] = useState("");
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateEmail = (e) => {
+    var email = e.target.value;
+    setEmail(email);
+    if (validator.isEmail(email)) {
+      setEmailError("");
+    } else {
+      setEmailError("veuillez saisir une adresse mail valide");
+    }
+  };
+  const validatePassword = (value) => {
+    setPassword(value);
+    if (
+      validator.isStrongPassword(value, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 0,
+        minSymbols: 0,
+      })
+    ) {
+      setPasswordError("");
+    } else {
+      setPasswordError("N'est pas un mot de passe fort");
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log({
+      mail: email,
+      mdp: password,
+      nom: name,
+      prenom: firstName,
+      pseudo: pseudo,
+    });
+    try {
+      const response = await axios.post(
+        SIGNUP_URL,
+        JSON.stringify({
+          mail: email,
+          mdp: password,
+          nom: name,
+          prenom: firstName,
+          pseudo: pseudo,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      //console.log(JSON.stringify(response?.data));
+      //console.log(JSON.stringify(response));
+      //console.log(email, password);
+
+      setEmail("");
+      setPassword("");
+      setSuccess(true);
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 400) {
+        setErrMsg("Missing Username or Password");
+      } else if (err.response?.status === 401) {
+        setErrMsg("Unauthorized: Ce compte existe déja !");
+      } else {
+        setErrMsg("Sign up Failed");
+      }
+      // errRef.current.focus();
+    }
+  };
   return (
-    <ChakraProvider>
-      <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
-        <Flex p={8} flex={1} align={"center"} justify={"center"}>
-          <Stack spacing={4} w={"full"} maxW={"md"}>
-            <Heading fontSize={"2xl"}>Créer votre compte</Heading>
-            <FormControl id="name">
-              <FormLabel>Nom</FormLabel>
-              <Input type="text" onChange={() => setName(name)} />
-            </FormControl>
-            <FormControl id="prenom">
-              <FormLabel>prenom</FormLabel>
-              <Input type="text" onChange={() => setFirstName(firstName)} />
-            </FormControl>
-            <FormControl id="email">
-              <FormLabel>Addresse mail</FormLabel>
-              <Input type="email" onChange={() => setPassword(password)} />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Mot de passe</FormLabel>
-              <Input type="password" onChange={() => setPassword(password)} />
-            </FormControl>
-            <FormControl id="passwordconfirm">
-              <FormLabel>Confirmation de mot de passe</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={6}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
+    <>
+      {success ? (
+        <Register />
+      ) : (
+        <>
+          <ChakraProvider>
+            <Box position={"relative"}>
+              <Container
+                as={SimpleGrid}
+                maxW={"7xl"}
+                columns={{ base: 1, md: 2 }}
+                spacing={{ base: 10, lg: 32 }}
+                py={{ base: 10, sm: 20, lg: 32 }}
               >
-                <Checkbox>Se souvenir de moi</Checkbox>
-                <Link color={"blue.500"}>Vous avez déja un compte ?</Link>
-              </Stack>
-              <Button colorScheme={"blue"} variant={"solid"}>
-                S'inscrire
-              </Button>
-            </Stack>
-          </Stack>
-        </Flex>
-        <Flex flex={1}>
-          <Image
-            alt={"Login Image"}
-            objectFit={"cover"}
-            src={
-              "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
-            }
-          />
-        </Flex>
-      </Stack>
-      <Blur
-        position={"absolute"}
-        top={-10}
-        left={-10}
-        style={{ filter: "blur(70px)" }}
-      />
-    </ChakraProvider>
+                <Stack spacing={{ base: 10, md: 20 }}>
+                  <Heading
+                    lineHeight={1.1}
+                    fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
+                  >
+                    Bienvenue sur market place
+                    <Text
+                      as={"span"}
+                      bgGradient="linear(to-r, red.400,pink.400)"
+                      bgClip="text"
+                    >
+                      &nbsp;!
+                    </Text>
+                    <br />
+                  </Heading>
+                  <Text
+                    lineHeight={1.0}
+                    fontSize={{ base: "3xl", sm: "4xl", md: "4xl", lg: "6xl" }}
+                    as={"span"}
+                    bgGradient="linear(to-r, red.400,pink.400)"
+                    bgClip="text"
+                  >
+                    Une envie subite ? Régalez-vous de suite. Recherchez une
+                    boutique, une catégorie ou un produit.
+                  </Text>
+                  <Stack direction={"row"} spacing={4} align={"center"}>
+                    <Center>
+                      <img src={Diamond} />
+                    </Center>
+
+                    <Text
+                      fontFamily={"heading"}
+                      fontSize={{ base: "4xl", md: "6xl" }}
+                    >
+                      +
+                    </Text>
+                    <Flex
+                      align={"center"}
+                      justify={"center"}
+                      fontFamily={"heading"}
+                      fontSize={{ base: "sm", md: "lg" }}
+                      bg={"gray.800"}
+                      color={"white"}
+                      rounded={"full"}
+                      position={"relative"}
+                      _before={{
+                        content: '""',
+                        width: "full",
+                        height: "full",
+                        rounded: "full",
+                        transform: "scale(1.125)",
+                        bgGradient: "linear(to-bl, orange.400,yellow.400)",
+                        position: "absolute",
+                        zIndex: -1,
+                        top: 0,
+                        left: 0,
+                      }}
+                    >
+                      YOU
+                    </Flex>
+                  </Stack>
+                </Stack>
+
+                <Stack
+                  bgGradient="linear(to-r, gray.300,gray.50)"
+                  rounded={"xl"}
+                  p={{ base: 4, sm: 6, md: 8 }}
+                  spacing={{ base: 8 }}
+                  maxW={{ lg: "lg" }}
+                >
+                  <Stack spacing={4}>
+                    <Heading
+                      color={"gray.800"}
+                      lineHeight={1.1}
+                      fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
+                    >
+                      Créez un compte
+                      <Text
+                        as={"span"}
+                        bgGradient="linear(to-r, red.400,pink.400)"
+                        bgClip="text"
+                      >
+                        &nbsp;!
+                      </Text>
+                    </Heading>
+                    <Text
+                      color={"gray.500"}
+                      fontSize={{ base: "sm", sm: "md" }}
+                    >
+                      Nous vous invitons à vous inscrire afin d'acceder à votre
+                      espace personnel
+                    </Text>
+                  </Stack>
+                  <Box as={"form"} mt={10}>
+                    <Stack spacing={4}>
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Nom"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="text"
+                        onChange={(e) => setFirstName(e.target.value)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />{" "}
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Prénom"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="text"
+                        onChange={(e) => setName(e.target.value)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />{" "}
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Pseudo"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="text"
+                        onChange={(e) => setPseudo(e.target.value)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Adresse email"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="email"
+                        onChange={(e) => validateEmail(e)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />{" "}
+                      <FormLabel color="red" fontSize="xs">
+                        {emailError}
+                      </FormLabel>
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Mot de passe"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="password"
+                        onChange={(e) => validatePassword(e.target.value)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />
+                      <FormLabel color="red" fontSize="xs">
+                        {passwordError}
+                      </FormLabel>
+                      <Input
+                        rounded={"200px"}
+                        placeholder="Confirmer le mot de passe"
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        border={0}
+                        color={"gray.500"}
+                        type="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        _placeholder={{
+                          color: "gray.500",
+                        }}
+                      />
+                      {errMsg && (
+                        <FormLabel color="red" mt="6" mb="0">
+                          {errMsg}
+                        </FormLabel>
+                      )}
+                    </Stack>
+                    <Button
+                      onClick={handleSubmit}
+                      rounded={"200px"}
+                      fontFamily={"heading"}
+                      mt={8}
+                      w={"full"}
+                      bgGradient="linear(to-r, blue.400,pink.400)"
+                      color={"white"}
+                      _hover={{
+                        bgGradient: "linear(to-r, red.400,pink.400)",
+                        boxShadow: "xl",
+                      }}
+                    >
+                      S'incrire
+                    </Button>
+                    <Devider label="ou" />
+
+                    <Center>
+                      <Text
+                        color={"gray.500"}
+                        fontSize={{ base: "sm", sm: "md" }}
+                      >
+                        Déjà un compte ? &emsp;
+                      </Text>
+
+                      <Link
+                        href="http://localhost:4020/ "
+                        fontSize={{ base: "sm", sm: "md" }}
+                        color={"blue.400"}
+                      >
+                        Connectez-vous
+                      </Link>
+                    </Center>
+                  </Box>
+                </Stack>
+              </Container>
+              <Blur
+                position={"absolute"}
+                top={-10}
+                left={-10}
+                style={{ filter: "blur(70px)" }}
+              />
+            </Box>
+          </ChakraProvider>
+        </>
+      )}
+    </>
   );
 }
 

@@ -1,16 +1,19 @@
-import { Fragment } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Register from "./pages/Register";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import routes from "./utils/routes";
 
 function App() {
   return (
-    <Router>
-      <Fragment>
-        <div className="main">
-          <Route exact path="/" component={Register} />
-        </div>
-      </Fragment>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        {routes.map((route) => (
+          <Route
+            key={route.name}
+            path={route.path}
+            element={<route.element />}
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
