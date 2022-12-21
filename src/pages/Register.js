@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Flex,
@@ -19,10 +19,13 @@ import {
 import Devider from "../components/Devider";
 import axios from "axios";
 import Diamond from "../images/LogoBG.png";
+import AuthContext from "../pages/context/AuthProvider";
+import Dashboard from "./Dashboard";
 
 const LOGIN_URL = "http://localhost:8080/user/findByMail";
 
 export default function Register() {
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -40,10 +43,13 @@ export default function Register() {
       if (response?.data.mdp === password) {
         //console.log(response?.data.user.id);
         //console.log(email, password);
-        let id = response?.data.user.id;
-        let mail = response?.data.user.email;
 
-        // setAuth({ id, mail });
+        let id = response?.data.id;
+        let email = response?.data.mail;
+        let nom = response?.data.nom;
+        let prenom = response?.data.prenom;
+        let pseudo = response?.data.pseudo;
+        setAuth({ id, nom, prenom, pseudo, email });
         setEmail("");
         setPassword("");
         setSuccess(true);
@@ -64,7 +70,7 @@ export default function Register() {
   return (
     <>
       {success ? (
-        <div />
+        <Dashboard />
       ) : (
         <>
           <ChakraProvider>

@@ -1,5 +1,6 @@
 import Register from "../pages/Register";
 import Signup from "../pages/SignUp";
+import Dashboard from "../pages/Dashboard";
 const routes = [
   {
     name: "Register",
@@ -10,6 +11,11 @@ const routes = [
     name: "SignupPage",
     path: "/signup",
     element: Signup,
+  },
+  {
+    name: "Dashboard",
+    path: "/Dashboard",
+    element: Dashboard,
   },
 ];
 
