@@ -42,7 +42,7 @@ const LinkItems = [
   { name: "Settings", icon: FiSettings, path: "/settings" },
 ];
 
-export default function Sidebar({ children }) {
+export default function Sidebar({ children, firstName, lastName, pseudo }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
@@ -65,7 +65,12 @@ export default function Sidebar({ children }) {
           </DrawerContent>
         </Drawer>
         {/* mobilenav */}
-        <MobileNav onOpen={onOpen} />
+        <MobileNav
+          pseudo={pseudo}
+          firstname={firstName}
+          lastname={lastName}
+          onOpen={onOpen}
+        />
         <Box ml={{ base: 0, md: 60 }} p="4">
           {children}
         </Box>
@@ -146,7 +151,7 @@ const NavItem = ({ path, icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -201,9 +206,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">
+                    {firstname} {lastname}
+                  </Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {pseudo}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
