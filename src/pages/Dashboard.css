@@ -1,0 +1,31 @@
+.wrapper {
+  width: 100%;
+  height: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 10%;
+}
+.page-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+.searchinput {
+  display: flex;
+}
+.cards {
+  margin-left: 10px;
+  margin-right: 0px;
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  row-gap: 2em;
+  column-gap: 40px;
+}
