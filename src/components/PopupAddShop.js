@@ -6,6 +6,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   AlertDialog,
+  Text,
   Input,
   Checkbox,
   Button,
@@ -13,10 +14,16 @@ import {
   IconButton,
   ChakraProvider,
   useDisclosure,
+  FormLabel,
+  Textarea,
 } from "@chakra-ui/react";
 import * as si from "react-icons/si";
+import "./PopupAddShop.css";
 
 export default function PopupAddShop({
+  setShopCode,
+  setShopDescription,
+  errorPopup,
   shopInVacation,
   setShopName,
   setShopTime,
@@ -58,13 +65,18 @@ export default function PopupAddShop({
           <AlertDialogHeader>Ajouter une boutique ?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Merci de renseigner le nom de la boutique, son horaire d'ouverture
-            pour les jours de la semaine et si la boutique est en congé ou non.
+            Veuillez renseigner les informations de la boutique.
+            <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"gray"}>
+              Les champs marqués d'un <label className="label">*</label> sont
+              obligatoires.
+            </FormLabel>
+            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
+              Nom de la boutique <label className="label">*</label>
+            </FormLabel>
             <Input
-              marginTop={"200px"}
-              m={"10px"}
+              required={true}
+              mt={0}
               rounded={"200px"}
-              placeholder="Nom de la boutique"
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               border={0}
               color={"gray.500"}
@@ -74,10 +86,12 @@ export default function PopupAddShop({
                 color: "gray.500",
               }}
             />{" "}
+            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
+              Horraire d'ouverture durant la semaine{" "}
+              <label className="label">*</label>
+            </FormLabel>
             <Input
-              placeholder="Horraire d'ouverture durant la semaine"
               required
-              m={"10px"}
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               border={0}
@@ -88,14 +102,50 @@ export default function PopupAddShop({
                 color: "gray.500",
               }}
             />{" "}
+            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
+              Code de la boutique
+            </FormLabel>
+            <Input
+              required={true}
+              mt={0}
+              rounded={"200px"}
+              bgGradient="linear(to-r, gray.200 ,pink.100)"
+              border={0}
+              color={"gray.500"}
+              type="text"
+              onChange={(e) => setShopCode(e.target.value)}
+              _placeholder={{
+                color: "gray.500",
+              }}
+            />
+            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
+              Description
+            </FormLabel>
+            <Textarea
+              mt={0}
+              rounded={"30"}
+              bgGradient="linear(to-r, gray.200 ,pink.100)"
+              border={0}
+              color={"gray.500"}
+              type="text"
+              onChange={(e) => setShopDescription(e.target.value)}
+              _placeholder={{
+                color: "gray.500",
+              }}
+            />
             <Checkbox
-              m={"10px"}
-              colorScheme="green"
+              mt={"15px"}
+              color="black"
               isChecked={shopInVacation}
               onChange={(e) => setShopInVacation(e.target.checked)}
             >
               En congé
             </Checkbox>
+            {errorPopup && (
+              <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
+                Un ou des champs obligatoires n'ont pas été remplis
+              </FormLabel>
+            )}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button

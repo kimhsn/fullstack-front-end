@@ -28,8 +28,10 @@ export default function Dashboard() {
   const [conge, setConge] = useState("");
   const [shopName, setShopName] = useState("");
   const [shopTime, setShopTime] = useState("");
+  const [shopDescription, setShopDescription] = useState("");
+  const [shopCode, setShopCode] = useState("");
   const [shopInVacation, setShopInVacation] = useState(false);
-
+  const [errorPopup, setErrorPopup] = useState("");
   console.log(shopTime);
   const getData = async () => {
     const response = await axios.get(`${URL}/read`);
@@ -46,6 +48,9 @@ export default function Dashboard() {
   useEffect(() => {
     getData();
   }, []);
+  useEffect(() => {
+    setErrorPopup("");
+  }, [shopName, shopTime]);
 
   const setTrue = async (id) => {
     setIdShop(id);
@@ -84,30 +89,45 @@ export default function Dashboard() {
   };
 
   const addShop = async () => {
-    const response = await axios.post(
-      `${URL}/create`,
-      JSON.stringify({
-        creationData: dateTime,
-        nom: shopName,
-        horaire: shopTime,
-        conge: shopInVacation,
-      }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    setIdShop(null);
-    getData();
+    if (shopTime === "" || shopName === "") {
+      setErrorPopup("Veuillez remplir tous les champs");
+    } else {
+      const response = await axios.post(
+        `${URL}/create`,
+        JSON.stringify({
+          description: shopDescription,
+          codeBoutique: shopCode,
+          creationData: dateTime,
+          nom: shopName,
+          horaire: shopTime,
+          conge: shopInVacation,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      setIdShop(null);
+      setShopDescription("");
+      setShopCode("");
+      setShopName("");
+      setShopTime("");
+      setShopInVacation(false);
+
+      getData();
+    }
   };
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
         <PopupAddShop
+          errorPopup={errorPopup}
           shopInVacation={shopInVacation}
           setShopName={setShopName}
           setShopTime={setShopTime}
           setShopInVacation={setShopInVacation}
           addShop={addShop}
+          setShopCode={setShopCode}
+          setShopDescription={setShopDescription}
         />
 
         <div className="wrapper">
