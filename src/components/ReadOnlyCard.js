@@ -22,7 +22,6 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
           <Box
             maxW={"435px"}
             w={"full"}
-            // bg={useColorModeValue("white", "gray.900")}
             boxShadow={"2xl"}
             rounded={"md"}
             p={6}
@@ -39,15 +38,27 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
               <Image src={Logo} layout={"fill"} />
             </Box>
             <Stack>
-              <Text
-                color={"green.500"}
-                textTransform={"uppercase"}
-                fontWeight={800}
-                fontSize={"sm"}
-                letterSpacing={1.1}
-              >
-                {item.conge == true ? "En congé" : "En activité"}
-              </Text>
+              {item.conge == true ? (
+                <Text
+                  color={"red.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En congé
+                </Text>
+              ) : (
+                <Text
+                  color={"green.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En activité
+                </Text>
+              )}
               <Heading fontSize={"2xl"} fontFamily={"body"}>
                 {item.nom}
               </Heading>

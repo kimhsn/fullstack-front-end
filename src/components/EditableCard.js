@@ -1,7 +1,6 @@
 import {
   Box,
   Center,
-  Heading,
   Text,
   Stack,
   Avatar,
@@ -49,15 +48,28 @@ export default function EditableCard({
               <Image src={Logo} layout={"fill"} />
             </Box>
             <Stack>
-              <Text
-                color={"green.500"}
-                textTransform={"uppercase"}
-                fontWeight={800}
-                fontSize={"sm"}
-                letterSpacing={1.1}
-              >
-                {item.conge == true ? "En congé" : "En activité"}
-              </Text>
+              {item.conge == true ? (
+                <Text
+                  color={"red.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En congé
+                </Text>
+              ) : (
+                <Text
+                  color={"green.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En activité
+                </Text>
+              )}
+
               <Input
                 border={0}
                 size={0}

@@ -12,6 +12,7 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
+import PopupAddShop from "../components/PopupAddShop";
 
 const URL = "http://localhost:8080/shpos/boutique";
 
@@ -25,11 +26,22 @@ export default function Dashboard() {
   const [creationData, setCreationData] = useState("");
   const [horaire, setHoraire] = useState("");
   const [conge, setConge] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [shopTime, setShopTime] = useState("");
+  const [shopInVacation, setShopInVacation] = useState(false);
 
+  console.log(shopTime);
   const getData = async () => {
     const response = await axios.get(`${URL}/read`);
     setShops(response.data);
   };
+
+  var today = new Date();
+  var date =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  var time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + "T" + time;
 
   useEffect(() => {
     getData();
@@ -70,15 +82,39 @@ export default function Dashboard() {
     });
     getData();
   };
+
+  const addShop = async () => {
+    const response = await axios.post(
+      `${URL}/create`,
+      JSON.stringify({
+        creationData: dateTime,
+        nom: shopName,
+        horaire: shopTime,
+        conge: shopInVacation,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    setIdShop(null);
+    getData();
+  };
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
+        <PopupAddShop
+          shopInVacation={shopInVacation}
+          setShopName={setShopName}
+          setShopTime={setShopTime}
+          setShopInVacation={setShopInVacation}
+          addShop={addShop}
+        />
+
         <div className="wrapper">
           <div className="page-container">
             <ChakraProvider>
               <FormLabel
                 fontWeight={"bold"}
-                mt={14}
                 ml={20}
                 color="black"
                 fontSize="31"
@@ -86,7 +122,7 @@ export default function Dashboard() {
                 Accueil
               </FormLabel>
 
-              <FormLabel mt={20} ml={20} color="black" fontSize="18">
+              <FormLabel mt={10} ml={20} color="black" fontSize="18">
                 Rechercher une boutique
               </FormLabel>
               <InputGroup className="searchinput">
