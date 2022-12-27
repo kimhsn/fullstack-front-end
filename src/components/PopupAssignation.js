@@ -28,7 +28,6 @@ export default function PopupAssignation({ addShop }) {
     setProducts(response.data);
     onOpen();
   };
-  console.log(productName);
   return (
     <ChakraProvider>
       <si.SiShopify
