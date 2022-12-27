@@ -9,10 +9,12 @@ import {
   FormLabel,
   Input,
   Button,
+  Box,
   InputGroup,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
 import PopupAddShop from "../components/PopupAddShop";
+import * as fc from "react-icons/fc";
 
 const URL = "http://localhost:8080/shpos/boutique";
 
@@ -32,7 +34,6 @@ export default function Dashboard() {
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
   const [errorPopup, setErrorPopup] = useState("");
-  console.log(shopTime);
   const getData = async () => {
     const response = await axios.get(`${URL}/read`);
     setShops(response.data);
@@ -55,12 +56,12 @@ export default function Dashboard() {
   const setTrue = async (id) => {
     setIdShop(id);
     const response = await axios.get(`${URL}/findById/${id}`);
-    setNom(Response.data.nom);
-    setDescription(Response.data.description);
-    setCodeBoutique(Response.data.codeBoutique);
-    setCreationData(Response.data.creationData);
-    setHoraire(Response.data.horaire);
-    setConge(Response.data.conge);
+    setNom(response.data.nom);
+    setDescription(response.data.description);
+    setCodeBoutique(response.data.codeBoutique);
+    setCreationData(response.data.creationData);
+    setHoraire(response.data.horaire);
+    setConge(response.data.conge);
   };
 
   const updateShop = async (id) => {
@@ -88,6 +89,24 @@ export default function Dashboard() {
     getData();
   };
 
+  const searchShop = async (name) => {
+    let newShops = [];
+    const response = await axios.get(`${URL}/read`);
+    response.data.map((shop) => {
+      if (name.length == 0) {
+        setShops(response.data);
+      } else if (name.length < 3) {
+        setShops([]);
+      } else {
+        if (shop.nom == name) {
+          newShops.unshift(shop);
+        } else if (shop.nom.includes(name)) {
+          newShops.push(shop);
+        }
+        setShops(newShops);
+      }
+    });
+  };
   const addShop = async () => {
     if (shopTime === "" || shopName === "") {
       setErrorPopup("Veuillez remplir tous les champs");
@@ -145,49 +164,41 @@ export default function Dashboard() {
               <FormLabel mt={10} ml={20} color="black" fontSize="18">
                 Rechercher une boutique
               </FormLabel>
-              <InputGroup className="searchinput">
-                <Input
-                  borderColor={"#585AFC"}
-                  borderLeftRadius={10}
+              <InputGroup ml={20}>
+                <Box
+                  borderLeftRadius={50}
                   borderRightRadius={0}
-                  borderWidth={"4px"}
-                  minWidth={"70px"}
-                  height={"80px"}
-                  width={"62%"}
-                  minwidth={"270px"}
-                  ml={20}
-                  placeholder="Mot clé"
-                />
-                <Input
-                  borderRightRadius={0}
-                  borderLeftRadius={0}
-                  height={"80px"}
-                  borderColor={"#585AFC"}
-                  borderWidth={"4px"}
-                  width={"276px"}
-                  name="location_id"
-                  placeholder="Pays"
-                />
-                <Button
-                  borderLeftRadius={0}
-                  borderRightRadius={10}
                   focusBorderColor={"#7B61FF"}
                   borderColor={"#585AFC"}
                   borderWidth={"4px"}
                   height={"80px"}
                   width={"100px"}
-                  bg={"#6578f4"}
-                  searchData
+                  bg={"#585AFC"}
                   color={"white"}
-                  _hover={{
-                    bg: "#7B61FF",
-                  }}
-                  _focus={{
-                    bg: "#7B61FF",
-                  }}
+
+                  //onClick={searchShop}
                 >
-                  GO
-                </Button>
+                  <fc.FcSearch
+                    style={{ marginLeft: "32px", marginTop: "14px" }}
+                    size={"40px"}
+                    color="red"
+                  />
+                </Box>{" "}
+                <Input
+                  borderColor={"#585AFC"}
+                  borderLeftRadius={0}
+                  borderRightRadius={50}
+                  borderWidth={"4px"}
+                  minWidth={"70px"}
+                  height={"80px"}
+                  width={"70%"}
+                  minwidth={"270px"}
+                  _hover={{
+                    borderColor: "#7B61FF",
+                  }}
+                  placeholder="Entrez au moins 3 caractères pour rechercher"
+                  onChange={(e) => searchShop(e.target.value)}
+                />
               </InputGroup>
               <div className="cards">
                 {shops &&
