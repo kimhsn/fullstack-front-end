@@ -10,7 +10,7 @@ import {
   ChakraProvider,
   Input,
 } from "@chakra-ui/react";
-import * as gr from "react-icons/gr";
+import * as ai from "react-icons/ai";
 import * as tb from "react-icons/tb";
 
 import Logo from "../images/a.jpg";
@@ -27,7 +27,7 @@ export default function EditableCard({
   return (
     <ChakraProvider>
       <GridItem key={item.id}>
-        <Center py={6}>
+        <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
             w={"full"}
@@ -92,7 +92,12 @@ export default function EditableCard({
                 src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
                 alt={"Author"}
               />
-              <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+              <Stack
+                direction={"column"}
+                width={"100%"}
+                spacing={0}
+                fontSize={"sm"}
+              >
                 <Input
                   border={0}
                   size={0}
@@ -108,19 +113,22 @@ export default function EditableCard({
                   setCreationData={(e) => setCreationData(e.target.value)}
                 />
               </Stack>
-              <IconButton
-                left={"108px"}
-                onClick={() => setIdShop(null)}
-                rounded={"full"}
-                colorScheme="red"
-                icon={<tb.TbArrowBack />}
-              />
-              <IconButton
-                left={"0px"}
+
+              <ai.AiFillCheckCircle
+                cursor="pointer"
+                color={"green"}
+                size={"60px"}
+                right={"0px"}
                 onClick={() => updateShop(item.id)}
                 rounded={"full"}
-                colorScheme="green"
-                icon={<gr.GrStatusGood />}
+              />
+              <tb.TbArrowBack
+                cursor="pointer"
+                size={"60px"}
+                right={"0px"}
+                onClick={() => setIdShop(null)}
+                rounded={"full"}
+                color="red"
               />
             </Stack>
           </Box>
