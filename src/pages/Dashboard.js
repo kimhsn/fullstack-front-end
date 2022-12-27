@@ -28,8 +28,8 @@ export default function Dashboard() {
   const [conge, setConge] = useState("");
   const [shopName, setShopName] = useState("");
   const [shopTime, setShopTime] = useState("");
-  const [shopDescription, setShopDescription] = useState("");
-  const [shopCode, setShopCode] = useState("");
+  const [shopDescription, setShopDescription] = useState(null);
+  const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
   const [errorPopup, setErrorPopup] = useState("");
   console.log(shopTime);
@@ -107,8 +107,8 @@ export default function Dashboard() {
         }
       );
       setIdShop(null);
-      setShopDescription("");
-      setShopCode("");
+      setShopDescription(null);
+      setShopCode(null);
       setShopName("");
       setShopTime("");
       setShopInVacation(false);
