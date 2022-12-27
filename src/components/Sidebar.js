@@ -207,7 +207,7 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
                   ml="2"
                 >
                   <Text fontSize="sm">
-                    {firstname} {lastname}
+                    {lastname} {firstname}
                   </Text>
                   <Text fontSize="xs" color="gray.600">
                     {pseudo}

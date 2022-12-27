@@ -7,18 +7,18 @@ import {
   Avatar,
   Image,
   GridItem,
-  IconButton,
   ChakraProvider,
 } from "@chakra-ui/react";
+import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
-
 import Logo from "../images/a.jpg";
+
 export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
   return (
     <ChakraProvider>
       <GridItem key={item.id}>
-        <Center py={6}>
+        <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
             w={"full"}
@@ -69,23 +69,31 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
                 alt={"Author"}
               />
-              <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+              <Stack
+                direction={"column"}
+                spacing={0}
+                width={"100%"}
+                fontSize={"sm"}
+              >
                 <Text fontWeight={600}>{item.codeBoutique}</Text>
                 <Text color={"gray.500"}>{item.creationData}</Text>
-              </Stack>
-              <IconButton
-                left={"135px"}
-                onClick={() => deleteShop(item.id)}
-                rounded={"full"}
-                colorScheme="red"
-                icon={<ai.AiFillDelete />}
-              />
-              <IconButton
-                left={"6"}
+              </Stack>{" "}
+              <PopupAssignation />
+              <fi.FiEdit
+                cursor="pointer"
+                size={"60px"}
+                right={"0px"}
                 onClick={() => setIdShop(item.id)}
                 rounded={"full"}
-                colorScheme="blue"
-                icon={<fi.FiEdit />}
+                color="#0000CD"
+              />
+              <ai.AiFillDelete
+                cursor="pointer"
+                size={"60px"}
+                right={"0px"}
+                onClick={() => deleteShop(item.id)}
+                rounded={"full"}
+                color="red"
               />
             </Stack>
           </Box>
