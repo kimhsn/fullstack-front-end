@@ -8,9 +8,10 @@ import {
   ChakraProvider,
   FormLabel,
   Input,
-  Button,
   Box,
   InputGroup,
+  SkeletonText,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
 import PopupAddShop from "../components/PopupAddShop";
@@ -201,7 +202,7 @@ export default function Dashboard() {
                 />
               </InputGroup>
               <div className="cards">
-                {shops &&
+                {shops.length > 0 ? (
                   shops.map((element) => {
                     return (
                       <Fragment>
@@ -222,10 +223,106 @@ export default function Dashboard() {
                             setIdShop={setTrue}
                             deleteShop={deleteShop}
                           />
-                        )}
+                        )}{" "}
                       </Fragment>
                     );
-                  })}
+                  })
+                ) : (
+                  <Fragment>
+                    {/* 
+                    <Box
+                      maxW={"435px"}
+                      w={"full"}
+                      boxShadow={"2xl"}
+                      rounded={"md"}
+                      p={6}
+                      overflow={"hidden"}
+                      h="300px"
+                    >
+                      <SkeletonText
+                        mt="10"
+                        noOfLines={6}
+                        spacing="4"
+                        skeletonHeight="2"
+                      />
+
+                      <SkeletonCircle mt="10" size="10" />
+                    </Box>{" "}
+                    <Box
+                      maxW={"435px"}
+                      w={"full"}
+                      boxShadow={"2xl"}
+                      rounded={"md"}
+                      p={6}
+                      overflow={"hidden"}
+                      h="300px"
+                    >
+                      <SkeletonText
+                        mt="10"
+                        noOfLines={6}
+                        spacing="4"
+                        skeletonHeight="2"
+                      />
+
+                      <SkeletonCircle mt="10" size="10" />
+                    </Box>{" "}
+                    <Box
+                      maxW={"435px"}
+                      w={"full"}
+                      boxShadow={"2xl"}
+                      rounded={"md"}
+                      p={6}
+                      overflow={"hidden"}
+                      h="300px"
+                    >
+                      <SkeletonText
+                        mt="10"
+                        noOfLines={6}
+                        spacing="4"
+                        skeletonHeight="2"
+                      />
+
+                      <SkeletonCircle mt="10" size="10" />
+                    </Box>{" "}
+                    <Box
+                      maxW={"435px"}
+                      w={"full"}
+                      boxShadow={"2xl"}
+                      rounded={"md"}
+                      p={6}
+                      overflow={"hidden"}
+                      h="300px"
+                    >
+                      <SkeletonText
+                        mt="10"
+                        noOfLines={6}
+                        spacing="4"
+                        skeletonHeight="2"
+                      />
+
+                      <SkeletonCircle mt="10" size="10" />
+                    </Box>{" "}
+                    <Box
+                      maxW={"435px"}
+                      w={"full"}
+                      boxShadow={"2xl"}
+                      rounded={"md"}
+                      p={6}
+                      overflow={"hidden"}
+                      h="300px"
+                    >
+                      <SkeletonText
+                        mt="10"
+                        noOfLines={6}
+                        spacing="4"
+                        skeletonHeight="2"
+                      />
+
+                      <SkeletonCircle mt="10" size="10" />
+                    </Box>
+                    */}
+                  </Fragment>
+                )}
               </div>
             </ChakraProvider>
           </div>

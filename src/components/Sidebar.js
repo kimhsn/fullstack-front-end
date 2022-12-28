@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../images/Logo.png";
 import {
   IconButton,
   Avatar,
   Box,
   CloseButton,
+  AvatarBadge,
   Flex,
   HStack,
   Image,
   VStack,
+  keyframes,
   Icon,
   useColorModeValue,
   Drawer,
@@ -46,7 +48,7 @@ export default function Sidebar({ children, firstName, lastName, pseudo }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
-      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH="160vh" bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}
@@ -116,6 +118,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const NavItem = ({ icon, children, path, ...rest }) => {
+  const [urlPath, setUrlPath] = useState(window.location.pathname);
+  console.log(urlPath);
   return (
     <Link
       to={path}
@@ -129,6 +133,8 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        color={urlPath === path ? "cyan.400" : "gray.600"}
+        bg={urlPath === path ? "cyan.100" : "inherit"}
         _hover={{
           bg: "cyan.400",
           color: "white",
@@ -152,6 +158,18 @@ const NavItem = ({ icon, children, path, ...rest }) => {
 };
 
 const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
+  const pulseRing = keyframes`
+	0% {
+    transform: scale(0.33);
+  }
+  40%,
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+	`;
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -164,6 +182,7 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
       justifyContent={{ base: "space-between", md: "flex-end" }}
       {...rest}
     >
+      {" "}
       <IconButton
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}
@@ -171,7 +190,6 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
       <Text
         display={{ base: "flex", md: "none" }}
         fontSize="2xl"
@@ -180,7 +198,6 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
       >
         <Image marginLeft={"25px"} maxWidth={"55px"} src={Logo} />{" "}
       </Text>
-
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
           size="lg"
@@ -196,10 +213,38 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
-                />
+                <Box
+                  as="div"
+                  position="relative"
+                  w={"50px"}
+                  h={"50px"}
+                  _before={{
+                    content: "''",
+                    position: "relative",
+                    display: "block",
+                    width: "300%",
+                    height: "300%",
+                    boxSizing: "border-box",
+                    marginLeft: "-100%",
+                    marginTop: "-100%",
+                    borderRadius: "50%",
+                    bgColor: "green",
+                    animation: `2.25s ${pulseRing} cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite`,
+                  }}
+                >
+                  <Avatar
+                    size="full"
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/428/428933.png"
+                    }
+                    position="absolute"
+                    top={0}
+                    right={"0px"}
+                  >
+                    {" "}
+                    <AvatarBadge boxSize="2.5em" bg="green.500" />
+                  </Avatar>
+                </Box>
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -222,12 +267,15 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
+              <Link to="/userprofile">
+                <MenuItem>Profile</MenuItem>
+              </Link>
+
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <Link href="http://localhost:4020/">
-                <MenuItem to="http://localhost:4020/">Se déconnecter</MenuItem>
+              <Link to="/">
+                <MenuItem>Se déconnecter</MenuItem>
               </Link>
             </MenuList>
           </Menu>

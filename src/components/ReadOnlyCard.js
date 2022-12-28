@@ -12,6 +12,7 @@ import {
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
+import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
 
 export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
@@ -27,57 +28,64 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
             p={6}
             overflow={"hidden"}
           >
-            <Box
-              h={"210px"}
-              bg={"gray.100"}
-              mt={-6}
-              mx={-6}
-              mb={6}
-              pos={"relative"}
-            >
-              <Image src={Logo} layout={"fill"} />
-            </Box>
-            <Stack>
-              {item.conge == true ? (
-                <Text
-                  color={"red.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  En congé
-                </Text>
-              ) : (
-                <Text
-                  color={"green.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  En activité
-                </Text>
-              )}
-              <Heading fontSize={"2xl"} fontFamily={"body"}>
-                {item.nom}
-              </Heading>
-              <Text color={"gray.500"}>{item.description}</Text>
-            </Stack>
+            <Link to={`/detailsshop/${item.id}`}>
+              <Box
+                h={"210px"}
+                bg={"gray.100"}
+                mt={-6}
+                mx={-6}
+                mb={6}
+                pos={"relative"}
+              >
+                <Image src={Logo} layout={"fill"} />
+              </Box>{" "}
+              <Stack>
+                {item.conge == true ? (
+                  <Text
+                    color={"red.500"}
+                    textTransform={"uppercase"}
+                    fontWeight={800}
+                    fontSize={"sm"}
+                    letterSpacing={1.1}
+                  >
+                    En congé
+                  </Text>
+                ) : (
+                  <Text
+                    color={"green.500"}
+                    textTransform={"uppercase"}
+                    fontWeight={800}
+                    fontSize={"sm"}
+                    letterSpacing={1.1}
+                  >
+                    En activité
+                  </Text>
+                )}
+                <Heading fontSize={"2xl"} fontFamily={"body"}>
+                  {item.nom}
+                </Heading>
+                <Text color={"gray.500"}>{item.description}</Text>
+              </Stack>
+            </Link>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Avatar
-                src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-                alt={"Author"}
-              />
+              <Link to={`/detailsshop/${item.id}`}>
+                {" "}
+                <Avatar
+                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+                  alt={"Author"}
+                />
+              </Link>{" "}
               <Stack
                 direction={"column"}
                 spacing={0}
                 width={"100%"}
                 fontSize={"sm"}
               >
-                <Text fontWeight={600}>{item.codeBoutique}</Text>
-                <Text color={"gray.500"}>{item.creationData}</Text>
-              </Stack>{" "}
+                <Link to={`/detailsshop/${item.id}`}>
+                  <Text fontWeight={600}>{item.codeBoutique}</Text>
+                  <Text color={"gray.500"}>{item.creationData}</Text>
+                </Link>{" "}
+              </Stack>
               <PopupAssignation />
               <fi.FiEdit
                 cursor="pointer"
