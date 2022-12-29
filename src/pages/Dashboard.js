@@ -10,18 +10,23 @@ import {
   Input,
   Box,
   InputGroup,
-  SkeletonText,
-  SkeletonCircle,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
-
+import Paginate from "../components/Paginate";
 const URL = "http://localhost:8080/shpos/boutique";
 
 export default function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
   const [shops, setShops] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [shopsPerPage] = useState(6);
+  const indexOfLastPost = currentPage * shopsPerPage;
+  const indexOfFirstPost = indexOfLastPost - shopsPerPage;
+  const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
+
+  //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
@@ -136,6 +141,22 @@ export default function Dashboard() {
       getData();
     }
   };
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const previousPage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage !== Math.ceil(shops.length / shopsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
@@ -202,8 +223,8 @@ export default function Dashboard() {
                 />
               </InputGroup>
               <div className="cards">
-                {shops.length > 0 ? (
-                  shops.map((element) => {
+                {shops ? (
+                  currentShops.map((element) => {
                     return (
                       <Fragment>
                         {idShop === element.id ? (
@@ -325,6 +346,16 @@ export default function Dashboard() {
                 )}
               </div>
             </ChakraProvider>
+            {currentShops.length > 0 && (
+              <Paginate
+                shopsPerPage={shopsPerPage}
+                totalShops={shops.length}
+                currentPage={currentPage}
+                paginate={paginate}
+                previousPage={previousPage}
+                nextPage={nextPage}
+              />
+            )}
           </div>
         </div>
       </Sidebar>
