@@ -22,12 +22,11 @@ import Register from "./Register";
 import axios from "axios";
 import validator from "validator";
 
-const SIGNUP_URL = "http://localhost:8080/user/create";
+const SIGNUP_URL = "http://localhost:8080/shops/users/create";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -63,22 +62,15 @@ export default function SignUp() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      mail: email,
-      mdp: password,
-      nom: name,
-      prenom: firstName,
-      pseudo: pseudo,
-    });
+
     try {
       const response = await axios.post(
         SIGNUP_URL,
         JSON.stringify({
-          mail: email,
+          email: email,
           mdp: password,
           nom: name,
           prenom: firstName,
-          pseudo: pseudo,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -238,18 +230,6 @@ export default function SignUp() {
                           color: "gray.500",
                         }}
                       />{" "}
-                      <Input
-                        rounded={"200px"}
-                        placeholder="Pseudo"
-                        bgGradient="linear(to-r, gray.200 ,pink.100)"
-                        border={0}
-                        color={"gray.500"}
-                        type="text"
-                        onChange={(e) => setPseudo(e.target.value)}
-                        _placeholder={{
-                          color: "gray.500",
-                        }}
-                      />
                       <Input
                         rounded={"200px"}
                         placeholder="Adresse email"

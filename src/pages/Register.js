@@ -22,7 +22,7 @@ import Diamond from "../images/LogoBG.png";
 import AuthContext from "../pages/context/AuthProvider";
 import Dashboard from "./Dashboard";
 
-const LOGIN_URL = "http://localhost:8080/user/findByMail";
+const LOGIN_URL = "http://localhost:8080/shops/auth/authenticate";
 
 export default function Register() {
   const { setAuth } = useContext(AuthContext);
@@ -37,9 +37,10 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const response = await axios.get(`${LOGIN_URL}/${email}`, {
+      const response = await axios.post(`${LOGIN_URL}`, {
         headers: { "Content-Type": "application/json" },
       });
+      console.log(response);
       if (response?.data.mdp === password) {
         //console.log(response?.data.user.id);
         //console.log(email, password);
