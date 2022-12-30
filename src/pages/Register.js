@@ -21,7 +21,7 @@ import axios from "axios";
 import Diamond from "../images/LogoBG.png";
 import AuthContext from "../pages/context/AuthProvider";
 import Dashboard from "./Dashboard";
-
+import jwt_decode from "jwt-decode";
 const LOGIN_URL = "http://localhost:8080/shops/auth/authenticate";
 
 export default function Register() {
@@ -37,20 +37,41 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${LOGIN_URL}`, {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log(response);
-      if (response?.data.mdp === password) {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({
+          login: email,
+          password: password,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const responseUser = await axios.get(
+        `http://localhost:8080/shops/users/findByMail/${email}`,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(responseUser);
+
+      if (response?.status === 200) {
+        let accesToken = response?.data.accesToken;
+        let refreshToken = response?.data.refreshToken;
+        var decoded = jwt_decode(accesToken);
+        console.log(decoded);
         //console.log(response?.data.user.id);
         //console.log(email, password);
 
-        let id = response?.data.id;
-        let email = response?.data.mail;
-        let nom = response?.data.nom;
-        let prenom = response?.data.prenom;
-        let pseudo = response?.data.pseudo;
-        setAuth({ id, nom, prenom, pseudo, email });
+        let id = responseUser?.data.id;
+        let email = responseUser?.data.email;
+        let nom = responseUser?.data.nom;
+        let prenom = responseUser?.data.prenom;
+        let url = responseUser?.data.url;
+        console.log({ id, nom, prenom, email, url, accesToken, refreshToken });
+
+        setAuth({ id, nom, prenom, email, url, accesToken, refreshToken });
         setEmail("");
         setPassword("");
         setSuccess(true);

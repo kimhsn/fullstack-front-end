@@ -15,10 +15,11 @@ import "./Dashboard.css";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
-const URL = "http://localhost:8080/shpos/boutique";
+const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
+  console.log(auth);
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
@@ -82,7 +83,7 @@ export default function Dashboard() {
         conge: conge,
       }),
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
     setIdShop(null);
@@ -90,7 +91,7 @@ export default function Dashboard() {
   };
   const deleteShop = async (id) => {
     const response = await axios.delete(`${URL}/delete/${id}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
   };
@@ -128,7 +129,7 @@ export default function Dashboard() {
           conge: shopInVacation,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${auth.accesToken}` },
         }
       );
       setIdShop(null);
