@@ -47,20 +47,17 @@ export default function Register() {
           headers: { "Content-Type": "application/json" },
         }
       );
-
+      let accesToken = response?.data.accesToken;
       const responseUser = await axios.get(
         `http://localhost:8080/shops/users/findByMail/${email}`,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${accesToken}` },
         }
       );
-      console.log(responseUser);
 
       if (response?.status === 200) {
-        let accesToken = response?.data.accesToken;
         let refreshToken = response?.data.refreshToken;
         var decoded = jwt_decode(accesToken);
-        console.log(decoded);
         //console.log(response?.data.user.id);
         //console.log(email, password);
 
