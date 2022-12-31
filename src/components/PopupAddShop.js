@@ -6,7 +6,6 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   AlertDialog,
-  Text,
   Input,
   Checkbox,
   Button,
@@ -160,7 +159,9 @@ export default function PopupAddShop({
               rounded={"200px"}
               colorScheme="green"
               ml={3}
-              onClick={(e) => addShop()}
+              onClick={(e) => {
+                addShop();
+              }}
             >
               Valider
             </Button>

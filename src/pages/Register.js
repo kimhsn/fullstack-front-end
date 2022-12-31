@@ -48,10 +48,11 @@ export default function Register() {
         }
       );
       let accesToken = response?.data.accesToken;
+
       const responseUser = await axios.get(
         `http://localhost:8080/shops/users/findByMail/${email}`,
         {
-          headers: { Authorization: `Bearer ${accesToken}` },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
@@ -66,7 +67,6 @@ export default function Register() {
         let nom = responseUser?.data.nom;
         let prenom = responseUser?.data.prenom;
         let url = responseUser?.data.url;
-        console.log({ id, nom, prenom, email, url, accesToken, refreshToken });
 
         setAuth({ id, nom, prenom, email, url, accesToken, refreshToken });
         setEmail("");

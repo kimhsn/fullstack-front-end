@@ -19,7 +19,6 @@ const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log(auth);
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
@@ -40,9 +39,11 @@ export default function Dashboard() {
   const [shopDescription, setShopDescription] = useState(null);
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
+
   const [errorPopup, setErrorPopup] = useState("");
   const getData = async () => {
     const response = await axios.get(`${URL}/read`);
+
     setShops(response.data);
   };
 
@@ -83,15 +84,16 @@ export default function Dashboard() {
         conge: conge,
       }),
       {
-        headers: { Authorization: `Bearer ${auth.accesToken}` },
+        headers: { "Content-Type": "application/json" },
       }
     );
     setIdShop(null);
     getData();
   };
+
   const deleteShop = async (id) => {
     const response = await axios.delete(`${URL}/delete/${id}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
+      headers: { "Content-Type": "application/json" },
     });
     getData();
   };
@@ -129,14 +131,13 @@ export default function Dashboard() {
           conge: shopInVacation,
         }),
         {
-          headers: { Authorization: `Bearer ${auth.accesToken}` },
+          headers: { "Content-Type": "application/json" },
         }
       );
       setIdShop(null);
       setShopDescription(null);
       setShopCode(null);
-      setShopName("");
-      setShopTime("");
+
       setShopInVacation(false);
 
       getData();
