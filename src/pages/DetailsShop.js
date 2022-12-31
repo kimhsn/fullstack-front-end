@@ -1,11 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
+import ReadOnlyRow from "../components/ReadOnlyRows";
+import StatsShop from "../components/StatsShop";
 import AuthContext from "./context/AuthProvider";
 import {
   Box,
   Container,
+  GridItem,
   Stack,
   Text,
   Image,
@@ -18,25 +21,60 @@ import {
   useColorModeValue,
   List,
   ListItem,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Table,
+  FormLabel,
+  TableContainer,
 } from "@chakra-ui/react";
 import detailsShop from "../images/detailsShop.jpg";
 import { MdLocalShipping } from "react-icons/md";
 import axios from "axios";
-
-const URL = "http://localhost:8080/shpos/boutique/findById";
+import { BiCategory } from "react-icons/bi";
+import { TiShoppingCart } from "react-icons/ti";
+import { GoLocation } from "react-icons/go";
+const URL = "http://localhost:8080/shops/boutiques/findById";
 
 const DetailsShop = () => {
+  const [categoryName, setCategoryName] = useState("");
+  const [productsTotal, setProductsTotal] = useState(0);
+  const [categoriesTotal, setCategoriesTotal] = useState(0);
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
-
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState("");
   const [shop, setShop] = useState("");
-
+  useEffect(() => {
+    getData();
+  }, []);
   const getData = async () => {
     const response = await axios.get(`${URL}/${id}`);
     setShop(response.data);
+    setCategories(response.data.categories);
+    setProductsTotal(response.data.produits.length);
+    setCategoriesTotal(response.data.categories.length);
   };
-  console.log(shop);
-  getData();
+  const renderHeader = () => {
+    let headerElements = ["Nom", "Prix", "Code produit", "Description"];
+    return headerElements.map((key, index) => {
+      return <Th key={index}>{key} </Th>;
+    });
+  };
+  const renderBody = () => {
+    return (
+      products &&
+      products.map((key) => {
+        return (
+          <Fragment>
+            <ReadOnlyRow product={key} />
+          </Fragment>
+        );
+      })
+    );
+  };
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
@@ -63,16 +101,40 @@ const DetailsShop = () => {
                   lineHeight={1.1}
                   fontWeight={600}
                   fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
+                  mr={"auto"}
                 >
                   {shop.nom}
                 </Heading>
-                <Text
-                  color={useColorModeValue("gray.900", "gray.400")}
-                  fontWeight={300}
-                  fontSize={"2xl"}
-                >
-                  $350.00 USD
-                </Text>
+                {shop.conge == true ? (
+                  <Text
+                    alignItems="center"
+                    justifyContent={"center"}
+                    color={"red.500"}
+                    textTransform={"uppercase"}
+                    fontWeight={800}
+                    fontSize={"sm"}
+                  >
+                    <Stack direction="row" alignItems="center">
+                      <MdLocalShipping />
+                      <Text>En congés</Text>
+                    </Stack>
+                  </Text>
+                ) : (
+                  <Text
+                    alignItems="center"
+                    justifyContent={"center"}
+                    color={"green.500"}
+                    textTransform={"uppercase"}
+                    fontWeight={800}
+                    fontSize={"sm"}
+                    letterSpacing={1.1}
+                  >
+                    <Stack direction="row" alignItems="center">
+                      <MdLocalShipping />
+                      <Text>En activité</Text>
+                    </Stack>
+                  </Text>
+                )}
               </Box>
 
               <Stack
@@ -89,26 +151,44 @@ const DetailsShop = () => {
                     color={useColorModeValue("gray.500", "gray.400")}
                     fontSize={"2xl"}
                     fontWeight={"300"}
+                    mr={"auto"}
                   >
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod tempor invidunt ut labore
+                    {shop.description}
                   </Text>
-                  <Text fontSize={"lg"}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
-                    aliquid amet at delectus doloribus dolorum expedita hic,
-                    ipsum maxime modi nam officiis porro, quae, quisquam quos
-                    reprehenderit velit? Natus, totam.
-                  </Text>
+                  <Box
+                    maxW="7xl"
+                    mx={"auto"}
+                    pt={2}
+                    px={{ base: 2, sm: 12, md: 17 }}
+                  >
+                    <SimpleGrid
+                      columns={{ base: 1, md: 3 }}
+                      spacing={{ base: 5, lg: 8 }}
+                    >
+                      <StatsShop
+                        title={"Catégories"}
+                        stat={categoriesTotal}
+                        icon={<BiCategory size={"3em"} />}
+                      />
+
+                      <StatsShop
+                        title={"Produits"}
+                        stat={productsTotal}
+                        icon={<TiShoppingCart size={"3em"} />}
+                      />
+                    </SimpleGrid>
+                  </Box>
                 </VStack>
+
                 <Box>
                   <Text
                     fontSize={{ base: "16px", lg: "18px" }}
-                    color={useColorModeValue("yellow.500", "yellow.300")}
+                    color={"#898afc"}
                     fontWeight={"500"}
                     textTransform={"uppercase"}
                     mb={"4"}
                   >
-                    Features
+                    Horraires d'ouverture
                   </Text>
 
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -127,87 +207,81 @@ const DetailsShop = () => {
                 <Box>
                   <Text
                     fontSize={{ base: "16px", lg: "18px" }}
-                    color={useColorModeValue("yellow.500", "yellow.300")}
+                    color={"#898afc"}
                     fontWeight={"500"}
                     textTransform={"uppercase"}
                     mb={"4"}
                   >
-                    Product Details
+                    Catégories de la boutique
                   </Text>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={14}>
+                    {categories &&
+                      categories.map((item) => (
+                        <GridItem key={item}>
+                          <Box
+                            borderColor={"#585AFC"}
+                            borderWidth={"4px"}
+                            p={8}
+                            w="300px"
+                            rounded="md"
+                            bg={
+                              item.nom === categoryName ? "#D1D2FF" : "#898afc"
+                            }
+                            key={item}
+                            borderRadius={10}
+                            cursor="pointer"
+                            onClick={() => {
+                              setCategory(item);
+                              setCategoryName(item.nom);
 
-                  <List spacing={2}>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Between lugs:
-                      </Text>{" "}
-                      20 mm
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Bracelet:
-                      </Text>{" "}
-                      leather strap
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Case:
-                      </Text>{" "}
-                      Steel
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Case diameter:
-                      </Text>{" "}
-                      42 mm
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Dial color:
-                      </Text>{" "}
-                      Black
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Crystal:
-                      </Text>{" "}
-                      Domed, scratch‑resistant sapphire crystal with
-                      anti‑reflective treatment inside
-                    </ListItem>
-                    <ListItem>
-                      <Text as={"span"} fontWeight={"bold"}>
-                        Water resistance:
-                      </Text>{" "}
-                      5 bar (50 metres / 167 feet){" "}
-                    </ListItem>
-                  </List>
+                              setProducts(item.produits);
+                            }}
+                          >
+                            <Stack align={"center"}>
+                              <Text
+                                fontSize={"30px"}
+                                fontWeight={"extrabold"}
+                                fontFamily={"nunito"}
+                                color={
+                                  item.nom === categoryName
+                                    ? "darkblue"
+                                    : "white"
+                                }
+                              >
+                                {item.nom}
+                              </Text>
+                            </Stack>
+                          </Box>
+                        </GridItem>
+                      ))}
+                  </SimpleGrid>
                 </Box>
               </Stack>
-
-              <Button
-                rounded={"none"}
-                w={"full"}
-                mt={8}
-                size={"lg"}
-                py={"7"}
-                bg={useColorModeValue("gray.900", "gray.50")}
-                color={useColorModeValue("white", "gray.900")}
-                textTransform={"uppercase"}
-                _hover={{
-                  transform: "translateY(2px)",
-                  boxShadow: "lg",
-                }}
-              >
-                Add to cart
-              </Button>
-
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent={"center"}
-              >
-                <MdLocalShipping />
-                <Text>2-3 business days delivery</Text>
-              </Stack>
+              {products.length > 0 && (
+                <Box
+                  bg={"white"}
+                  w="600px"
+                  h="550px"
+                  mt={10}
+                  ml={20}
+                  px={20}
+                  py={10}
+                >
+                  <FormLabel color="#4f4e69" fontSize="24">
+                    <b>Les produits de la category {category.nom}</b>
+                  </FormLabel>
+                  <TableContainer>
+                    <Box overflowY="auto" maxHeight="550px" maxWidth="700px">
+                      <Table variant="striped" colorScheme="blue">
+                        <Thead position="sticky" top={0}>
+                          <Tr>{renderHeader()}</Tr>
+                        </Thead>
+                        <Tbody>{renderBody()}</Tbody>
+                      </Table>
+                    </Box>
+                  </TableContainer>
+                </Box>
+              )}
             </Stack>
           </SimpleGrid>
         </Container>

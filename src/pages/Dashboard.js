@@ -15,7 +15,7 @@ import "./Dashboard.css";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
-const URL = "http://localhost:8080/shpos/boutique";
+const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -39,9 +39,11 @@ export default function Dashboard() {
   const [shopDescription, setShopDescription] = useState(null);
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
+
   const [errorPopup, setErrorPopup] = useState("");
   const getData = async () => {
     const response = await axios.get(`${URL}/read`);
+
     setShops(response.data);
   };
 
@@ -88,6 +90,7 @@ export default function Dashboard() {
     setIdShop(null);
     getData();
   };
+
   const deleteShop = async (id) => {
     const response = await axios.delete(`${URL}/delete/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -134,8 +137,7 @@ export default function Dashboard() {
       setIdShop(null);
       setShopDescription(null);
       setShopCode(null);
-      setShopName("");
-      setShopTime("");
+
       setShopInVacation(false);
 
       getData();

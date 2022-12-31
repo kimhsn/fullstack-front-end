@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Center,
@@ -5,10 +6,16 @@ import {
   Text,
   Stack,
   Avatar,
+  Grid,
+  SimpleGrid,
   Image,
   GridItem,
+  Flex,
   ChakraProvider,
+  Icon,
 } from "@chakra-ui/react";
+import { FcViewDetails, FcPaid, FcInTransit } from "react-icons/fc";
+
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
@@ -39,31 +46,51 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
               >
                 <Image src={Logo} layout={"fill"} />
               </Box>{" "}
+              <Grid templateColumns="repeat(5, 1fr)">
+                <GridItem colSpan={3} h="20">
+                  <Stack>
+                    {item.conge == true ? (
+                      <Text
+                        color={"red.500"}
+                        textTransform={"uppercase"}
+                        fontWeight={800}
+                        fontSize={"sm"}
+                        letterSpacing={1.1}
+                      >
+                        En congé
+                      </Text>
+                    ) : (
+                      <Text
+                        color={"green.500"}
+                        textTransform={"uppercase"}
+                        fontWeight={800}
+                        fontSize={"sm"}
+                        letterSpacing={1.1}
+                      >
+                        En activité
+                      </Text>
+                    )}
+                    <Heading fontSize={"2xl"} fontFamily={"body"}>
+                      {item.nom}
+                    </Heading>
+                  </Stack>
+                </GridItem>
+                <GridItem h="20">
+                  {" "}
+                  <Feature
+                    icon={<Icon as={FcViewDetails} w={10} h={10} />}
+                    title={item.categories.length}
+                  />
+                </GridItem>
+                <GridItem h="20">
+                  {" "}
+                  <Feature
+                    icon={<Icon as={FcPaid} w={10} h={10} />}
+                    title={item.produits.length}
+                  />
+                </GridItem>
+              </Grid>
               <Stack>
-                {item.conge == true ? (
-                  <Text
-                    color={"red.500"}
-                    textTransform={"uppercase"}
-                    fontWeight={800}
-                    fontSize={"sm"}
-                    letterSpacing={1.1}
-                  >
-                    En congé
-                  </Text>
-                ) : (
-                  <Text
-                    color={"green.500"}
-                    textTransform={"uppercase"}
-                    fontWeight={800}
-                    fontSize={"sm"}
-                    letterSpacing={1.1}
-                  >
-                    En activité
-                  </Text>
-                )}
-                <Heading fontSize={"2xl"} fontFamily={"body"}>
-                  {item.nom}
-                </Heading>
                 <Text color={"gray.500"}>{item.description}</Text>
               </Stack>
             </Link>
@@ -110,3 +137,15 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
     </ChakraProvider>
   );
 }
+const Feature = ({ title, icon }) => {
+  return (
+    <Stack>
+      <Flex w={10} ml={10} h={8}>
+        {icon}
+      </Flex>
+      <Text position={"relative"} top={0} left={"50px"} fontWeight={600}>
+        {title}
+      </Text>{" "}
+    </Stack>
+  );
+};
