@@ -51,7 +51,9 @@ const DetailsShop = () => {
     getData();
   }, []);
   const getData = async () => {
-    const response = await axios.get(`${URL}/${id}`);
+    const response = await axios.get(`${URL}/${id}`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     setShop(response.data);
     setCategories(response.data.categories);
     setProductsTotal(response.data.produits.length);
@@ -77,7 +79,7 @@ const DetailsShop = () => {
   };
   return (
     <ChakraProvider>
-      <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
+      <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
         <Container maxW={"7xl"}>
           <SimpleGrid
             columns={{ base: 1, lg: 2 }}

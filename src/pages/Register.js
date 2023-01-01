@@ -21,7 +21,7 @@ import axios from "axios";
 import Diamond from "../images/LogoBG.png";
 import AuthContext from "../pages/context/AuthProvider";
 import Dashboard from "./Dashboard";
-import jwt_decode from "jwt-decode";
+
 const LOGIN_URL = "http://localhost:8080/shops/auth/authenticate";
 
 export default function Register() {
@@ -47,18 +47,17 @@ export default function Register() {
           headers: { "Content-Type": "application/json" },
         }
       );
+
       let accesToken = response?.data.accesToken;
+      let refreshToken = response?.data.refreshToken;
 
       const responseUser = await axios.get(
-        `http://localhost:8080/shops/users/findByMail/${email}`,
+        `http://localhost:8080/shops/users/profile`,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${accesToken}` },
         }
       );
-
       if (response?.status === 200) {
-        let refreshToken = response?.data.refreshToken;
-        var decoded = jwt_decode(accesToken);
         //console.log(response?.data.user.id);
         //console.log(email, password);
 
@@ -67,8 +66,18 @@ export default function Register() {
         let nom = responseUser?.data.nom;
         let prenom = responseUser?.data.prenom;
         let url = responseUser?.data.url;
+        let role = responseUser?.data.appRoles[0].roleName;
 
-        setAuth({ id, nom, prenom, email, url, accesToken, refreshToken });
+        setAuth({
+          id,
+          nom,
+          prenom,
+          email,
+          url,
+          role,
+          accesToken,
+          refreshToken,
+        });
         setEmail("");
         setPassword("");
         setSuccess(true);

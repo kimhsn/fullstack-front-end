@@ -6,6 +6,6 @@ export default function Paramettres() {
   const { auth, setAuth } = useContext(AuthContext);
   console.log(auth.id);
   return (
-    <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo} />
+    <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role} />
   );
 }

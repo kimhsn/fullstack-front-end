@@ -19,7 +19,7 @@ const UserProfile = () => {
   const { auth } = useContext(AuthContext);
   return (
     <ChakraProvider>
-      <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
+      <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
         <Center py={6}>
           <Box
             maxW={"500px"}

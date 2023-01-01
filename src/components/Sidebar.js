@@ -44,7 +44,7 @@ const LinkItems = [
   { name: "Settings", icon: FiSettings, path: "/Paramettres" },
 ];
 
-export default function Sidebar({ children, firstName, lastName, pseudo }) {
+export default function Sidebar({ children, firstName, lastName, role }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
@@ -68,7 +68,7 @@ export default function Sidebar({ children, firstName, lastName, pseudo }) {
         </Drawer>
         {/* mobilenav */}
         <MobileNav
-          pseudo={pseudo}
+          role={role}
           firstname={firstName}
           lastname={lastName}
           onOpen={onOpen}
@@ -157,7 +157,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
   );
 };
 
-const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
+const MobileNav = ({ firstname, lastname, role, onOpen, ...rest }) => {
   const pulseRing = keyframes`
 	0% {
     transform: scale(0.33);
@@ -255,7 +255,7 @@ const MobileNav = ({ firstname, lastname, pseudo, onOpen, ...rest }) => {
                     {lastname} {firstname}
                   </Text>
                   <Text fontSize="xs" color="gray.600">
-                    {pseudo}
+                    {role}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>

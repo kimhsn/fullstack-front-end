@@ -41,9 +41,11 @@ export default function Dashboard() {
   const [shopInVacation, setShopInVacation] = useState(false);
 
   const [errorPopup, setErrorPopup] = useState("");
-  const getData = async () => {
-    const response = await axios.get(`${URL}/read`);
 
+  const getData = async () => {
+    const response = await axios.get(`${URL}/read`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     setShops(response.data);
   };
 
@@ -63,7 +65,9 @@ export default function Dashboard() {
 
   const setTrue = async (id) => {
     setIdShop(id);
-    const response = await axios.get(`${URL}/findById/${id}`);
+    const response = await axios.get(`${URL}/findById/${id}`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     setNom(response.data.nom);
     setDescription(response.data.description);
     setCodeBoutique(response.data.codeBoutique);
@@ -73,34 +77,38 @@ export default function Dashboard() {
   };
 
   const updateShop = async (id) => {
-    const response = await axios.put(
+    const response = axios.post(
       `${URL}/update/${id}`,
       JSON.stringify({
         nom: nom,
         description: description,
-        codeBoutique: codeBoutique,
         creationData: creationData,
         horaire: horaire,
         conge: conge,
       }),
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${auth.accesToken}`,
+        },
       }
     );
+
     setIdShop(null);
     getData();
   };
 
   const deleteShop = async (id) => {
     const response = await axios.delete(`${URL}/delete/${id}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
   };
 
   const searchShop = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}/read`);
+    const response = await axios.get(`${URL}/read`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     response.data.map((shop) => {
       if (name.length == 0) {
         setShops(response.data);
@@ -131,7 +139,7 @@ export default function Dashboard() {
           conge: shopInVacation,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${auth.accesToken}` },
         }
       );
       setIdShop(null);
@@ -161,7 +169,7 @@ export default function Dashboard() {
 
   return (
     <ChakraProvider>
-      <Sidebar firstName={auth.prenom} lastName={auth.nom} pseudo={auth.pseudo}>
+      <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
         <PopupAddShop
           errorPopup={errorPopup}
           shopInVacation={shopInVacation}
