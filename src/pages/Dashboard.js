@@ -87,9 +87,7 @@ export default function Dashboard() {
         conge: conge,
       }),
       {
-        headers: {
-          Authorization: `Bearer ${auth.accesToken}`,
-        },
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
 

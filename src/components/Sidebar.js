@@ -119,7 +119,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
 const NavItem = ({ icon, children, path, ...rest }) => {
   const [urlPath, setUrlPath] = useState(window.location.pathname);
-  console.log(urlPath);
   return (
     <Link
       to={path}

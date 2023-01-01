@@ -12,6 +12,7 @@ import {
   SimpleGrid,
   Link,
   Center,
+  Select,
   FormLabel,
   useBreakpointValue,
   Icon,
@@ -22,13 +23,14 @@ import Register from "./Register";
 import axios from "axios";
 import validator from "validator";
 
-const SIGNUP_URL = "http://localhost:8080/shops/users/create";
-
 export default function SignUp() {
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  console.log(role);
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -64,6 +66,15 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
+      let SIGNUP_URL;
+      if (role === "Admin") {
+        SIGNUP_URL = "http://localhost:8080/shops/users/addNewAdmin";
+      } else if (role === "Manager") {
+        SIGNUP_URL = "http://localhost:8080/shops/users/addNewManager";
+      } else {
+        SIGNUP_URL = "http://localhost:8080/shops/users/addNewUser";
+      }
+
       const response = await axios.post(
         SIGNUP_URL,
         JSON.stringify({
@@ -82,7 +93,11 @@ export default function SignUp() {
 
       setEmail("");
       setPassword("");
-      setSuccess(true);
+      if (password !== confirmPassword) {
+        setErrMsg("Les mots de passe ne correspondent pas");
+      } else {
+        setSuccess(true);
+      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -133,7 +148,7 @@ export default function SignUp() {
                     bgGradient="linear(to-r, red.400,pink.400)"
                     bgClip="text"
                   >
-                    Une envie subite ? Régalez-vous de suite. Recherchez une
+                    Une envie subite ? Régalez-vous de suite. Recherchez une
                     boutique, une catégorie ou un produit.
                   </Text>
                   <Stack direction={"row"} spacing={4} align={"center"}>
@@ -242,9 +257,23 @@ export default function SignUp() {
                           color: "gray.500",
                         }}
                       />{" "}
-                      <FormLabel color="red" fontSize="xs">
-                        {emailError}
-                      </FormLabel>
+                      {emailError && (
+                        <FormLabel color="red" fontSize="xs">
+                          {emailError}
+                        </FormLabel>
+                      )}
+                      <Select
+                        color={"gray.500"}
+                        border={0}
+                        rounded={"200px"}
+                        bgGradient="linear(to-r, gray.200 ,pink.100)"
+                        placeholder="Rôle"
+                        onChange={(e) => setRole(e.target.value)}
+                      >
+                        <option value={"Admin"}>Admin</option>
+                        <option value={"Manager"}>Manager</option>;
+                        <option value={"Utilisateur"}>Utilisateur</option>;
+                      </Select>
                       <Input
                         rounded={"200px"}
                         placeholder="Mot de passe"
@@ -257,9 +286,11 @@ export default function SignUp() {
                           color: "gray.500",
                         }}
                       />
-                      <FormLabel color="red" fontSize="xs">
-                        {passwordError}
-                      </FormLabel>
+                      {passwordError && (
+                        <FormLabel color="red" fontSize="xs">
+                          {passwordError}
+                        </FormLabel>
+                      )}
                       <Input
                         rounded={"200px"}
                         placeholder="Confirmer le mot de passe"
@@ -267,7 +298,7 @@ export default function SignUp() {
                         border={0}
                         color={"gray.500"}
                         type="password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         _placeholder={{
                           color: "gray.500",
                         }}
