@@ -5,23 +5,24 @@ import {
   Heading,
   Text,
   Stack,
-  Avatar,
   Grid,
   Image,
   GridItem,
+  chakra,
+  Tooltip,
   Flex,
   ChakraProvider,
   Icon,
 } from "@chakra-ui/react";
-import { FcViewDetails, FcPaid, FcInTransit } from "react-icons/fc";
+import { FiShoppingCart } from "react-icons/fi";
 
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Logo from "../images/a.jpg";
+import Logo from "../images/Product2.png";
 
-export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
+export default function ReadOnlyProductCard({ item, deleteShop, setIdShop }) {
   return (
     <ChakraProvider>
       <GridItem key={item.id}>
@@ -45,61 +46,41 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
               >
                 <Image src={Logo} layout={"fill"} />
               </Box>{" "}
-              <Grid templateColumns="repeat(5, 1fr)">
-                <GridItem colSpan={3} h="20">
-                  <Stack>
-                    {item.conge == true ? (
-                      <Text
-                        color={"red.500"}
-                        textTransform={"uppercase"}
-                        fontWeight={800}
-                        fontSize={"sm"}
-                        letterSpacing={1.1}
-                      >
-                        En congé
-                      </Text>
-                    ) : (
-                      <Text
-                        color={"green.500"}
-                        textTransform={"uppercase"}
-                        fontWeight={800}
-                        fontSize={"sm"}
-                        letterSpacing={1.1}
-                      >
-                        En activité
-                      </Text>
-                    )}
-                    <Heading fontSize={"2xl"} fontFamily={"body"}>
-                      {item.nom}
-                    </Heading>
-                  </Stack>
-                </GridItem>
-                <GridItem h="20">
-                  {" "}
-                  <Feature
-                    icon={<Icon as={FcViewDetails} w={10} h={10} />}
-                    title={item.categories.length}
-                  />
-                </GridItem>
-                <GridItem h="20">
-                  {" "}
-                  <Feature
-                    icon={<Icon as={FcPaid} w={10} h={10} />}
-                    title={item.produits.length}
-                  />
-                </GridItem>
+              <Grid templateColumns="repeat(1, 1fr)">
+                <Stack>
+                  <Heading fontSize={"2xl"} fontFamily={"body"}>
+                    {item.nom}
+                  </Heading>
+                </Stack>
               </Grid>
               <Stack>
-                <Text color={"gray.500"}>{item.description}</Text>
+                <Text marginTop={3} color={"gray.500"}>
+                  {item.description}
+                </Text>
               </Stack>
             </Link>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
               <Link to={`/detailsshop/${item.id}`}>
-                {" "}
-                <Avatar
-                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-                  alt={"Author"}
-                />
+                <Tooltip
+                  label="Produit en stock"
+                  bg="white"
+                  placement={"top"}
+                  color={"gray.800"}
+                  fontSize={"1.2em"}
+                >
+                  <chakra.a href={"#"} display={"flex"}>
+                    <Icon
+                      color={"blue.600"}
+                      as={FiShoppingCart}
+                      h={7}
+                      w={7}
+                      alignSelf={"center"}
+                    />
+                  </chakra.a>
+                </Tooltip>
+                <Text color="blue.600" fontSize="2xl">
+                  {item.prix}€
+                </Text>
               </Link>{" "}
               <Stack
                 direction={"column"}
@@ -108,11 +89,11 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 fontSize={"sm"}
               >
                 <Link to={`/detailsshop/${item.id}`}>
-                  <Text fontWeight={600}>{item.codeProduit}</Text>
+                  <Text fontWeight={600}>{item.codeBoutique}</Text>
                   <Text color={"gray.500"}>{item.creationData}</Text>
                 </Link>{" "}
               </Stack>
-              <PopupAssignation />
+              {/*<PopupAssignation />*/}
               <fi.FiEdit
                 cursor="pointer"
                 size={"60px"}

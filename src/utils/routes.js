@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import Paramettres from "../pages/Paramettres";
 import UserProfile from "../pages/UserProfile";
 import DetailsShop from "../pages/DetailsShop";
+import Products from "../pages/Products";
 const routes = [
   {
     name: "Register",
@@ -34,6 +35,11 @@ const routes = [
     name: "Paramettres",
     path: "/Paramettres",
     element: Paramettres,
+  },
+  {
+    name: "Products",
+    path: "/products",
+    element: Products,
   },
 ];
 

@@ -1,24 +1,24 @@
 import React, { useContext, useEffect, useState, Fragment } from "react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
-import EditableCard from "../components/EditableCard";
-import ReadOnlyCard from "../components/ReadOnlyCard";
+import ReadOnlyProductCard from "../components/ReadOnlyProductCard";
+import EditableProductCard from "../components/EditableProductCard";
 import axios from "axios";
 import {
   ChakraProvider,
   FormLabel,
-  Select,
   Input,
   Box,
   InputGroup,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
-import PopupAddShop from "../components/PopupAddShop";
+import PopupAddProduct from "../components/PopupAddProduct";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
-const URL = "http://localhost:8080/shops/boutiques";
 
-export default function Dashboard() {
+const URL = "http://localhost:8080/shops/produits";
+
+export default function Products() {
   const { auth, setAuth } = useContext(AuthContext);
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,25 +26,22 @@ export default function Dashboard() {
   const indexOfLastPost = currentPage * shopsPerPage;
   const indexOfFirstPost = indexOfLastPost - shopsPerPage;
   const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
-
-  //pagination state
+  let a = 1;
+  console.log(a + 1); //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
-  const [codeBoutique, setCodeBoutique] = useState("");
   const [creationData, setCreationData] = useState("");
   const [horaire, setHoraire] = useState("");
   const [conge, setConge] = useState("");
-  const [shopName, setShopName] = useState("");
-  const [shopTime, setShopTime] = useState("");
-  const [shopDescription, setShopDescription] = useState(null);
-  const [shopCode, setShopCode] = useState(null);
-  const [shopInVacation, setShopInVacation] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productDescription, setproductDescription] = useState(null);
+  const [productCode, setProductCode] = useState(null);
+  // const [shopInVacation, setShopInVacation] = useState(false);
 
   const [errorPopup, setErrorPopup] = useState("");
-  //filtre+sort
-  const [SortBy, setSortBy] = useState("");
-  console.log(SortBy);
+
   const getData = async () => {
     const response = await axios.get(`${URL}/read`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -64,7 +61,7 @@ export default function Dashboard() {
   }, []);
   useEffect(() => {
     setErrorPopup("");
-  }, [shopName, shopTime]);
+  }, [productName, productPrice]);
 
   const setTrue = async (id) => {
     setIdShop(id);
@@ -73,7 +70,6 @@ export default function Dashboard() {
     });
     setNom(response.data.nom);
     setDescription(response.data.description);
-    setCodeBoutique(response.data.codeBoutique);
     setCreationData(response.data.creationData);
     setHoraire(response.data.horaire);
     setConge(response.data.conge);
@@ -125,28 +121,52 @@ export default function Dashboard() {
       }
     });
   };
-  const addShop = async () => {
-    if (shopTime === "" || shopName === "") {
+  const addProduct = async () => {
+    if (productPrice === "" || productName === "") {
       setErrorPopup("Veuillez remplir tous les champs");
     } else {
-      const response = await axios.post(
-        `${URL}/create`,
-        JSON.stringify({
-          description: shopDescription,
-          creationData: dateTime,
-          nom: shopName,
-          horaire: shopTime,
-          conge: shopInVacation,
-        }),
-        {
-          headers: { Authorization: `Bearer ${auth.accesToken}` },
-        }
-      );
-      setIdShop(null);
-      setShopDescription(null);
-      setShopCode(null);
+      try {
+        const response = await fetch(`${URL}/create`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${auth.accesToken}`,
+            accept: "application/json", // It can be used to overcome cors errors
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            codeProduit: productCode,
+            prix: productPrice,
+            description: productDescription,
+            creationData: dateTime,
+            nom: productName,
+            horaire: productPrice,
+          }),
+        });
+      } catch (e) {
+        console.log(e);
+      }
 
-      setShopInVacation(false);
+      const response = await fetch(`${URL}/create`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${auth.accesToken}`,
+          accept: "application/json", // It can be used to overcome cors errors
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          codeProduit: productCode,
+          prix: productPrice,
+          description: productDescription,
+          creationData: dateTime,
+          nom: productName,
+          horaire: productPrice,
+        }),
+      });
+
+      setProductCode(null);
+
+      setIdShop(null);
+      setproductDescription(null);
 
       getData();
     }
@@ -170,110 +190,88 @@ export default function Dashboard() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        <PopupAddShop
+        <PopupAddProduct
+          setProductCode={setProductCode}
           errorPopup={errorPopup}
-          shopInVacation={shopInVacation}
-          setShopName={setShopName}
-          setShopTime={setShopTime}
-          setShopInVacation={setShopInVacation}
-          addShop={addShop}
-          setShopCode={setShopCode}
-          setShopDescription={setShopDescription}
+          setProductName={setProductName}
+          addProduct={addProduct}
+          setProductDescription={setproductDescription}
+          setProductPrice={setProductPrice}
         />
 
         <div className="wrapper">
           <div className="page-container">
-            <ChakraProvider>
-              <FormLabel
-                fontWeight={"bold"}
-                ml={20}
-                color="black"
-                fontSize="31"
+            <FormLabel fontWeight={"bold"} ml={20} color="black" fontSize="31">
+              Produits disponibles dans les boutiques
+            </FormLabel>
+
+            <FormLabel mt={10} ml={20} color="black" fontSize="18">
+              Rechercher un produit
+            </FormLabel>
+            <InputGroup ml={20}>
+              <Box
+                borderLeftRadius={50}
+                borderRightRadius={0}
+                focusBorderColor={"#7B61FF"}
+                borderColor={"#585AFC"}
+                borderWidth={"4px"}
+                height={"80px"}
+                width={"100px"}
+                bg={"#585AFC"}
+                color={"white"}
+
+                //onClick={searchShop}
               >
-                Accueil
-              </FormLabel>
-
-              <FormLabel mt={10} ml={20} color="black" fontSize="18">
-                Rechercher une boutique
-              </FormLabel>
-              <InputGroup ml={20}>
-                <Box
-                  borderLeftRadius={50}
-                  borderRightRadius={0}
-                  focusBorderColor={"#7B61FF"}
-                  borderColor={"#585AFC"}
-                  borderWidth={"4px"}
-                  height={"80px"}
-                  width={"100px"}
-                  bg={"#585AFC"}
-                  color={"white"}
-
-                  //onClick={searchShop}
-                >
-                  <fc.FcSearch
-                    style={{ marginLeft: "32px", marginTop: "14px" }}
-                    size={"40px"}
-                    color="red"
-                  />
-                </Box>{" "}
-                <Input
-                  borderColor={"#585AFC"}
-                  borderLeftRadius={0}
-                  borderRightRadius={50}
-                  borderWidth={"4px"}
-                  minWidth={"70px"}
-                  height={"80px"}
-                  width={"70%"}
-                  minwidth={"270px"}
-                  _hover={{
-                    borderColor: "#7B61FF",
-                  }}
-                  placeholder="Entrez au moins 3 caractères pour rechercher"
-                  onChange={(e) => searchShop(e.target.value)}
+                <fc.FcSearch
+                  style={{ marginLeft: "32px", marginTop: "14px" }}
+                  size={"40px"}
+                  color="red"
                 />
-              </InputGroup>
-
-              <Select
-                mt={"15px"}
-                rounded={"200px"}
-                bgGradient="linear(to-r, gray.200 ,pink.100)"
-                placeholder="Trier par "
-                onChange={(e) => setSortBy(e.target.value)}
-                width={"185px"}
-              >
-                <option value="name">Nom</option>
-                <option value="creationDate">Date de création</option>
-                <option value="productsum">Nombre de produit</option>
-              </Select>
-              <div className="cards">
-                {shops ? (
-                  currentShops.map((element) => {
-                    return (
-                      <Fragment>
-                        {idShop === element.id ? (
-                          <EditableCard
-                            item={element}
-                            setIdShop={setIdShop}
-                            updateShop={updateShop}
-                            setNom={setNom}
-                            setDescription={setDescription}
-                            setCodeBoutique={setCodeBoutique}
-                            setCreationData={setCreationData}
-                            setHoraire={setHoraire}
-                          />
-                        ) : (
-                          <ReadOnlyCard
-                            item={element}
-                            setIdShop={setTrue}
-                            deleteShop={deleteShop}
-                          />
-                        )}{" "}
-                      </Fragment>
-                    );
-                  })
-                ) : (
-                  <Fragment>
-                    {/* 
+              </Box>{" "}
+              <Input
+                borderColor={"#585AFC"}
+                borderLeftRadius={0}
+                borderRightRadius={50}
+                borderWidth={"4px"}
+                minWidth={"70px"}
+                height={"80px"}
+                width={"70%"}
+                minwidth={"270px"}
+                _hover={{
+                  borderColor: "#7B61FF",
+                }}
+                placeholder="Entrez au moins 3 caractères pour rechercher"
+                onChange={(e) => searchShop(e.target.value)}
+              />
+            </InputGroup>
+            <div className="cards">
+              {shops ? (
+                currentShops.map((element) => {
+                  return (
+                    <Fragment>
+                      {idShop === element.id ? (
+                        <EditableProductCard
+                          item={element}
+                          setIdShop={setIdShop}
+                          updateShop={updateShop}
+                          setNom={setNom}
+                          setDescription={setDescription}
+                          setCreationData={setCreationData}
+                          setHoraire={setHoraire}
+                        />
+                      ) : (
+                        <ReadOnlyProductCard
+                          item={element}
+                          setIdShop={setTrue}
+                          deleteShop={deleteShop}
+                        />
+                      )}{" "}
+                    </Fragment>
+                  );
+                })
+              ) : (
+                <Fragment>
+                  {/* 
                     <Box
                       maxW={"435px"}
                       w={"full"}
@@ -365,10 +363,9 @@ export default function Dashboard() {
                       <SkeletonCircle mt="10" size="10" />
                     </Box>
                     */}
-                  </Fragment>
-                )}
-              </div>
-            </ChakraProvider>
+                </Fragment>
+              )}
+            </div>
             {currentShops.length > 0 && (
               <Paginate
                 shopsPerPage={shopsPerPage}
