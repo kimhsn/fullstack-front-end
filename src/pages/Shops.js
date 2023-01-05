@@ -3,22 +3,42 @@ import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
 import EditableCard from "../components/EditableCard";
 import ReadOnlyCard from "../components/ReadOnlyCard";
+import Devider from "../components/Devider";
 import axios from "axios";
 import {
   ChakraProvider,
   FormLabel,
+  FormControl,
+  Grid,
+  GridItem,
+  Switch,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanel,
+  TabPanels,
+  Flex,
+  PopoverHeader,
+  Button,
+  Popover,
+  PopoverTrigger,
   Select,
   Input,
   Box,
   InputGroup,
 } from "@chakra-ui/react";
 import "./Dashboard.css";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
 const URL = "http://localhost:8080/shops/boutiques";
 
-export default function Dashboard() {
+export default function Shops() {
   const { auth, setAuth } = useContext(AuthContext);
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,11 +60,14 @@ export default function Dashboard() {
   const [shopDescription, setShopDescription] = useState(null);
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
-
   const [errorPopup, setErrorPopup] = useState("");
+
   //filtre+sort
   const [SortBy, setSortBy] = useState("");
-  console.log(SortBy);
+  const [enConge, setEnConge] = useState("");
+  const [dateBefore, setDateBefore] = useState("");
+  const [dateAfter, setDateAfter] = useState("");
+
   const getData = async () => {
     const response = await axios.get(`${URL}/read`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -190,7 +213,7 @@ export default function Dashboard() {
                 color="black"
                 fontSize="31"
               >
-                Accueil
+                Boutiques disponibles
               </FormLabel>
 
               <FormLabel mt={10} ml={20} color="black" fontSize="18">
@@ -232,19 +255,107 @@ export default function Dashboard() {
                   onChange={(e) => searchShop(e.target.value)}
                 />
               </InputGroup>
+              <Grid mt={10} templateColumns="repeat(5, 1fr)">
+                <GridItem colSpan={3}></GridItem>
+                <GridItem ml={20}>
+                  {" "}
+                  <Select
+                    rounded={"200px"}
+                    bgGradient="linear(to-r, blue.200,pink.200)"
+                    placeholder="Trier par"
+                    onChange={(e) => setSortBy(e.target.value)}
+                    width={"185px"}
+                  >
+                    <option value="name">Nom</option>
+                    <option value="creationDate">Date de création</option>
+                    <option value="productsum">Nombre de produit</option>
+                  </Select>
+                </GridItem>
+                <GridItem ml={1}>
+                  {" "}
+                  <Flex justifyContent="center">
+                    <Popover placement="bottom" isLazy>
+                      <PopoverTrigger>
+                        <Button
+                          width={"185px"}
+                          rounded={"200px"}
+                          rightIcon={<ChevronDownIcon ml={14} />}
+                          bgGradient="linear(to-r, blue.200,pink.200)"
+                        >
+                          Filtrer par
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent _focus={{ boxShadown: "none" }}>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverHeader fontWeight="bold">
+                          Filtrer par
+                        </PopoverHeader>
+                        <PopoverBody w="full">
+                          <Tabs isLazy colorScheme="green">
+                            <TabList>
+                              <Tab
+                                _focus={{ boxShadow: "none" }}
+                                fontSize="xs"
+                                fontWeight="bold"
+                                w="50%"
+                              >
+                                Type de boutique
+                              </Tab>
+                              <Tab
+                                _focus={{ boxShadow: "none" }}
+                                fontSize="xs"
+                                fontWeight="bold"
+                                w="50%"
+                              >
+                                Date de création
+                              </Tab>
+                            </TabList>
+                            <TabPanels>
+                              <TabPanel>
+                                <FormControl display="flex" alignItems="center">
+                                  <FormLabel htmlFor="email-alerts" mb="0">
+                                    Boutique en congé ?
+                                  </FormLabel>
+                                  <Switch
+                                    onChange={() => setEnConge(!enConge)}
+                                  />
+                                </FormControl>
+                              </TabPanel>
+                              <TabPanel>
+                                <FormLabel htmlFor="email-alerts" mb="0">
+                                  Avant une date précise
+                                </FormLabel>
+                                <Input
+                                  placeholder="Select Date and Time"
+                                  size="md"
+                                  type="datetime-local"
+                                  onChange={(e) => {
+                                    setDateBefore(e.target.value);
+                                  }}
+                                />
+                                <Devider label="-" />
+                                <FormLabel htmlFor="email-alerts" mb="0">
+                                  Aprés une date précise
+                                </FormLabel>
+                                <Input
+                                  placeholder="Select Date and Time"
+                                  size="md"
+                                  type="datetime-local"
+                                  onChange={(e) => {
+                                    setDateAfter(e.target.value);
+                                  }}
+                                />
+                              </TabPanel>
+                            </TabPanels>
+                          </Tabs>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                  </Flex>
+                </GridItem>
+              </Grid>
 
-              <Select
-                mt={"15px"}
-                rounded={"200px"}
-                bgGradient="linear(to-r, gray.200 ,pink.100)"
-                placeholder="Trier par "
-                onChange={(e) => setSortBy(e.target.value)}
-                width={"185px"}
-              >
-                <option value="name">Nom</option>
-                <option value="creationDate">Date de création</option>
-                <option value="productsum">Nombre de produit</option>
-              </Select>
               <div className="cards">
                 {shops ? (
                   currentShops.map((element) => {

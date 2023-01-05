@@ -1,11 +1,18 @@
 import Register from "../pages/Register";
 import Signup from "../pages/SignUp";
-import Dashboard from "../pages/Dashboard";
+import Shops from "../pages/Shops";
 import Paramettres from "../pages/Paramettres";
 import UserProfile from "../pages/UserProfile";
 import DetailsShop from "../pages/DetailsShop";
 import Products from "../pages/Products";
+import Home from "../pages/Home";
+
 const routes = [
+  {
+    name: "Home",
+    path: "/Home",
+    element: Home,
+  },
   {
     name: "Register",
     path: "/",
@@ -17,9 +24,9 @@ const routes = [
     element: Signup,
   },
   {
-    name: "Dashboard",
-    path: "/Dashboard",
-    element: Dashboard,
+    name: "Shops",
+    path: "/Shops",
+    element: Shops,
   },
   {
     name: "Dashboard",

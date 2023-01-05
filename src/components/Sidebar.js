@@ -34,11 +34,15 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
+import { GiShop } from "react-icons/gi";
+import { SiShopify } from "react-icons/si";
+
 import { Link } from "react-router-dom";
 
 const LinkItems = [
-  { name: "Home", icon: FiHome, path: "/Dashboard" },
-  { name: "Products", icon: FiHome, path: "/Products" },
+  { name: "Accueil", icon: FiHome, path: "/Home" },
+  { name: "Boutiques", icon: GiShop, path: "/Shops" },
+  { name: "Produits", icon: SiShopify, path: "/Products" },
   { name: "Trending", icon: FiTrendingUp, path: "/trending" },
   { name: "Explore", icon: FiCompass, path: "/explore" },
   { name: "Favourites", icon: FiStar, path: "/favourites" },
@@ -49,7 +53,7 @@ export default function Sidebar({ children, firstName, lastName, role }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
-      <Box minH="160vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH="170vh" bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}
@@ -268,7 +272,7 @@ const MobileNav = ({ firstname, lastname, role, onOpen, ...rest }) => {
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <Link to="/userprofile">
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>Profil</MenuItem>
               </Link>
 
               <MenuItem>Settings</MenuItem>

@@ -1,13 +1,15 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
-
+import { Input } from "@chakra-ui/react";
 export default function Paramettres() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log(auth.id);
-  let a = 1;
-  console.log(a + 1); //pagination state
+  console.log("test");
+
   return (
-    <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role} />
+    <ChakraProvider>
+      <Input />
+    </ChakraProvider>
   );
 }

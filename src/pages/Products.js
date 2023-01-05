@@ -21,13 +21,13 @@ const URL = "http://localhost:8080/shops/produits";
 export default function Products() {
   const { auth, setAuth } = useContext(AuthContext);
   const [shops, setShops] = useState([]);
+  console.log(shops);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
   const indexOfLastPost = currentPage * shopsPerPage;
   const indexOfFirstPost = indexOfLastPost - shopsPerPage;
   const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
-  let a = 1;
-  console.log(a + 1); //pagination state
+  //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
@@ -125,27 +125,6 @@ export default function Products() {
     if (productPrice === "" || productName === "") {
       setErrorPopup("Veuillez remplir tous les champs");
     } else {
-      try {
-        const response = await fetch(`${URL}/create`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${auth.accesToken}`,
-            accept: "application/json", // It can be used to overcome cors errors
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            codeProduit: productCode,
-            prix: productPrice,
-            description: productDescription,
-            creationData: dateTime,
-            nom: productName,
-            horaire: productPrice,
-          }),
-        });
-      } catch (e) {
-        console.log(e);
-      }
-
       const response = await fetch(`${URL}/create`, {
         method: "POST",
         headers: {
@@ -164,7 +143,8 @@ export default function Products() {
       });
 
       setProductCode(null);
-
+      setProductName("");
+      setProductPrice("");
       setIdShop(null);
       setproductDescription(null);
 
