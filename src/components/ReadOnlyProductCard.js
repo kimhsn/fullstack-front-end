@@ -44,7 +44,10 @@ export default function ReadOnlyProductCard({ item, deleteShop, setIdShop }) {
                 mb={6}
                 pos={"relative"}
               >
-                <Image src={Logo} layout={"fill"} />
+                <Image
+                  src="https://farm66.staticflickr.com/65535/52604600085_b09968f4e4_z.jpg"
+                  layout={"fill"}
+                />
               </Box>{" "}
               <Grid templateColumns="repeat(1, 1fr)">
                 <Stack>

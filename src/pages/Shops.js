@@ -103,17 +103,18 @@ export default function Shops() {
   };
 
   const updateShop = async (id) => {
-    const response = axios.post(
+    const response = await axios.put(
       `${URL}/update/${id}`,
-      JSON.stringify({
+      {
         nom: nom,
         description: description,
-        creationData: creationData,
         horaire: horaire,
         conge: conge,
-      }),
+      },
       {
-        headers: { Authorization: `Bearer ${auth.accesToken}` },
+        headers: {
+          Authorization: `Bearer ${auth.accesToken}`,
+        },
       }
     );
 
@@ -149,18 +150,16 @@ export default function Shops() {
     });
   };
   const addShop = async () => {
-    if (shopTime === "" || shopName === "") {
+    if (shopName === "") {
       setErrorPopup("Veuillez remplir tous les champs");
     } else {
       const response = await axios.post(
         `${URL}/create`,
-        JSON.stringify({
+        {
           description: shopDescription,
-          creationData: dateTime,
           nom: shopName,
-          horaire: shopTime,
           conge: shopInVacation,
-        }),
+        },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
         }
@@ -170,7 +169,12 @@ export default function Shops() {
       setShopCode(null);
 
       setShopInVacation(false);
-
+      console.log({
+        description: shopDescription,
+        creationData: dateTime,
+        nom: shopName,
+        conge: shopInVacation,
+      });
       getData();
     }
   };

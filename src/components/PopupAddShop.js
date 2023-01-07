@@ -84,23 +84,7 @@ export default function PopupAddShop({
               _placeholder={{
                 color: "gray.500",
               }}
-            />{" "}
-            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Horraire d'ouverture durant la semaine{" "}
-              <label className="label">*</label>
-            </FormLabel>
-            <Input
-              required
-              rounded={"200px"}
-              bgGradient="linear(to-r, gray.200 ,pink.100)"
-              border={0}
-              color={"gray.500"}
-              type="time"
-              onChange={(e) => setShopTime(e.target.value)}
-              _placeholder={{
-                color: "gray.500",
-              }}
-            />{" "}
+            />
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
               Code de la boutique
             </FormLabel>

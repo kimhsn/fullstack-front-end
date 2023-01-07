@@ -21,7 +21,6 @@ const URL = "http://localhost:8080/shops/produits";
 export default function Products() {
   const { auth, setAuth } = useContext(AuthContext);
   const [shops, setShops] = useState([]);
-  console.log(shops);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
   const indexOfLastPost = currentPage * shopsPerPage;
@@ -76,20 +75,15 @@ export default function Products() {
   };
 
   const updateShop = async (id) => {
-    const response = axios.post(
+    console.log(productPrice);
+
+    const response = await axios.put(
       `${URL}/update/${id}`,
-      JSON.stringify({
-        nom: nom,
-        description: description,
-        creationData: creationData,
-        horaire: horaire,
-        conge: conge,
-      }),
+      { prix: 20, nom: nom, description: description },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
-
     setIdShop(null);
     getData();
   };
