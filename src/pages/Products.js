@@ -7,14 +7,35 @@ import axios from "axios";
 import {
   ChakraProvider,
   FormLabel,
+  Grid,
+  GridItem,
+  Switch,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanel,
+  TabPanels,
+  Flex,
+  PopoverHeader,
+  Button,
+  Popover,
+  PopoverTrigger,
+  FormControl,
   Input,
   Box,
   InputGroup,
+  Select,
 } from "@chakra-ui/react";
-import "./Dashboard.css";
+import Devider from "../components/Devider";
 import PopupAddProduct from "../components/PopupAddProduct";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import "./Dashboard.css";
 
 const URL = "http://localhost:8080/shops/produits";
 
@@ -38,6 +59,13 @@ export default function Products() {
   const [productDescription, setproductDescription] = useState(null);
   const [productCode, setProductCode] = useState(null);
   // const [shopInVacation, setShopInVacation] = useState(false);
+
+  //filtre+sort
+  const [SortBy, setSortBy] = useState("");
+  const [enConge, setEnConge] = useState("");
+  const [dateBefore, setDateBefore] = useState("");
+  const [dateAfter, setDateAfter] = useState("");
+  const [productsInEN, setProductsInEN] = useState(false);
 
   const [errorPopup, setErrorPopup] = useState("");
 
@@ -95,7 +123,7 @@ export default function Products() {
     getData();
   };
 
-  const searchShop = async (name) => {
+  const searchProduct = async (name) => {
     let newShops = [];
     const response = await axios.get(`${URL}/read`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -117,7 +145,11 @@ export default function Products() {
   };
   const addProduct = async () => {
     if (productPrice === "" || productName === "") {
-      setErrorPopup("Veuillez remplir tous les champs");
+      setErrorPopup("Veuillez remplir tous les champs obligatoires");
+      return false;
+    } else if (isNaN(productPrice)) {
+      setErrorPopup("Le prix doit être un nombre entier");
+      return false;
     } else {
       const response = await fetch(`${URL}/create`, {
         method: "POST",
@@ -143,6 +175,7 @@ export default function Products() {
       setproductDescription(null);
 
       getData();
+      return true;
     }
   };
   const paginate = (pageNumber) => {
@@ -171,6 +204,7 @@ export default function Products() {
           addProduct={addProduct}
           setProductDescription={setproductDescription}
           setProductPrice={setProductPrice}
+          setErrorPopup={setErrorPopup}
         />
 
         <div className="wrapper">
@@ -193,8 +227,7 @@ export default function Products() {
                 width={"100px"}
                 bg={"#585AFC"}
                 color={"white"}
-
-                //onClick={searchShop}
+                onClick={searchProduct}
               >
                 <fc.FcSearch
                   style={{ marginLeft: "32px", marginTop: "14px" }}
@@ -215,9 +248,127 @@ export default function Products() {
                   borderColor: "#7B61FF",
                 }}
                 placeholder="Entrez au moins 3 caractères pour rechercher"
-                onChange={(e) => searchShop(e.target.value)}
+                onChange={(e) => searchProduct(e.target.value)}
               />
             </InputGroup>
+            <Grid mt={10} templateColumns="repeat(5, 1fr)">
+              <GridItem></GridItem>{" "}
+              <GridItem ml={20}>
+                {" "}
+                <Flex
+                  rounded={"200px"}
+                  bgGradient="linear(to-r, blue.200,pink.200)"
+                  placeholder="Trier par"
+                  onChange={(e) => setSortBy(e.target.value)}
+                  width={"220px"}
+                  height={"40px"}
+                >
+                  <FormLabel mt={2} ml={4}>
+                    Produits en anglais?{" "}
+                  </FormLabel>{" "}
+                  <Switch
+                    mt={2}
+                    onChange={() => setProductsInEN(!productsInEN)}
+                  />
+                </Flex>
+              </GridItem>
+              <GridItem ml={20}>
+                {" "}
+                <Select
+                  rounded={"200px"}
+                  bgGradient="linear(to-r, blue.200,pink.200)"
+                  placeholder="Trier par"
+                  onChange={(e) => setSortBy(e.target.value)}
+                  width={"185px"}
+                >
+                  <option value="name">Nom</option>
+                  <option value="creationDate">Date de création</option>
+                  <option value="productsum">Nombre de produit</option>
+                </Select>
+              </GridItem>
+              <GridItem ml={1}>
+                {" "}
+                <Flex justifyContent="center">
+                  <Popover placement="bottom" isLazy>
+                    <PopoverTrigger>
+                      <Button
+                        width={"185px"}
+                        rounded={"200px"}
+                        rightIcon={<ChevronDownIcon ml={14} />}
+                        bgGradient="linear(to-r, blue.200,pink.200)"
+                      >
+                        Filtrer par
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent _focus={{ boxShadown: "none" }}>
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <PopoverHeader fontWeight="bold">
+                        Filtrer par
+                      </PopoverHeader>
+                      <PopoverBody w="full">
+                        <Tabs isLazy colorScheme="green">
+                          <TabList>
+                            <Tab
+                              _focus={{ boxShadow: "none" }}
+                              fontSize="xs"
+                              fontWeight="bold"
+                              w="50%"
+                            >
+                              Type de boutique
+                            </Tab>
+                            <Tab
+                              _focus={{ boxShadow: "none" }}
+                              fontSize="xs"
+                              fontWeight="bold"
+                              w="50%"
+                            >
+                              Date de création
+                            </Tab>
+                          </TabList>
+                          <TabPanels>
+                            <TabPanel>
+                              <FormControl display="flex" alignItems="center">
+                                <FormLabel htmlFor="email-alerts" mb="0">
+                                  Boutique en congé ?
+                                </FormLabel>
+                                <Switch onChange={() => setEnConge(!enConge)} />
+                              </FormControl>
+                            </TabPanel>
+                            <TabPanel>
+                              <FormLabel htmlFor="email-alerts" mb="0">
+                                Avant une date précise
+                              </FormLabel>
+                              <Input
+                                placeholder="Select Date and Time"
+                                size="md"
+                                type="datetime-local"
+                                onChange={(e) => {
+                                  setDateBefore(e.target.value);
+                                }}
+                              />
+                              <Devider label="-" />
+                              <FormLabel htmlFor="email-alerts" mb="0">
+                                Aprés une date précise
+                              </FormLabel>
+                              <Input
+                                placeholder="Select Date and Time"
+                                size="md"
+                                type="datetime-local"
+                                onChange={(e) => {
+                                  setDateAfter(e.target.value);
+                                }}
+                              />
+                            </TabPanel>
+                          </TabPanels>
+                        </Tabs>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                </Flex>
+              </GridItem>
+            </Grid>
+
             <div className="cards">
               {shops ? (
                 currentShops.map((element) => {

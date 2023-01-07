@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../images/Logo.png";
+import LogoSideBar from "../images/LogoSideBar.png";
 import {
   IconButton,
   Avatar,
@@ -90,7 +91,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue("white", "gray.900")}
+      bg={"black"}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: 60 }}
@@ -100,17 +101,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
     >
       <Flex
         h="110"
-        marginBottom={"30px"}
+        marginBottom={"75px"}
         alignItems="center"
         mx="8"
         justifyContent="space-between"
       >
-        <Image
-          marginLeft={"25px"}
-          marginTop={"30px"}
-          maxWidth={"100px"}
-          src={Logo}
-        />
+        <Image marginTop={"40px"} size="50px" src={LogoSideBar} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -127,18 +123,22 @@ const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <Link
       to={path}
-      style={{ textDecoration: "none" }}
+      style={{
+        textDecoration: "none",
+        fontSize: urlPath === path && "25px",
+        fontWeight: urlPath === path && "bold",
+      }}
       _focus={{ boxShadow: "none" }}
     >
       <Flex
         align="center"
         p="4"
-        mx="4"
+        mx="5"
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        color={urlPath === path ? "cyan.400" : "gray.600"}
-        bg={urlPath === path ? "cyan.100" : "inherit"}
+        color={urlPath === path ? "cyan.400" : "white"}
+        //bg={urlPath === path ? "cyan.100" : "inherit"}
         _hover={{
           bg: "cyan.400",
           color: "white",
@@ -147,8 +147,9 @@ const NavItem = ({ icon, children, path, ...rest }) => {
       >
         {icon && (
           <Icon
+            fontWeight={urlPath === path && "bold"}
             mr="4"
-            fontSize="16"
+            fontSize={urlPath === path ? "29px" : "20px"}
             _groupHover={{
               color: "white",
             }}

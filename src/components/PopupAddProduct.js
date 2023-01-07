@@ -25,6 +25,7 @@ export default function PopupAddProduct({
   setProductName,
   setProductPrice,
   addProduct,
+  setErrorPopup,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -43,7 +44,12 @@ export default function PopupAddProduct({
         position={"fixed"}
         right="65px"
         top={"490"}
-        onClick={onOpen}
+        onClick={(e) => {
+          setProductName("");
+          setProductPrice("");
+          setErrorPopup("");
+          onOpen();
+        }}
         size={"lg"}
         icon={<si.SiAddthis />}
       />
@@ -130,7 +136,7 @@ export default function PopupAddProduct({
             />
             {errorPopup && (
               <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
-                Un ou des champs obligatoires n'ont pas été remplis
+                {errorPopup}
               </FormLabel>
             )}
           </AlertDialogBody>
@@ -148,7 +154,14 @@ export default function PopupAddProduct({
               colorScheme="green"
               ml={3}
               onClick={(e) => {
-                addProduct();
+                const test = addProduct();
+                test
+                  .then((res) => {
+                    res && onClose();
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               }}
             >
               Valider
