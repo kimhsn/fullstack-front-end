@@ -7,7 +7,6 @@ import {
   AlertDialogOverlay,
   AlertDialog,
   Input,
-  Checkbox,
   Button,
   AlertDialogFooter,
   IconButton,
@@ -19,15 +18,12 @@ import {
 import * as si from "react-icons/si";
 import "./PopupAddShop.css";
 
-export default function PopupAddShop({
+export default function PopupAddCategory({
   setErrorPopup,
   setShopCode,
   setShopDescription,
   errorPopup,
-  shopInVacation,
   setShopName,
-  setShopTime,
-  setShopInVacation,
   addShop,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,16 +64,16 @@ export default function PopupAddShop({
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Ajouter une boutique ?</AlertDialogHeader>
+          <AlertDialogHeader>Ajouter une catégorie ?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Veuillez renseigner les informations de la boutique.
+            Veuillez renseigner les informations de la catégorie.
             <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"gray"}>
-              Les champs marqués d'un <label className="label">*</label> sont
-              obligatoires.
+              Le champ marqué d'un <label className="label">*</label> est
+              obligatoire.
             </FormLabel>
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Nom de la boutique <label className="label">*</label>
+              Nom de la catégorie <label className="label">*</label>
             </FormLabel>
             <Input
               required={true}
@@ -93,7 +89,7 @@ export default function PopupAddShop({
               }}
             />
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Code de la boutique
+              Code de la catégorie
             </FormLabel>
             <Input
               required={true}
@@ -123,17 +119,9 @@ export default function PopupAddShop({
                 color: "gray.500",
               }}
             />
-            <Checkbox
-              mt={"15px"}
-              color="black"
-              isChecked={shopInVacation}
-              onChange={(e) => setShopInVacation(e.target.checked)}
-            >
-              En congé
-            </Checkbox>
             {errorPopup && (
               <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
-                Un ou des champs obligatoires n'ont pas été remplis
+                Un champ obligatoire n'a pas été rempli
               </FormLabel>
             )}
           </AlertDialogBody>

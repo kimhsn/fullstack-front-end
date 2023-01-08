@@ -19,12 +19,11 @@ import Logo from "../images/Product2.png";
 
 export default function EditableProductCard({
   item,
-  updateShop,
+  updateProduct,
   setIdShop,
-  setCodeBoutique,
   setNom,
   setDescription,
-  setCreationData,
+  setProductPrice,
 }) {
   return (
     <ChakraProvider>
@@ -33,7 +32,7 @@ export default function EditableProductCard({
           <Box
             maxW={"435px"}
             w={"full"}
-            // bg={useColorModeValue("white", "gray.900")}
+            bg={"white"}
             boxShadow={"2xl"}
             rounded={"md"}
             p={6}
@@ -44,10 +43,15 @@ export default function EditableProductCard({
               bg={"gray.100"}
               mt={-6}
               mx={-6}
-              mb={6}
+              mb={80}
               pos={"relative"}
             >
-              <Image src={Logo} layout={"fill"} />
+              <Image
+                h={"500px"}
+                w={"500px"}
+                src={item.urlPhoto}
+                layout={"fill"}
+              />
             </Box>
             <Stack>
               <Input
@@ -90,9 +94,17 @@ export default function EditableProductCard({
                       alignSelf={"center"}
                     />
                   </chakra.a>
-                </Tooltip>
+                </Tooltip>{" "}
                 <Text color="blue.600" fontSize="2xl">
-                  {item.prix}€
+                  <Input
+                    border={0}
+                    size={0}
+                    color="blue.600"
+                    focusBorderColor={"transparent"}
+                    onChange={(e) => setProductPrice(e.target.value)}
+                    placeholder={item.prix}
+                  />
+                  €
                 </Text>
               </Stack>
 
@@ -101,7 +113,7 @@ export default function EditableProductCard({
                 color={"green"}
                 size={"40px"}
                 right={"0px"}
-                onClick={() => updateShop(item.id)}
+                onClick={() => updateProduct(item.id)}
                 rounded={"full"}
               />
               <tb.TbArrowBack

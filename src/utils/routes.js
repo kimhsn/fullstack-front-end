@@ -1,9 +1,10 @@
 import Register from "../pages/Register";
 import Signup from "../pages/SignUp";
 import Shops from "../pages/Shops";
-import Paramettres from "../pages/Paramettres";
+import Categories from "../pages/Categories";
 import UserProfile from "../pages/UserProfile";
 import DetailsShop from "../pages/DetailsShop";
+import DetailsCategory from "../pages/DetailsCategory";
 import Products from "../pages/Products";
 import Home from "../pages/Home";
 
@@ -29,9 +30,14 @@ const routes = [
     element: Shops,
   },
   {
-    name: "Dashboard",
+    name: "DetailsShop",
     path: "/detailsshop/:id",
     element: DetailsShop,
+  },
+  {
+    name: "DetailsCategory",
+    path: "/detailscategory/:id",
+    element: DetailsCategory,
   },
   {
     name: "UserProfile",
@@ -39,9 +45,9 @@ const routes = [
     element: UserProfile,
   },
   {
-    name: "Paramettres",
-    path: "/Paramettres",
-    element: Paramettres,
+    name: "Categories",
+    path: "/Categories",
+    element: Categories,
   },
   {
     name: "Products",

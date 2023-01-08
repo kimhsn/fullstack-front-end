@@ -43,18 +43,23 @@ import { Link } from "react-router-dom";
 const LinkItems = [
   { name: "Accueil", icon: FiHome, path: "/Home" },
   { name: "Boutiques", icon: GiShop, path: "/Shops" },
+  { name: "Catégories", icon: FiTrendingUp, path: "/Categories" },
   { name: "Produits", icon: SiShopify, path: "/Products" },
-  { name: "Trending", icon: FiTrendingUp, path: "/trending" },
-  { name: "Explore", icon: FiCompass, path: "/explore" },
-  { name: "Favourites", icon: FiStar, path: "/favourites" },
-  { name: "Settings", icon: FiSettings, path: "/Paramettres" },
+
+  { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
 ];
 
-export default function Sidebar({ children, firstName, lastName, role }) {
+export default function Sidebar({
+  children,
+  firstName,
+  lastName,
+  role,
+  minH = "170vh",
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
-      <Box minH="170vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH={minH} bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}
@@ -276,8 +281,6 @@ const MobileNav = ({ firstname, lastname, role, onOpen, ...rest }) => {
                 <MenuItem>Profil</MenuItem>
               </Link>
 
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
               <MenuDivider />
               <Link to="/">
                 <MenuItem>Se déconnecter</MenuItem>

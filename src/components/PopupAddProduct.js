@@ -154,8 +154,8 @@ export default function PopupAddProduct({
               colorScheme="green"
               ml={3}
               onClick={(e) => {
-                const test = addProduct();
-                test
+                const isAdded = addProduct();
+                isAdded
                   .then((res) => {
                     res && onClose();
                   })

@@ -13,17 +13,16 @@ import {
 import * as ai from "react-icons/ai";
 import * as tb from "react-icons/tb";
 
-import Logo from "../images/a.jpg";
+import Logo from "../images/Product2.png";
 
-export default function EditableCard({
+export default function EditableCategoryCard({
   item,
-  updateShop,
+  updateCategory,
   setIdShop,
   setCodeBoutique,
   setNom,
   setDescription,
   setCreationData,
-  setInVacations,
 }) {
   return (
     <ChakraProvider>
@@ -49,39 +48,6 @@ export default function EditableCard({
               <Image src={Logo} layout={"fill"} />
             </Box>
             <Stack>
-              {item.conge == true ? (
-                <Text
-                  color={"green.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  {" "}
-                  En activité ?
-                  <Switch
-                    colorScheme="green"
-                    ml={4}
-                    onChange={() => setInVacations(!item.conge)}
-                  />
-                </Text>
-              ) : (
-                <Text
-                  color={"red.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  En congé ?
-                  <Switch
-                    colorScheme="red"
-                    ml={4}
-                    onChange={() => setInVacations(!item.conge)}
-                  />
-                </Text>
-              )}
-
               <Input
                 border={0}
                 size={0}
@@ -131,7 +97,7 @@ export default function EditableCard({
                 color={"green"}
                 size={"60px"}
                 right={"0px"}
-                onClick={() => updateShop(item.id)}
+                onClick={() => updateCategory(item.id)}
                 rounded={"full"}
               />
               <tb.TbArrowBack

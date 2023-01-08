@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
+import axios from "axios";
 import {
   Heading,
   Avatar,
   Box,
+  Input,
   Center,
   Image,
   Flex,
@@ -15,8 +17,33 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+const URL = "http://localhost:8080/shops/users";
+
 const UserProfile = () => {
   const { auth } = useContext(AuthContext);
+  const [isClicked, setIsClicked] = useState(false);
+  const [firstName, setFirstName] = useState(auth.prenom);
+  const [lastName, setLastName] = useState(auth.nom);
+  const [email, setEmail] = useState(auth.email);
+  console.log(auth.id);
+  const updateUser = async (id) => {
+    const response = await axios.put(
+      `${URL}/update/${id}`,
+      {
+        nom: lastName,
+        prenom: firstName,
+        email: email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${auth.accesToken}`,
+        },
+      }
+    );
+    setEmail(response.data.email);
+    setFirstName(response.data.prenom);
+    setLastName(response.data.nom);
+  };
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
@@ -50,10 +77,45 @@ const UserProfile = () => {
 
             <Box p={6}>
               <Stack spacing={0} align={"center"} mb={5}>
-                <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-                  {auth.nom} {auth.prenom}
-                </Heading>
-                <Text color={"gray.500"}> {auth.email}</Text>
+                {isClicked ? (
+                  <Heading
+                    fontSize={"2xl"}
+                    fontWeight={500}
+                    fontFamily={"body"}
+                  >
+                    <Flex>
+                      {" "}
+                      <Input
+                        ml={7}
+                        width="80px"
+                        border={0}
+                        size={0}
+                        focusBorderColor={"transparent"}
+                        placeholder={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        style={{ fontWeight: "bold", fontSize: "24px" }}
+                      />{" "}
+                      <Input
+                        ml={3}
+                        border={0}
+                        size={0}
+                        width="80px"
+                        focusBorderColor={"transparent"}
+                        placeholder={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        style={{ fontWeight: "bold", fontSize: "24px" }}
+                      />{" "}
+                    </Flex>
+                  </Heading>
+                ) : (
+                  <Heading
+                    fontSize={"2xl"}
+                    fontWeight={500}
+                    fontFamily={"body"}
+                  >
+                    {firstName} {lastName}
+                  </Heading>
+                )}
               </Stack>
 
               <Stack
@@ -62,46 +124,103 @@ const UserProfile = () => {
                 justify={"center"}
                 spacing={20}
               >
+                {" "}
+                <Stack spacing={0} align={"center"}>
+                  <Text fontWeight={600}> Email</Text>
+                  {isClicked ? (
+                    <Input
+                      mr={20}
+                      fontSize={"sm"}
+                      color={"gray.500"}
+                      width="120px"
+                      border={0}
+                      size={0}
+                      focusBorderColor={"transparent"}
+                      placeholder={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  ) : (
+                    <Text fontSize={"sm"} color={"gray.500"}>
+                      {email}{" "}
+                    </Text>
+                  )}
+                </Stack>
                 <Stack spacing={0} align={"center"}>
                   <Text fontWeight={600}>Rôle</Text>
                   <Text fontSize={"sm"} color={"gray.500"}>
                     Admin
                   </Text>
                 </Stack>{" "}
-                <Stack spacing={0} align={"center"}>
-                  <Text fontWeight={600}> Pseudo</Text>
-                  <Text fontSize={"sm"} color={"gray.500"}>
-                    {auth.pseudo}{" "}
-                  </Text>
-                </Stack>
               </Stack>
-
-              <Button
-                w={"full"}
-                mt={14}
-                bg={useColorModeValue("green.700", "gray.900")}
-                color={"white"}
-                rounded={"60px"}
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "lg",
-                }}
-              >
-                Changer les informations de mon compte
-              </Button>
-              <Button
-                w={"full"}
-                mt={4}
-                bg={useColorModeValue("red.700", "gray.900")}
-                color={"white"}
-                rounded={"60px"}
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "lg",
-                }}
-              >
-                Changer mon mot de passe
-              </Button>
+              {isClicked ? (
+                <Button
+                  w={"full"}
+                  mt={14}
+                  bg={"blue.700"}
+                  color={"white"}
+                  rounded={"60px"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                  onClick={() => {
+                    setIsClicked(!isClicked);
+                    updateUser(auth.id);
+                  }}
+                >
+                  Valider les modifications
+                </Button>
+              ) : (
+                <Button
+                  w={"full"}
+                  mt={14}
+                  bg={"green.700"}
+                  color={"white"}
+                  rounded={"60px"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                  onClick={() => {
+                    setIsClicked(!isClicked);
+                  }}
+                >
+                  Changer les informations de mon compte
+                </Button>
+              )}
+              {isClicked ? (
+                <Button
+                  w={"full"}
+                  mt={4}
+                  bg={"red.700"}
+                  color={"white"}
+                  rounded={"60px"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                  onClick={() => {
+                    setIsClicked(!isClicked);
+                    updateUser(auth.id);
+                  }}
+                >
+                  Annuler{" "}
+                </Button>
+              ) : (
+                <Button
+                  w={"full"}
+                  mt={4}
+                  bg={"red.700"}
+                  color={"white"}
+                  rounded={"60px"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                >
+                  Changer mon mot de passe
+                </Button>
+              )}
             </Box>
           </Box>
         </Center>
