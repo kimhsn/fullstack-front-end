@@ -2,7 +2,7 @@ import React, { useContext, useState, Fragment, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
 import ReadOnlyCardCategory from "../components/ReadOnlyCardCategory";
-import EditableCard from "../components/EditableCard";
+import EditableCategoryCard from "../components/EditableCategoryCard";
 import axios from "axios";
 import {
   Input,
@@ -44,10 +44,10 @@ export default function Categories() {
 
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [shopsPerPage] = useState(6);
-  const indexOfLastPost = currentPage * shopsPerPage;
-  const indexOfFirstPost = indexOfLastPost - shopsPerPage;
-  const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
+  const [elementsPerPage] = useState(6);
+  const indexOfLastPost = currentPage * elementsPerPage;
+  const indexOfFirstPost = indexOfLastPost - elementsPerPage;
+  const currentCategories = shops.slice(indexOfFirstPost, indexOfLastPost);
 
   //pagination state
   const [idShop, setIdShop] = useState(null);
@@ -71,7 +71,7 @@ export default function Categories() {
   const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setShops(response.data);
@@ -104,9 +104,9 @@ export default function Categories() {
     setInVacations(response.data.conge);
   };
 
-  const updateShop = async (id) => {
+  const updateCategory = async (id) => {
     const response = await axios.put(
-      `${URL}/update/${id}`,
+      `${URL}/${id}`,
       {
         nom: nom,
         description: description,
@@ -124,8 +124,8 @@ export default function Categories() {
     getData();
   };
 
-  const deleteShop = async (id) => {
-    const response = await axios.delete(`${URL}/delete/${id}`, {
+  const deleteCategory = async (id) => {
+    const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
@@ -133,7 +133,7 @@ export default function Categories() {
 
   const searchShop = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     response.data.map((shop) => {
@@ -158,11 +158,10 @@ export default function Categories() {
       return false;
     } else {
       const response = await axios.post(
-        `${URL}/create`,
+        `${URL}`,
         {
           description: shopDescription,
           nom: shopName,
-          conge: shopInVacation,
         },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -189,13 +188,22 @@ export default function Categories() {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(shops.length / shopsPerPage)) {
+    if (currentPage !== Math.ceil(shops.length / elementsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
+        <PopupAddCategory
+          setErrorPopup={setErrorPopup}
+          errorPopup={errorPopup}
+          setShopName={setShopName}
+          setShopInVacation={setShopInVacation}
+          addShop={addShop}
+          setShopCode={setShopCode}
+          setShopDescription={setShopDescription}
+        />
         <div className="wrapper">
           <div className="page-container">
             <ChakraProvider>
@@ -250,14 +258,26 @@ export default function Categories() {
 
               <div className="cards">
                 {shops ? (
-                  currentShops.map((element) => {
+                  currentCategories.map((element) => {
                     return (
                       <Fragment>
-                        <ReadOnlyCardCategory
-                          item={element}
-                          setIdShop={setTrue}
-                          deleteShop={deleteShop}
-                        />
+                        {idShop === element.id ? (
+                          <EditableCategoryCard
+                            item={element}
+                            setIdShop={setIdShop}
+                            updateCategory={updateCategory}
+                            setNom={setNom}
+                            setDescription={setDescription}
+                            setCodeBoutique={setCodeBoutique}
+                            setCreationData={setCreationData}
+                          />
+                        ) : (
+                          <ReadOnlyCardCategory
+                            item={element}
+                            setIdShop={setTrue}
+                            deleteCategory={deleteCategory}
+                          />
+                        )}
                       </Fragment>
                     );
                   })
@@ -359,10 +379,10 @@ export default function Categories() {
                 )}
               </div>
             </ChakraProvider>
-            {currentShops.length > 0 && (
+            {currentCategories.length > 0 && (
               <Paginate
-                shopsPerPage={shopsPerPage}
-                totalShops={shops.length}
+                elementsPerPage={elementsPerPage}
+                totalElements={shops.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}

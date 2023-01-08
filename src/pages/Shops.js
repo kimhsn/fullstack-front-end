@@ -69,7 +69,7 @@ export default function Shops() {
   const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setShops(response.data);
@@ -104,7 +104,7 @@ export default function Shops() {
 
   const updateShop = async (id) => {
     const response = await axios.put(
-      `${URL}/update/${id}`,
+      `${URL}/${id}`,
       {
         nom: nom,
         description: description,
@@ -123,7 +123,7 @@ export default function Shops() {
   };
 
   const deleteShop = async (id) => {
-    const response = await axios.delete(`${URL}/delete/${id}`, {
+    const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
@@ -131,7 +131,7 @@ export default function Shops() {
 
   const searchShop = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     response.data.map((shop) => {
@@ -155,7 +155,7 @@ export default function Shops() {
       return false;
     } else {
       const response = await axios.post(
-        `${URL}/create`,
+        `${URL}`,
         {
           description: shopDescription,
           nom: shopName,
@@ -486,8 +486,8 @@ export default function Shops() {
             </ChakraProvider>
             {currentShops.length > 0 && (
               <Paginate
-                shopsPerPage={shopsPerPage}
-                totalShops={shops.length}
+                elementsPerPage={shopsPerPage}
+                totalElements={shops.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}

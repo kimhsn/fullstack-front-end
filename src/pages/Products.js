@@ -46,14 +46,11 @@ export default function Products() {
   const [shopsPerPage] = useState(6);
   const indexOfLastPost = currentPage * shopsPerPage;
   const indexOfFirstPost = indexOfLastPost - shopsPerPage;
-  const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
+  const currentProducts = shops.slice(indexOfFirstPost, indexOfLastPost);
   //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
-  const [creationData, setCreationData] = useState("");
-  const [horaire, setHoraire] = useState("");
-  const [conge, setConge] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setproductDescription] = useState(null);
@@ -70,7 +67,7 @@ export default function Products() {
   const [errorPopup, setErrorPopup] = useState("");
 
   const getData = async () => {
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setShops(response.data);
@@ -97,17 +94,15 @@ export default function Products() {
     });
     setNom(response.data.nom);
     setDescription(response.data.description);
-    setCreationData(response.data.creationData);
-    setHoraire(response.data.horaire);
-    setConge(response.data.conge);
+    setProductPrice(response.data.prix);
   };
 
-  const updateShop = async (id) => {
+  const updateProduct = async (id) => {
     console.log(productPrice);
 
     const response = await axios.put(
-      `${URL}/update/${id}`,
-      { prix: 20, nom: nom, description: description },
+      `${URL}/${id}`,
+      { prix: productPrice, nom: nom, description: description },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
@@ -117,7 +112,7 @@ export default function Products() {
   };
 
   const deleteProduct = async (id) => {
-    const response = await axios.delete(`${URL}/delete/${id}`, {
+    const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
@@ -125,7 +120,7 @@ export default function Products() {
 
   const searchProduct = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}/read`, {
+    const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     response.data.map((shop) => {
@@ -151,7 +146,7 @@ export default function Products() {
       setErrorPopup("Le prix doit être un nombre entier");
       return false;
     } else {
-      const response = await fetch(`${URL}/create`, {
+      const response = await fetch(`${URL}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${auth.accesToken}`,
@@ -162,9 +157,7 @@ export default function Products() {
           codeProduit: productCode,
           prix: productPrice,
           description: productDescription,
-          creationData: dateTime,
           nom: productName,
-          horaire: productPrice,
         }),
       });
 
@@ -195,7 +188,12 @@ export default function Products() {
 
   return (
     <ChakraProvider>
-      <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
+      <Sidebar
+        firstName={auth.prenom}
+        lastName={auth.nom}
+        role={auth.role}
+        minH={"230vh"}
+      >
         <PopupAddProduct
           setProductCode={setProductCode}
           errorPopup={errorPopup}
@@ -370,18 +368,17 @@ export default function Products() {
 
             <div className="cards">
               {shops ? (
-                currentShops.map((element) => {
+                currentProducts.map((element) => {
                   return (
                     <Fragment>
                       {idShop === element.id ? (
                         <EditableProductCard
                           item={element}
                           setIdShop={setIdShop}
-                          updateShop={updateShop}
+                          setProductPrice={setProductPrice}
+                          updateProduct={updateProduct}
                           setNom={setNom}
                           setDescription={setDescription}
-                          setCreationData={setCreationData}
-                          setHoraire={setHoraire}
                         />
                       ) : (
                         <ReadOnlyProductCard
@@ -490,10 +487,10 @@ export default function Products() {
                 </Fragment>
               )}
             </div>
-            {currentShops.length > 0 && (
+            {currentProducts.length > 0 && (
               <Paginate
-                shopsPerPage={shopsPerPage}
-                totalShops={shops.length}
+                elementsPerPage={shopsPerPage}
+                totalElements={shops.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}

@@ -4,6 +4,7 @@ import Shops from "../pages/Shops";
 import Categories from "../pages/Categories";
 import UserProfile from "../pages/UserProfile";
 import DetailsShop from "../pages/DetailsShop";
+import DetailsCategory from "../pages/DetailsCategory";
 import Products from "../pages/Products";
 import Home from "../pages/Home";
 
@@ -29,9 +30,14 @@ const routes = [
     element: Shops,
   },
   {
-    name: "Dashboard",
+    name: "DetailsShop",
     path: "/detailsshop/:id",
     element: DetailsShop,
+  },
+  {
+    name: "DetailsCategory",
+    path: "/detailscategory/:id",
+    element: DetailsCategory,
   },
   {
     name: "UserProfile",

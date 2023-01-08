@@ -32,6 +32,7 @@ export default function ReadOnlyProductCard({
         <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
+            bg={"white"}
             w={"full"}
             boxShadow={"2xl"}
             rounded={"md"}
@@ -44,14 +45,15 @@ export default function ReadOnlyProductCard({
                 bg={"gray.100"}
                 mt={-6}
                 mx={-6}
-                mb={6}
+                mb={80}
                 pos={"relative"}
               >
-                <Image src={Logo} layout={"fill"} />
-                {/*} <Image
-                  src="https://farm66.staticflickr.com/65535/52604600085_b09968f4e4_z.jpg"
+                <Image
+                  h={"500px"}
+                  w={"500px"}
+                  src={item.urlPhoto}
                   layout={"fill"}
-  />*/}
+                />
               </Box>{" "}
               <Grid templateColumns="repeat(1, 1fr)">
                 <Stack>

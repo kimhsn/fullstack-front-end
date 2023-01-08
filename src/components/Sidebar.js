@@ -49,11 +49,17 @@ const LinkItems = [
   { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
 ];
 
-export default function Sidebar({ children, firstName, lastName, role }) {
+export default function Sidebar({
+  children,
+  firstName,
+  lastName,
+  role,
+  minH = "170vh",
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider>
-      <Box minH="170vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH={minH} bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}

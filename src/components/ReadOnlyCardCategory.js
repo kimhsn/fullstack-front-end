@@ -19,9 +19,13 @@ import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Logo from "../images/a.jpg";
+import Logo from "../images/Product2.png";
 
-export default function ReadOnlyCardCategory({ item, deleteShop, setIdShop }) {
+export default function ReadOnlyCardCategory({
+  item,
+  deleteCategory,
+  setIdShop,
+}) {
   return (
     <ChakraProvider>
       <GridItem key={item.id}>
@@ -34,7 +38,7 @@ export default function ReadOnlyCardCategory({ item, deleteShop, setIdShop }) {
             p={6}
             overflow={"hidden"}
           >
-            <Link to={`/detailsshop/${item.id}`}>
+            <Link to={`/detailscategory/${item.id}`}>
               <Box
                 h={"210px"}
                 bg={"gray.100"}
@@ -70,7 +74,7 @@ export default function ReadOnlyCardCategory({ item, deleteShop, setIdShop }) {
               </Stack>
             </Link>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Link to={`/detailsshop/${item.id}`}>
+              <Link to={`/detailscategory/${item.id}`}>
                 {" "}
                 <Avatar
                   src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
@@ -83,7 +87,7 @@ export default function ReadOnlyCardCategory({ item, deleteShop, setIdShop }) {
                 width={"100%"}
                 fontSize={"sm"}
               >
-                <Link to={`/detailsshop/${item.id}`}>
+                <Link to={`/detailscategory/${item.id}`}>
                   <Text fontWeight={600}>{item.codeCategorie}</Text>
                   <Text color={"gray.500"}>{item.creationData}</Text>
                 </Link>{" "}
@@ -101,7 +105,7 @@ export default function ReadOnlyCardCategory({ item, deleteShop, setIdShop }) {
                 cursor="pointer"
                 size={"60px"}
                 right={"0px"}
-                onClick={() => deleteShop(item.id)}
+                onClick={() => deleteCategory(item.id)}
                 rounded={"full"}
                 color="red"
               />

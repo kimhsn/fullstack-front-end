@@ -1,8 +1,8 @@
 import React from "react";
 import "./Paginate.css";
 const Paginate = ({
-  shopsPerPage,
-  totalShops,
+  elementsPerPage,
+  totalElements,
   currentPage,
   paginate,
   previousPage,
@@ -10,7 +10,7 @@ const Paginate = ({
 }) => {
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalShops / shopsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalElements / elementsPerPage); i++) {
     pageNumbers.push(i);
   }
   return (
