@@ -6,7 +6,7 @@ import {
   Avatar,
   Image,
   GridItem,
-  IconButton,
+  Switch,
   ChakraProvider,
   Input,
 } from "@chakra-ui/react";
@@ -23,6 +23,7 @@ export default function EditableCard({
   setNom,
   setDescription,
   setCreationData,
+  setInVacations,
 }) {
   return (
     <ChakraProvider>
@@ -50,23 +51,34 @@ export default function EditableCard({
             <Stack>
               {item.conge == true ? (
                 <Text
-                  color={"red.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  En congé
-                </Text>
-              ) : (
-                <Text
                   color={"green.500"}
                   textTransform={"uppercase"}
                   fontWeight={800}
                   fontSize={"sm"}
                   letterSpacing={1.1}
                 >
-                  En activité
+                  {" "}
+                  En activité ?
+                  <Switch
+                    colorScheme="green"
+                    ml={4}
+                    onChange={() => setInVacations(!item.conge)}
+                  />
+                </Text>
+              ) : (
+                <Text
+                  color={"red.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En congé ?
+                  <Switch
+                    colorScheme="red"
+                    ml={4}
+                    onChange={() => setInVacations(!item.conge)}
+                  />
                 </Text>
               )}
 

@@ -116,7 +116,7 @@ export default function Products() {
     getData();
   };
 
-  const deleteShop = async (id) => {
+  const deleteProduct = async (id) => {
     const response = await axios.delete(`${URL}/delete/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
@@ -173,7 +173,6 @@ export default function Products() {
       setProductPrice("");
       setIdShop(null);
       setproductDescription(null);
-
       getData();
       return true;
     }
@@ -388,7 +387,7 @@ export default function Products() {
                         <ReadOnlyProductCard
                           item={element}
                           setIdShop={setTrue}
-                          deleteShop={deleteShop}
+                          deleteProduct={deleteProduct}
                         />
                       )}{" "}
                     </Fragment>

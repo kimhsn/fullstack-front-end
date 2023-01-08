@@ -19,7 +19,7 @@ import {
 import * as si from "react-icons/si";
 import "./PopupAddShop.css";
 
-export default function PopupAddShop({
+export default function PopupAddCategory({
   setErrorPopup,
   setShopCode,
   setShopDescription,

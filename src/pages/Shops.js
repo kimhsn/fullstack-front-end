@@ -61,7 +61,7 @@ export default function Shops() {
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
   const [errorPopup, setErrorPopup] = useState("");
-
+  const [inVacations, setInVacations] = useState("");
   //filtre+sort
   const [SortBy, setSortBy] = useState("");
   const [enConge, setEnConge] = useState("");
@@ -99,7 +99,7 @@ export default function Shops() {
     setCodeBoutique(response.data.codeBoutique);
     setCreationData(response.data.creationData);
     setHoraire(response.data.horaire);
-    setConge(response.data.conge);
+    setInVacations(response.data.conge);
   };
 
   const updateShop = async (id) => {
@@ -109,7 +109,7 @@ export default function Shops() {
         nom: nom,
         description: description,
         horaire: horaire,
-        conge: conge,
+        conge: inVacations,
       },
       {
         headers: {
@@ -152,6 +152,7 @@ export default function Shops() {
   const addShop = async () => {
     if (shopName === "") {
       setErrorPopup("Veuillez remplir tous les champs");
+      return false;
     } else {
       const response = await axios.post(
         `${URL}/create`,
@@ -169,13 +170,9 @@ export default function Shops() {
       setShopCode(null);
 
       setShopInVacation(false);
-      console.log({
-        description: shopDescription,
-        creationData: dateTime,
-        nom: shopName,
-        conge: shopInVacation,
-      });
+
       getData();
+      return true;
     }
   };
   const paginate = (pageNumber) => {
@@ -198,6 +195,7 @@ export default function Shops() {
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
         <PopupAddShop
+          setErrorPopup={setErrorPopup}
           errorPopup={errorPopup}
           shopInVacation={shopInVacation}
           setShopName={setShopName}
@@ -375,6 +373,8 @@ export default function Shops() {
                             setCodeBoutique={setCodeBoutique}
                             setCreationData={setCreationData}
                             setHoraire={setHoraire}
+                            setEnConge={setEnConge}
+                            setInVacations={setInVacations}
                           />
                         ) : (
                           <ReadOnlyCard

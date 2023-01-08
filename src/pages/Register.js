@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -20,7 +21,6 @@ import Devider from "../components/Devider";
 import axios from "axios";
 import Diamond from "../images/LogoBG.png";
 import AuthContext from "../pages/context/AuthProvider";
-import Home from "./Home";
 
 const LOGIN_URL = "http://localhost:8080/shops/auth/authenticate";
 
@@ -98,7 +98,7 @@ export default function Register() {
   return (
     <>
       {success ? (
-        <Home />
+        <Navigate to="/home"></Navigate>
       ) : (
         <>
           <ChakraProvider>
