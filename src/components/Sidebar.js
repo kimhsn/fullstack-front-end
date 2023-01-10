@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Logo from "../images/Logo.png";
 import LogoSideBar from "../images/LogoSideBar.png";
 import {
@@ -25,11 +25,10 @@ import {
   ChakraProvider,
   MenuList,
 } from "@chakra-ui/react";
+import AuthContext from "../pages/context/AuthProvider";
 import {
   FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
   FiSettings,
   FiMenu,
   FiBell,
@@ -37,7 +36,7 @@ import {
 } from "react-icons/fi";
 import { GiShop } from "react-icons/gi";
 import { SiShopify } from "react-icons/si";
-
+import { ImUsers } from "react-icons/im";
 import { Link } from "react-router-dom";
 
 const LinkItems = [
@@ -45,6 +44,7 @@ const LinkItems = [
   { name: "Boutiques", icon: GiShop, path: "/Shops" },
   { name: "Catégories", icon: FiTrendingUp, path: "/Categories" },
   { name: "Produits", icon: SiShopify, path: "/Products" },
+  { name: "Utilisateurs", icon: ImUsers, path: "/Users" },
 
   { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
 ];
@@ -57,6 +57,8 @@ export default function Sidebar({
   minH = "170vh",
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  //const { auth, setAuth } = useContext(AuthContext);
+  console.log(role);
   return (
     <ChakraProvider>
       <Box minH={minH} bg={useColorModeValue("gray.100", "gray.900")}>

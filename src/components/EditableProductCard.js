@@ -14,9 +14,6 @@ import {
 import * as ai from "react-icons/ai";
 import * as tb from "react-icons/tb";
 import { FiShoppingCart } from "react-icons/fi";
-
-import Logo from "../images/Product2.png";
-
 export default function EditableProductCard({
   item,
   updateProduct,

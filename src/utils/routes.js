@@ -7,12 +7,18 @@ import DetailsShop from "../pages/DetailsShop";
 import DetailsCategory from "../pages/DetailsCategory";
 import Products from "../pages/Products";
 import Home from "../pages/Home";
+import Users from "../pages/Users";
 
 const routes = [
   {
     name: "Home",
     path: "/Home",
     element: Home,
+  },
+  {
+    name: "user",
+    path: "/Users",
+    element: Users,
   },
   {
     name: "Register",

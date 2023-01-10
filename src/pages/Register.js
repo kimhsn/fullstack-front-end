@@ -275,7 +275,7 @@ export default function Register() {
                       </Text>
 
                       <Link
-                        href="http://localhost:4020/signup "
+                        href="http://localhost:4200/signup"
                         fontSize={{ base: "sm", sm: "md" }}
                         color={"blue.400"}
                       >
