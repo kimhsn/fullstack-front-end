@@ -25,7 +25,6 @@ const UserProfile = () => {
   const [firstName, setFirstName] = useState(auth.prenom);
   const [lastName, setLastName] = useState(auth.nom);
   const [email, setEmail] = useState(auth.email);
-  console.log(auth.id);
   const updateUser = async (id) => {
     const response = await axios.put(
       `${URL}/update/${id}`,
