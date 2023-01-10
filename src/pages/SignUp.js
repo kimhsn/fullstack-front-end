@@ -30,7 +30,6 @@ export default function SignUp() {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  console.log(role);
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);

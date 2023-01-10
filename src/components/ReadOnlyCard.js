@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Center,
@@ -24,7 +23,7 @@ import Logo from "../images/a.jpg";
 export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
   return (
     <ChakraProvider>
-      <GridItem key={item.id}>
+      <GridItem key={item.idBoutique}>
         <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
@@ -34,7 +33,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
             p={6}
             overflow={"hidden"}
           >
-            <Link to={`/detailsshop/${item.id}`}>
+            <Link to={`/detailsshop/${item.idBoutique}`}>
               <Box
                 h={"210px"}
                 bg={"gray.100"}
@@ -94,7 +93,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
               </Stack>
             </Link>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Link to={`/detailsshop/${item.id}`}>
+              <Link to={`/detailsshop/${item.idBoutique}`}>
                 {" "}
                 <Avatar
                   src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
@@ -107,9 +106,11 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 width={"100%"}
                 fontSize={"sm"}
               >
-                <Link to={`/detailsshop/${item.id}`}>
-                  <Text fontWeight={600}>{item.codeProduit}</Text>
-                  <Text color={"gray.500"}>{item.creationData}</Text>
+                <Link to={`/detailsshop/${item.idBoutique}`}>
+                  <Text fontWeight={600}>{item.user}</Text>
+                  <Text size={2} color={"gray.500"}>
+                    {item.creationData}
+                  </Text>
                 </Link>{" "}
               </Stack>
               <PopupAssignation />
@@ -117,7 +118,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 cursor="pointer"
                 size={"60px"}
                 right={"0px"}
-                onClick={() => setIdShop(item.id)}
+                onClick={() => setIdShop(item.idBoutique)}
                 rounded={"full"}
                 color="#0000CD"
               />
@@ -125,7 +126,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 cursor="pointer"
                 size={"60px"}
                 right={"0px"}
-                onClick={() => deleteShop(item.id)}
+                onClick={() => deleteShop(item.idBoutique)}
                 rounded={"full"}
                 color="red"
               />

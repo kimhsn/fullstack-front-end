@@ -14,10 +14,13 @@ import {
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
+  Radio,
+  RadioGroup,
   Tab,
   TabList,
   Tabs,
   TabPanel,
+  Stack,
   TabPanels,
   Flex,
   PopoverHeader,
@@ -41,12 +44,14 @@ const URL = "http://localhost:8080/shops/produits";
 
 export default function Products() {
   const { auth, setAuth } = useContext(AuthContext);
+  const [products, setProducts] = useState([]);
   const [shops, setShops] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [shopsPerPage] = useState(6);
-  const indexOfLastPost = currentPage * shopsPerPage;
-  const indexOfFirstPost = indexOfLastPost - shopsPerPage;
-  const currentProducts = shops.slice(indexOfFirstPost, indexOfLastPost);
+  const [productsPerPage] = useState(6);
+  const indexOfLastPost = currentPage * productsPerPage;
+  const indexOfFirstPost = indexOfLastPost - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstPost, indexOfLastPost);
   //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
@@ -63,26 +68,40 @@ export default function Products() {
   const [dateBefore, setDateBefore] = useState("");
   const [dateAfter, setDateAfter] = useState("");
   const [productsInEN, setProductsInEN] = useState(false);
-
+  const [value, setValue] = useState("1");
   const [errorPopup, setErrorPopup] = useState("");
 
-  const getData = async () => {
+  const [selectedShop, setSelectedShop] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  console.log(selectedShop, selectedCategory);
+  const getProducts = async () => {
     const response = await axios.get(`${URL}`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
+    setProducts(response.data);
+  };
+
+  const getShops = async () => {
+    const response = await axios.get(`http://localhost:8080/shops/boutiques`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setShops(response.data);
   };
-
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + "T" + time;
+  const getCategories = async () => {
+    const response = await axios.get(`http://localhost:8080/shops/categories`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
+    setCategories(response.data);
+  };
 
   useEffect(() => {
-    getData();
+    getProducts();
+    getCategories();
+    getShops();
   }, []);
+
+  console.log(categories);
+  console.log(shops);
   useEffect(() => {
     setErrorPopup("");
   }, [productName, productPrice]);
@@ -98,8 +117,6 @@ export default function Products() {
   };
 
   const updateProduct = async (id) => {
-    console.log(productPrice);
-
     const response = await axios.put(
       `${URL}/${id}`,
       { prix: productPrice, nom: nom, description: description },
@@ -108,33 +125,33 @@ export default function Products() {
       }
     );
     setIdShop(null);
-    getData();
+    getProducts();
   };
 
   const deleteProduct = async (id) => {
     const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
-    getData();
+    getProducts();
   };
 
   const searchProduct = async (name) => {
-    let newShops = [];
+    let newproducts = [];
     const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     response.data.map((shop) => {
       if (name.length == 0) {
-        setShops(response.data);
+        setProducts(response.data);
       } else if (name.length < 3) {
-        setShops([]);
+        setProducts([]);
       } else {
         if (shop.nom == name) {
-          newShops.unshift(shop);
+          newproducts.unshift(shop);
         } else if (shop.nom.includes(name)) {
-          newShops.push(shop);
+          newproducts.push(shop);
         }
-        setShops(newShops);
+        setProducts(newproducts);
       }
     });
   };
@@ -166,7 +183,7 @@ export default function Products() {
       setProductPrice("");
       setIdShop(null);
       setproductDescription(null);
-      getData();
+      getProducts();
       return true;
     }
   };
@@ -181,7 +198,7 @@ export default function Products() {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(shops.length / shopsPerPage)) {
+    if (currentPage !== Math.ceil(products.length / productsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -250,7 +267,7 @@ export default function Products() {
             </InputGroup>
             <Grid mt={10} templateColumns="repeat(5, 1fr)">
               <GridItem></GridItem>{" "}
-              <GridItem ml={20}>
+              <GridItem ml={"200px"}>
                 {" "}
                 <Flex
                   rounded={"200px"}
@@ -268,20 +285,6 @@ export default function Products() {
                     onChange={() => setProductsInEN(!productsInEN)}
                   />
                 </Flex>
-              </GridItem>
-              <GridItem ml={20}>
-                {" "}
-                <Select
-                  rounded={"200px"}
-                  bgGradient="linear(to-r, blue.200,pink.200)"
-                  placeholder="Trier par"
-                  onChange={(e) => setSortBy(e.target.value)}
-                  width={"185px"}
-                >
-                  <option value="name">Nom</option>
-                  <option value="creationDate">Date de création</option>
-                  <option value="productsum">Nombre de produit</option>
-                </Select>
               </GridItem>
               <GridItem ml={1}>
                 {" "}
@@ -304,7 +307,7 @@ export default function Products() {
                         Filtrer par
                       </PopoverHeader>
                       <PopoverBody w="full">
-                        <Tabs isLazy colorScheme="green">
+                        <Tabs isLazy colorScheme="blue">
                           <TabList>
                             <Tab
                               _focus={{ boxShadow: "none" }}
@@ -312,7 +315,7 @@ export default function Products() {
                               fontWeight="bold"
                               w="50%"
                             >
-                              Type de boutique
+                              Nom de la Boutique
                             </Tab>
                             <Tab
                               _focus={{ boxShadow: "none" }}
@@ -320,42 +323,61 @@ export default function Products() {
                               fontWeight="bold"
                               w="50%"
                             >
-                              Date de création
+                              Nom de la catégorie
                             </Tab>
                           </TabList>
                           <TabPanels>
                             <TabPanel>
-                              <FormControl display="flex" alignItems="center">
-                                <FormLabel htmlFor="email-alerts" mb="0">
-                                  Boutique en congé ?
-                                </FormLabel>
-                                <Switch onChange={() => setEnConge(!enConge)} />
-                              </FormControl>
+                              <div>
+                                <input
+                                  type="radio"
+                                  name="shop"
+                                  value=""
+                                  onChange={(event) =>
+                                    setSelectedShop(event.target.value)
+                                  }
+                                />
+                                <label> Par défaut</label>
+                              </div>
+                              {shops.map((shop) => (
+                                <div>
+                                  <input
+                                    type="radio"
+                                    name="shop"
+                                    value={shop.idBoutique}
+                                    onChange={(event) =>
+                                      setSelectedShop(event.target.value)
+                                    }
+                                  />
+                                  <label> {shop.nom}</label>
+                                </div>
+                              ))}
                             </TabPanel>
                             <TabPanel>
-                              <FormLabel htmlFor="email-alerts" mb="0">
-                                Avant une date précise
-                              </FormLabel>
-                              <Input
-                                placeholder="Select Date and Time"
-                                size="md"
-                                type="datetime-local"
-                                onChange={(e) => {
-                                  setDateBefore(e.target.value);
-                                }}
-                              />
-                              <Devider label="-" />
-                              <FormLabel htmlFor="email-alerts" mb="0">
-                                Aprés une date précise
-                              </FormLabel>
-                              <Input
-                                placeholder="Select Date and Time"
-                                size="md"
-                                type="datetime-local"
-                                onChange={(e) => {
-                                  setDateAfter(e.target.value);
-                                }}
-                              />
+                              <div>
+                                <input
+                                  type="radio"
+                                  name="shop"
+                                  value=""
+                                  onChange={(event) =>
+                                    setSelectedCategory(event.target.value)
+                                  }
+                                />
+                                <label> Par défaut</label>
+                              </div>
+                              {categories.map((category) => (
+                                <div>
+                                  <input
+                                    type="radio"
+                                    name="shop"
+                                    value={category.id}
+                                    onChange={(event) =>
+                                      setSelectedCategory(event.target.value)
+                                    }
+                                  />
+                                  <label> {category.nom} </label>
+                                </div>
+                              ))}
                             </TabPanel>
                           </TabPanels>
                         </Tabs>
@@ -367,7 +389,7 @@ export default function Products() {
             </Grid>
 
             <div className="cards">
-              {shops ? (
+              {products ? (
                 currentProducts.map((element) => {
                   return (
                     <Fragment>
@@ -489,8 +511,8 @@ export default function Products() {
             </div>
             {currentProducts.length > 0 && (
               <Paginate
-                elementsPerPage={shopsPerPage}
-                totalElements={shops.length}
+                elementsPerPage={productsPerPage}
+                totalElements={products.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}

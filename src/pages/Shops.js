@@ -40,13 +40,13 @@ const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Shops() {
   const { auth, setAuth } = useContext(AuthContext);
+
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
   const indexOfLastPost = currentPage * shopsPerPage;
   const indexOfFirstPost = indexOfLastPost - shopsPerPage;
   const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
-
   //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
@@ -69,12 +69,14 @@ export default function Shops() {
   const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
-    const response = await axios.get(`${URL}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(
+      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
+      {
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
+      }
+    );
     setShops(response.data);
   };
-
   var today = new Date();
   var date =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -84,7 +86,7 @@ export default function Shops() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [SortBy, enConge, dateBefore, dateAfter]);
   useEffect(() => {
     setErrorPopup("");
   }, [shopName, shopTime]);
@@ -131,9 +133,12 @@ export default function Shops() {
 
   const searchShop = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(
+      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
+      {
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
+      }
+    );
     response.data.map((shop) => {
       if (name.length == 0) {
         setShops(response.data);
@@ -145,6 +150,7 @@ export default function Shops() {
         } else if (shop.nom.includes(name)) {
           newShops.push(shop);
         }
+
         setShops(newShops);
       }
     });
@@ -160,6 +166,7 @@ export default function Shops() {
           description: shopDescription,
           nom: shopName,
           conge: shopInVacation,
+          user: auth.prenom + " " + auth.nom,
         },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -268,9 +275,9 @@ export default function Shops() {
                     onChange={(e) => setSortBy(e.target.value)}
                     width={"185px"}
                   >
-                    <option value="name">Nom</option>
+                    <option value="nom">Nom</option>
                     <option value="creationDate">Date de création</option>
-                    <option value="productsum">Nombre de produit</option>
+                    <option value="nbProduits">Nombre de produit</option>
                   </Select>
                 </GridItem>
                 <GridItem ml={1}>
@@ -331,9 +338,13 @@ export default function Shops() {
                                 <Input
                                   placeholder="Select Date and Time"
                                   size="md"
-                                  type="datetime-local"
+                                  type="date"
                                   onChange={(e) => {
-                                    setDateBefore(e.target.value);
+                                    const [year, month, day] =
+                                      e.target.value.split("-");
+
+                                    const db = [day, month, year].join("/");
+                                    setDateBefore(db);
                                   }}
                                 />
                                 <Devider label="-" />
@@ -343,9 +354,13 @@ export default function Shops() {
                                 <Input
                                   placeholder="Select Date and Time"
                                   size="md"
-                                  type="datetime-local"
+                                  type="date"
                                   onChange={(e) => {
-                                    setDateAfter(e.target.value);
+                                    const [year, month, day] =
+                                      e.target.value.split("-");
+
+                                    const db = [day, month, year].join("/");
+                                    setDateAfter(db);
                                   }}
                                 />
                               </TabPanel>
@@ -363,7 +378,7 @@ export default function Shops() {
                   currentShops.map((element) => {
                     return (
                       <Fragment>
-                        {idShop === element.id ? (
+                        {idShop === element.idBoutique ? (
                           <EditableCard
                             item={element}
                             setIdShop={setIdShop}
