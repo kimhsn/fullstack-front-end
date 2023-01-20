@@ -15,11 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 
-import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Logo from "../images/Product2.png";
 
 export default function ReadOnlyProductCard({
   item,

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Logo from "../images/Logo.png";
 import LogoSideBar from "../images/LogoSideBar.png";
 import {
@@ -25,7 +25,6 @@ import {
   ChakraProvider,
   MenuList,
 } from "@chakra-ui/react";
-import AuthContext from "../pages/context/AuthProvider";
 import {
   FiHome,
   FiTrendingUp,
@@ -58,7 +57,6 @@ export default function Sidebar({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //const { auth, setAuth } = useContext(AuthContext);
-  console.log(role);
   return (
     <ChakraProvider>
       <Box minH={minH} bg={useColorModeValue("gray.100", "gray.900")}>

@@ -1,12 +1,10 @@
 import {
   Box,
   Center,
-  Text,
   Stack,
   Avatar,
   Image,
   GridItem,
-  Switch,
   ChakraProvider,
   Input,
 } from "@chakra-ui/react";

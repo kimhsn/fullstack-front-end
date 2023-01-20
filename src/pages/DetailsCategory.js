@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState, Fragment } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
-import ReadOnlyRow from "../components/ReadOnlyRows";
 import StatsShop from "../components/StatsShop";
 import AuthContext from "./context/AuthProvider";
 import { Badge, Center, Link } from "@chakra-ui/react";
 import {
   Box,
   Container,
-  GridItem,
   Stack,
   Text,
   Image,
@@ -20,15 +18,6 @@ import {
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  List,
-  ListItem,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Table,
-  FormLabel,
-  TableContainer,
 } from "@chakra-ui/react";
 import detailsShop from "../images/detailsShop.jpg";
 import { MdLocalShipping } from "react-icons/md";

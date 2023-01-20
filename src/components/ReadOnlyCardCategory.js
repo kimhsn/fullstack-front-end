@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Center,
@@ -13,7 +12,7 @@ import {
   ChakraProvider,
   Icon,
 } from "@chakra-ui/react";
-import { FcViewDetails, FcPaid, FcInTransit } from "react-icons/fc";
+import { FcPaid } from "react-icons/fc";
 
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";

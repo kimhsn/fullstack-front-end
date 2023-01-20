@@ -36,6 +36,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
+
 const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Shops() {

@@ -8,33 +8,12 @@ import {
   Input,
   ChakraProvider,
   FormLabel,
-  Grid,
-  GridItem,
-  Switch,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  Tab,
-  TabList,
-  Tabs,
-  TabPanel,
-  TabPanels,
-  Flex,
-  PopoverHeader,
-  Button,
-  Popover,
-  PopoverTrigger,
-  FormControl,
   Box,
   InputGroup,
-  Select,
 } from "@chakra-ui/react";
-import Devider from "../components/Devider";
 import PopupAddCategory from "../components/PopupAddCategory";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Dashboard.css";
 
 const URL = "http://localhost:8080/shops/categories";

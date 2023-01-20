@@ -14,26 +14,20 @@ import {
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  Radio,
-  RadioGroup,
   Tab,
   TabList,
   Tabs,
   TabPanel,
-  Stack,
   TabPanels,
   Flex,
   PopoverHeader,
   Button,
   Popover,
   PopoverTrigger,
-  FormControl,
   Input,
   Box,
   InputGroup,
-  Select,
 } from "@chakra-ui/react";
-import Devider from "../components/Devider";
 import PopupAddProduct from "../components/PopupAddProduct";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
