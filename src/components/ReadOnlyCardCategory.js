@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FcPaid } from "react-icons/fc";
 
-import PopupAssignation from "./PopupAssignation";
+import PopupAssignation from "./PopupAssignationProductToCategory";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";

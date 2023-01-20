@@ -20,11 +20,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import detailsShop from "../images/detailsShop.jpg";
-import { MdLocalShipping } from "react-icons/md";
 import axios from "axios";
-import { BiCategory } from "react-icons/bi";
 import { TiShoppingCart } from "react-icons/ti";
-import { GoLocation } from "react-icons/go";
 
 const URL = "http://localhost:8080/shops/categories/findById";
 

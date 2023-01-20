@@ -33,7 +33,6 @@ import { MdLocalShipping } from "react-icons/md";
 import axios from "axios";
 import { BiCategory } from "react-icons/bi";
 import { TiShoppingCart } from "react-icons/ti";
-import { GoLocation } from "react-icons/go";
 const URL = "http://localhost:8080/shops/boutiques/findById";
 
 const DetailsShop = () => {
@@ -55,8 +54,7 @@ const DetailsShop = () => {
     });
     setShop(response.data);
     setCategories(response.data.categories);
-    setProductsTotal(response.data.produits.length);
-    setCategoriesTotal(response.data.categories.length);
+    setProducts(shop.data.produits);
   };
   const renderHeader = () => {
     let headerElements = ["Nom", "Prix", "Code produit", "Description"];
@@ -168,13 +166,13 @@ const DetailsShop = () => {
                     >
                       <StatsShop
                         title={"Catégories"}
-                        stat={categoriesTotal}
+                        stat={categories.length}
                         icon={<BiCategory size={"3em"} />}
                       />
 
                       <StatsShop
                         title={"Produits"}
-                        stat={productsTotal}
+                        stat={products.length}
                         icon={<TiShoppingCart size={"3em"} />}
                       />
                     </SimpleGrid>

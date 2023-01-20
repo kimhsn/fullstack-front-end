@@ -17,7 +17,7 @@ import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignation() {
+export default function PopupAssignationProductToCategory() {
   const { auth, setAuth } = useContext(AuthContext);
 
   const [productName, setProductName] = useState("");
@@ -53,12 +53,12 @@ export default function PopupAssignation() {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            Assigner un produit à cette boutique ?
+            Assigner un produit à cette categorie ?
           </AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
             Veuillez selectionnez le produit que vous souhaitez assigner à cette
-            boutique.
+            categorie.
             <Select
               mt={"15px"}
               rounded={"200px"}
