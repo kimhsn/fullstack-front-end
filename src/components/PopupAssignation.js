@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import {
   AlertDialogBody,
   AlertDialogCloseButton,
@@ -15,16 +15,19 @@ import {
 import * as si from "react-icons/si";
 import axios from "axios";
 import "./PopupAddShop.css";
+import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignation({ addShop }) {
+export default function PopupAssignation() {
+  const { auth, setAuth } = useContext(AuthContext);
+
   const [productName, setProductName] = useState("");
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const getproducts = async () => {
-    const response = await axios.get(
-      `http://localhost:8080/shpos/produits/read`
-    );
+    const response = await axios.get(`http://localhost:8080/shops/boutiques`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     setProducts(response.data);
     onOpen();
   };
@@ -81,7 +84,7 @@ export default function PopupAssignation({ addShop }) {
               rounded={"200px"}
               colorScheme="green"
               ml={3}
-              onClick={(e) => addShop()}
+              //onClick={(e) => addShop()}
             >
               Valider
             </Button>
