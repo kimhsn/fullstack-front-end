@@ -21,6 +21,20 @@ import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
 
 export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
+  const formateDate = (date) => {
+    const dateObj = new Date(date);
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const formattedDate = dateObj
+      .toLocaleDateString("en-GB", options)
+      .replace(",", " ");
+    return formattedDate;
+  };
   return (
     <ChakraProvider>
       <GridItem key={item.idBoutique}>
@@ -109,7 +123,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 <Link to={`/detailsshop/${item.idBoutique}`}>
                   <Text fontWeight={600}>{item.user}</Text>
                   <Text size={2} color={"gray.500"}>
-                    {item.creationData}
+                    {formateDate(item.creationData)}
                   </Text>
                 </Link>{" "}
               </Stack>

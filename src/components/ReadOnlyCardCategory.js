@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import {
   Box,
   Center,
@@ -19,12 +20,29 @@ import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/Product2.png";
+import AuthContext from "../pages/context/AuthProvider";
 
 export default function ReadOnlyCardCategory({
   item,
   deleteCategory,
   setIdShop,
 }) {
+  const { auth, setAuth } = useContext(AuthContext);
+
+  const formateDate = (date) => {
+    const dateObj = new Date(date);
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const formattedDate = dateObj
+      .toLocaleDateString("en-GB", options)
+      .replace(",", " ");
+    return formattedDate;
+  };
   return (
     <ChakraProvider>
       <GridItem key={item.id}>
@@ -88,18 +106,22 @@ export default function ReadOnlyCardCategory({
               >
                 <Link to={`/detailscategory/${item.id}`}>
                   <Text fontWeight={600}>{item.codeCategorie}</Text>
-                  <Text color={"gray.500"}>{item.creationData}</Text>
+                  <Text color={"gray.500"}>
+                    {formateDate(item.creationData)}
+                  </Text>
                 </Link>{" "}
               </Stack>
               <PopupAssignation />
-              <fi.FiEdit
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => setIdShop(item.id)}
-                rounded={"full"}
-                color="#0000CD"
-              />
+              {auth.role === "admin" && (
+                <fi.FiEdit
+                  cursor="pointer"
+                  size={"60px"}
+                  right={"0px"}
+                  onClick={() => setIdShop(item.id)}
+                  rounded={"full"}
+                  color="#0000CD"
+                />
+              )}
               <ai.AiFillDelete
                 cursor="pointer"
                 size={"60px"}

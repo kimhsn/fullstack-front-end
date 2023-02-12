@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Logo from "../images/Logo.png";
 import LogoSideBar from "../images/LogoSideBar.png";
 import {
@@ -37,14 +37,21 @@ import { GiShop } from "react-icons/gi";
 import { SiShopify } from "react-icons/si";
 import { ImUsers } from "react-icons/im";
 import { Link } from "react-router-dom";
-
-const LinkItems = [
+import AuthContext from "../pages/context/AuthProvider";
+const LinkItemsAdmin = [
   { name: "Accueil", icon: FiHome, path: "/Home" },
   { name: "Boutiques", icon: GiShop, path: "/Shops" },
   { name: "Catégories", icon: FiTrendingUp, path: "/Categories" },
   { name: "Produits", icon: SiShopify, path: "/Products" },
   { name: "Utilisateurs", icon: ImUsers, path: "/Users" },
 
+  { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
+];
+const LinkItemsSeller = [
+  { name: "Accueil", icon: FiHome, path: "/Home" },
+  { name: "Boutiques", icon: GiShop, path: "/Shops" },
+  { name: "Catégories", icon: FiTrendingUp, path: "/Categories" },
+  { name: "Produits", icon: SiShopify, path: "/Products" },
   { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
 ];
 
@@ -56,7 +63,7 @@ export default function Sidebar({
   minH = "170vh",
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //const { auth, setAuth } = useContext(AuthContext);
+
   return (
     <ChakraProvider>
       <Box minH={minH} bg={useColorModeValue("gray.100", "gray.900")}>
@@ -93,6 +100,8 @@ export default function Sidebar({
 }
 
 const SidebarContent = ({ onClose, ...rest }) => {
+  const { auth, setAuth } = useContext(AuthContext);
+
   return (
     <Box
       transition="3s ease"
@@ -114,11 +123,22 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <Image marginTop={"40px"} size="50px" src={LogoSideBar} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem path={link.path} key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
+      {auth.role === "ADMIN" ? (
+        LinkItemsAdmin.map((link) => (
+          <NavItem path={link.path} key={link.name} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        ))
+      ) : (
+        <>
+          {" "}
+          {LinkItemsSeller.map((link) => (
+            <NavItem path={link.path} key={link.name} icon={link.icon}>
+              {link.name}
+            </NavItem>
+          ))}
+        </>
+      )}
     </Box>
   );
 };

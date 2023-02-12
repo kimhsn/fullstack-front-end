@@ -69,6 +69,55 @@ export default function Shops() {
   const [dateBefore, setDateBefore] = useState("");
   const [dateAfter, setDateAfter] = useState("");
 
+  //horraires d'ouverture de la boutique
+  const [mondayMorningFrom, setMondayMorningFrom] = useState("");
+  const [mondayMorningTo, setMondayMorningTo] = useState("");
+  const [mondayAfternoonFrom, setMondayAfternoonFrom] = useState("");
+  const [mondayAfternoonTo, setMondayAfternoonTo] = useState("");
+  const [tuesdayMorningFrom, setTuesdayMorningFrom] = useState("");
+  const [tuesdayMorningTo, setTuesdayMorningTo] = useState("");
+  const [tuesdayAfternoonFrom, setTuesdayAfternoonFrom] = useState("");
+  const [tuesdayAfternoonTo, setTuesdayAfternoonTo] = useState("");
+  const [wednesdayMorningFrom, setWednesdayMorningFrom] = useState("");
+  const [wednesdayMorningTo, setWednesdayMorningTo] = useState("");
+  const [wednesdayAfternoonFrom, setWednesdayAfternoonFrom] = useState("");
+  const [wednesdayAfternoonTo, setWednesdayAfternoonTo] = useState("");
+  const [thursdayMorningFrom, setThursdayMorningFrom] = useState("");
+  const [thursdayMorningTo, setThursdayMorningTo] = useState("");
+  const [thursdayAfternoonFrom, setThursdayAfternoonFrom] = useState("");
+  const [thursdayAfternoonTo, setThursdayAfternoonTo] = useState("");
+  const [fridayMorningFrom, setFridayMorningFrom] = useState("");
+  const [fridayMorningTo, setFridayMorningTo] = useState("");
+  const [fridayAfternoonFrom, setFridayAfternoonFrom] = useState("");
+  const [fridayAfternoonTo, setFridayAfternoonTo] = useState("");
+
+  let horaiere = {
+    lundi: [
+      { from: "08:00", to: "12:00" },
+      { from: "14:00", to: "18:00" },
+    ],
+    mardi: [
+      { from: "08:00", to: "12:00" },
+      { from: "14:00", to: "18:00" },
+    ],
+    mercredi: [
+      { from: "08:00", to: "12:00" },
+      { from: "14:00", to: "18:00" },
+    ],
+    jeudi: [
+      { from: "08:00", to: "12:00" },
+      { from: "14:00", to: "18:00" },
+    ],
+    vendredi: [
+      { from: "08:00", to: "12:00" },
+      { from: "14:00", to: "18:00" },
+    ],
+    samedi: [
+      { from: "10:00", to: "12:00" },
+      { from: "14:00", to: "19:00" },
+    ],
+  };
+
   const getData = async () => {
     const response = await axios.get(
       `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
@@ -168,6 +217,28 @@ export default function Shops() {
           nom: shopName,
           conge: shopInVacation,
           user: auth.prenom + " " + auth.nom,
+          horraires: {
+            lundi: [
+              { from: mondayMorningFrom, to: mondayMorningTo },
+              { from: mondayAfternoonFrom, to: mondayAfternoonTo },
+            ],
+            mardi: [
+              { from: tuesdayMorningFrom, to: tuesdayMorningTo },
+              { from: tuesdayAfternoonFrom, to: tuesdayAfternoonTo },
+            ],
+            mercredi: [
+              { from: wednesdayMorningFrom, to: wednesdayMorningTo },
+              { from: wednesdayAfternoonFrom, to: wednesdayAfternoonTo },
+            ],
+            jeudi: [
+              { from: thursdayMorningFrom, to: thursdayMorningTo },
+              { from: thursdayAfternoonFrom, to: thursdayAfternoonTo },
+            ],
+            vendredi: [
+              { from: fridayMorningFrom, to: fridayMorningTo },
+              { from: fridayAfternoonFrom, to: fridayAfternoonTo },
+            ],
+          },
         },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -180,6 +251,34 @@ export default function Shops() {
       setShopInVacation(false);
 
       getData();
+      console.log({
+        description: shopDescription,
+        nom: shopName,
+        conge: shopInVacation,
+        user: auth.prenom + " " + auth.nom,
+        horraires: {
+          lundi: [
+            { from: mondayMorningFrom, to: mondayMorningTo },
+            { from: mondayAfternoonFrom, to: mondayAfternoonTo },
+          ],
+          mardi: [
+            { from: tuesdayMorningFrom, to: tuesdayMorningTo },
+            { from: tuesdayAfternoonFrom, to: tuesdayAfternoonTo },
+          ],
+          mercredi: [
+            { from: wednesdayMorningFrom, to: wednesdayMorningTo },
+            { from: wednesdayAfternoonFrom, to: wednesdayAfternoonTo },
+          ],
+          jeudi: [
+            { from: thursdayMorningFrom, to: thursdayMorningTo },
+            { from: thursdayAfternoonFrom, to: thursdayAfternoonTo },
+          ],
+          vendredi: [
+            { from: fridayMorningFrom, to: fridayMorningTo },
+            { from: fridayAfternoonFrom, to: fridayAfternoonTo },
+          ],
+        },
+      });
       return true;
     }
   };
@@ -212,6 +311,26 @@ export default function Shops() {
           addShop={addShop}
           setShopCode={setShopCode}
           setShopDescription={setShopDescription}
+          setMondayAfternoonFrom={setMondayAfternoonFrom}
+          setMondayAfternoonTo={setMondayAfternoonTo}
+          setMondayMorningFrom={setMondayMorningFrom}
+          setMondayMorningTo={setMondayMorningTo}
+          setTuesdayAfternoonFrom={setTuesdayAfternoonFrom}
+          setTuesdayAfternoonTo={setTuesdayAfternoonTo}
+          setTuesdayMorningFrom={setTuesdayMorningFrom}
+          setTuesdayMorningTo={setTuesdayMorningTo}
+          setWednesdayAfternoonFrom={setWednesdayAfternoonFrom}
+          setWednesdayAfternoonTo={setWednesdayAfternoonTo}
+          setWednesdayMorningFrom={setWednesdayMorningFrom}
+          setWednesdayMorningTo={setWednesdayMorningTo}
+          setThursdayAfternoonFrom={setThursdayAfternoonFrom}
+          setThursdayAfternoonTo={setThursdayAfternoonTo}
+          setThursdayMorningFrom={setThursdayMorningFrom}
+          setThursdayMorningTo={setThursdayMorningTo}
+          setFridayAfternoonFrom={setFridayAfternoonFrom}
+          setFridayAfternoonTo={setFridayAfternoonTo}
+          setFridayMorningFrom={setFridayMorningFrom}
+          setFridayMorningTo={setFridayMorningTo}
         />
 
         <div className="wrapper">

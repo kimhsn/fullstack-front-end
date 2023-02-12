@@ -191,6 +191,83 @@ const DetailsShop = () => {
                   </Text>
 
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                    {/*
+   <Square w="400px">
+              <Box mb="4" marginRight={70}>
+                {" "}
+                <Heading as="h2" size="md" mb="3">
+                  Horaires d'ouverture
+                </Heading>
+                <Text fontWeight="bold">mardi</Text>
+                <Box>
+                  <Text as="span" mr="2">
+                    Matin :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Box>
+                  <Text as="span" mr="2">
+                    Après-midi :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Text fontWeight="bold">mardi</Text>
+                <Box>
+                  <Text as="span" mr="2">
+                    Matin :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Box>
+                  <Text as="span" mr="2">
+                    Après-midi :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Text fontWeight="bold">mardi</Text>
+                <Box>
+                  <Text as="span" mr="2">
+                    Matin :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Box>
+                  <Text as="span" mr="2">
+                    Après-midi :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Text fontWeight="bold">mardi</Text>
+                <Box>
+                  <Text as="span" mr="2">
+                    Matin :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Box>
+                  <Text as="span" mr="2">
+                    Après-midi :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Text fontWeight="bold">mardi</Text>
+                <Box>
+                  <Text as="span" mr="2">
+                    Matin :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+                <Box>
+                  <Text as="span" mr="2">
+                    Après-midi :
+                  </Text>
+                  <Text as="span">12h21 - 17h25 </Text>
+                </Box>
+              </Box>
+            </Square>
+
+              */}
+
                     <List spacing={2}>
                       <ListItem>Chronograph</ListItem>
                       <ListItem>Master Chronometer Certified</ListItem>{" "}

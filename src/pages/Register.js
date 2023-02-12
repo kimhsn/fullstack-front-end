@@ -57,10 +57,11 @@ export default function Register() {
           headers: { Authorization: `Bearer ${accesToken}` },
         }
       );
+      console.log(responseUser.data);
+
       if (response?.status === 200) {
         //console.log(response?.data.user.id);
         //console.log(email, password);
-
         let id = responseUser?.data.id;
         let email = responseUser?.data.email;
         let nom = responseUser?.data.nom;
