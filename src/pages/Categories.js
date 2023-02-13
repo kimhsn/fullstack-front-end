@@ -174,15 +174,17 @@ export default function Categories() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        <PopupAddCategory
-          setErrorPopup={setErrorPopup}
-          errorPopup={errorPopup}
-          setShopName={setShopName}
-          setShopInVacation={setShopInVacation}
-          addShop={addShop}
-          setShopCode={setShopCode}
-          setShopDescription={setShopDescription}
-        />
+        {auth.role == "ADMIN" || auth.role == "USER" ? (
+          <PopupAddCategory
+            setErrorPopup={setErrorPopup}
+            errorPopup={errorPopup}
+            setShopName={setShopName}
+            setShopInVacation={setShopInVacation}
+            addShop={addShop}
+            setShopCode={setShopCode}
+            setShopDescription={setShopDescription}
+          />
+        ) : null}
         <div className="wrapper">
           <div className="page-container">
             <ChakraProvider>
@@ -255,6 +257,7 @@ export default function Categories() {
                             item={element}
                             setIdShop={setTrue}
                             deleteCategory={deleteCategory}
+                            role={auth.role}
                           />
                         )}
                       </Fragment>

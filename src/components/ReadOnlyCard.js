@@ -20,7 +20,7 @@ import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
 
-export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
+export default function ReadOnlyCard({ item, deleteShop, setIdShop, role }) {
   const formateDate = (date) => {
     const dateObj = new Date(date);
     const options = {
@@ -88,14 +88,12 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                   </Stack>
                 </GridItem>
                 <GridItem h="20">
-                  {" "}
                   <Feature
                     icon={<Icon as={FcViewDetails} w={10} h={10} />}
                     title={item.categories.length}
                   />
                 </GridItem>
                 <GridItem h="20">
-                  {" "}
                   <Feature
                     icon={<Icon as={FcPaid} w={10} h={10} />}
                     title={item.produits.length}
@@ -108,7 +106,6 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
             </Link>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
               <Link to={`/detailsshop/${item.idBoutique}`}>
-                {" "}
                 <Avatar
                   src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
                   alt={"Author"}
@@ -127,23 +124,27 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                   </Text>
                 </Link>{" "}
               </Stack>
-              <PopupAssignation />
-              <fi.FiEdit
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => setIdShop(item.idBoutique)}
-                rounded={"full"}
-                color="#0000CD"
-              />
-              <ai.AiFillDelete
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => deleteShop(item.idBoutique)}
-                rounded={"full"}
-                color="red"
-              />
+              {role == "ADMIN" || role == "USER" ? (
+                <>
+                  <PopupAssignation />
+                  <fi.FiEdit
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => setIdShop(item.idBoutique)}
+                    rounded={"full"}
+                    color="#0000CD"
+                  />
+                  <ai.AiFillDelete
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => deleteShop(item.idBoutique)}
+                    rounded={"full"}
+                    color="red"
+                  />
+                </>
+              ) : null}
             </Stack>
           </Box>
         </Center>

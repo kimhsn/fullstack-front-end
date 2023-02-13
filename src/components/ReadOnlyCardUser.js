@@ -37,9 +37,7 @@ export default function ReadOnlyCardUser({ item, deleteShop, setIdShop }) {
           <Flex justify={"center"} mt={-12}>
             <Avatar
               size={"xl"}
-              src={
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-              }
+              src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
               alt={"Author"}
               css={{
                 border: "2px solid white",

@@ -16,6 +16,7 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
+import UserProfileLogo from "../images/UserProfileLogo.jpg";
 
 const URL = "http://localhost:8080/shops/users";
 
@@ -66,7 +67,7 @@ const UserProfile = () => {
             <Flex justify={"center"} mt={-12}>
               <Avatar
                 size={"xl"}
-                src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
+                src={UserProfileLogo}
                 alt={"Author"}
                 css={{
                   border: "2px solid white",

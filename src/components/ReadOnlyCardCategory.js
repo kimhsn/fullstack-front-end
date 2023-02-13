@@ -20,15 +20,13 @@ import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/Product2.png";
-import AuthContext from "../pages/context/AuthProvider";
 
 export default function ReadOnlyCardCategory({
   item,
   deleteCategory,
   setIdShop,
+  role,
 }) {
-  const { auth, setAuth } = useContext(AuthContext);
-
   const formateDate = (date) => {
     const dateObj = new Date(date);
     const options = {
@@ -110,26 +108,30 @@ export default function ReadOnlyCardCategory({
                     {formateDate(item.creationData)}
                   </Text>
                 </Link>{" "}
-              </Stack>
-              <PopupAssignation />
-              {auth.role === "admin" && (
-                <fi.FiEdit
-                  cursor="pointer"
-                  size={"60px"}
-                  right={"0px"}
-                  onClick={() => setIdShop(item.id)}
-                  rounded={"full"}
-                  color="#0000CD"
-                />
-              )}
-              <ai.AiFillDelete
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => deleteCategory(item.id)}
-                rounded={"full"}
-                color="red"
-              />
+              </Stack>{" "}
+              {role == "ADMIN" || role == "USER" ? (
+                <>
+                  <PopupAssignation />
+
+                  <fi.FiEdit
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => setIdShop(item.id)}
+                    rounded={"full"}
+                    color="#0000CD"
+                  />
+
+                  <ai.AiFillDelete
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => deleteCategory(item.id)}
+                    rounded={"full"}
+                    color="red"
+                  />
+                </>
+              ) : null}
             </Stack>
           </Box>
         </Center>

@@ -301,38 +301,39 @@ export default function Shops() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        <PopupAddShop
-          setErrorPopup={setErrorPopup}
-          errorPopup={errorPopup}
-          shopInVacation={shopInVacation}
-          setShopName={setShopName}
-          setShopTime={setShopTime}
-          setShopInVacation={setShopInVacation}
-          addShop={addShop}
-          setShopCode={setShopCode}
-          setShopDescription={setShopDescription}
-          setMondayAfternoonFrom={setMondayAfternoonFrom}
-          setMondayAfternoonTo={setMondayAfternoonTo}
-          setMondayMorningFrom={setMondayMorningFrom}
-          setMondayMorningTo={setMondayMorningTo}
-          setTuesdayAfternoonFrom={setTuesdayAfternoonFrom}
-          setTuesdayAfternoonTo={setTuesdayAfternoonTo}
-          setTuesdayMorningFrom={setTuesdayMorningFrom}
-          setTuesdayMorningTo={setTuesdayMorningTo}
-          setWednesdayAfternoonFrom={setWednesdayAfternoonFrom}
-          setWednesdayAfternoonTo={setWednesdayAfternoonTo}
-          setWednesdayMorningFrom={setWednesdayMorningFrom}
-          setWednesdayMorningTo={setWednesdayMorningTo}
-          setThursdayAfternoonFrom={setThursdayAfternoonFrom}
-          setThursdayAfternoonTo={setThursdayAfternoonTo}
-          setThursdayMorningFrom={setThursdayMorningFrom}
-          setThursdayMorningTo={setThursdayMorningTo}
-          setFridayAfternoonFrom={setFridayAfternoonFrom}
-          setFridayAfternoonTo={setFridayAfternoonTo}
-          setFridayMorningFrom={setFridayMorningFrom}
-          setFridayMorningTo={setFridayMorningTo}
-        />
-
+        {auth.role == "ADMIN" || auth.role == "USER" ? (
+          <PopupAddShop
+            setErrorPopup={setErrorPopup}
+            errorPopup={errorPopup}
+            shopInVacation={shopInVacation}
+            setShopName={setShopName}
+            setShopTime={setShopTime}
+            setShopInVacation={setShopInVacation}
+            addShop={addShop}
+            setShopCode={setShopCode}
+            setShopDescription={setShopDescription}
+            setMondayAfternoonFrom={setMondayAfternoonFrom}
+            setMondayAfternoonTo={setMondayAfternoonTo}
+            setMondayMorningFrom={setMondayMorningFrom}
+            setMondayMorningTo={setMondayMorningTo}
+            setTuesdayAfternoonFrom={setTuesdayAfternoonFrom}
+            setTuesdayAfternoonTo={setTuesdayAfternoonTo}
+            setTuesdayMorningFrom={setTuesdayMorningFrom}
+            setTuesdayMorningTo={setTuesdayMorningTo}
+            setWednesdayAfternoonFrom={setWednesdayAfternoonFrom}
+            setWednesdayAfternoonTo={setWednesdayAfternoonTo}
+            setWednesdayMorningFrom={setWednesdayMorningFrom}
+            setWednesdayMorningTo={setWednesdayMorningTo}
+            setThursdayAfternoonFrom={setThursdayAfternoonFrom}
+            setThursdayAfternoonTo={setThursdayAfternoonTo}
+            setThursdayMorningFrom={setThursdayMorningFrom}
+            setThursdayMorningTo={setThursdayMorningTo}
+            setFridayAfternoonFrom={setFridayAfternoonFrom}
+            setFridayAfternoonTo={setFridayAfternoonTo}
+            setFridayMorningFrom={setFridayMorningFrom}
+            setFridayMorningTo={setFridayMorningTo}
+          />
+        ) : null}
         <div className="wrapper">
           <div className="page-container">
             <ChakraProvider>
@@ -516,6 +517,7 @@ export default function Shops() {
                             item={element}
                             setIdShop={setTrue}
                             deleteShop={deleteShop}
+                            role={auth.role}
                           />
                         )}{" "}
                       </Fragment>

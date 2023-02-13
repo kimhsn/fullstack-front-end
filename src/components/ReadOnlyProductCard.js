@@ -22,6 +22,7 @@ export default function ReadOnlyProductCard({
   item,
   deleteProduct,
   setIdShop,
+  role,
 }) {
   return (
     <ChakraProvider>
@@ -84,6 +85,7 @@ export default function ReadOnlyProductCard({
               <Text color="blue.600" fontSize="2xl">
                 {item.prix}€
               </Text>
+
               <Stack
                 direction={"column"}
                 spacing={0}
@@ -94,22 +96,26 @@ export default function ReadOnlyProductCard({
                 <Text color={"gray.500"}>{item.creationData}</Text>
               </Stack>
               {/*<PopupAssignation />*/}
-              <fi.FiEdit
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => setIdShop(item.id)}
-                rounded={"full"}
-                color="#0000CD"
-              />
-              <ai.AiFillDelete
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => deleteProduct(item.id)}
-                rounded={"full"}
-                color="red"
-              />
+              {role == "ADMIN" || role == "USER" ? (
+                <>
+                  <fi.FiEdit
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => setIdShop(item.id)}
+                    rounded={"full"}
+                    color="#0000CD"
+                  />
+                  <ai.AiFillDelete
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => deleteProduct(item.id)}
+                    rounded={"full"}
+                    color="red"
+                  />
+                </>
+              ) : null}
             </Stack>
           </Box>
         </Center>

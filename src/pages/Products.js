@@ -67,9 +67,9 @@ export default function Products() {
 
   const [selectedShop, setSelectedShop] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  console.log(selectedShop, selectedCategory);
+
   const getProducts = async () => {
-    const response = await axios.get(`${URL}`, {
+    const response = await axios.get(`http://localhost:8080/shops/produits`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setProducts(response.data);
@@ -94,8 +94,6 @@ export default function Products() {
     getShops();
   }, []);
 
-  console.log(categories);
-  console.log(shops);
   useEffect(() => {
     setErrorPopup("");
   }, [productName, productPrice]);
@@ -205,16 +203,17 @@ export default function Products() {
         role={auth.role}
         minH={"230vh"}
       >
-        <PopupAddProduct
-          setProductCode={setProductCode}
-          errorPopup={errorPopup}
-          setProductName={setProductName}
-          addProduct={addProduct}
-          setProductDescription={setproductDescription}
-          setProductPrice={setProductPrice}
-          setErrorPopup={setErrorPopup}
-        />
-
+        {auth.role == "ADMIN" || auth.role == "USER" ? (
+          <PopupAddProduct
+            setProductCode={setProductCode}
+            errorPopup={errorPopup}
+            setProductName={setProductName}
+            addProduct={addProduct}
+            setProductDescription={setproductDescription}
+            setProductPrice={setProductPrice}
+            setErrorPopup={setErrorPopup}
+          />
+        ) : null}
         <div className="wrapper">
           <div className="page-container">
             <FormLabel fontWeight={"bold"} ml={20} color="black" fontSize="31">
@@ -401,6 +400,7 @@ export default function Products() {
                           item={element}
                           setIdShop={setTrue}
                           deleteProduct={deleteProduct}
+                          role={auth.role}
                         />
                       )}{" "}
                     </Fragment>

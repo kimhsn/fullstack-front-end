@@ -12,7 +12,7 @@ import Users from "../pages/Users";
 const routes = [
   {
     name: "Home",
-    path: "/Home",
+    path: "/",
     element: Home,
   },
   {
@@ -22,7 +22,7 @@ const routes = [
   },
   {
     name: "Register",
-    path: "/",
+    path: "/register",
     element: Register,
   },
   {

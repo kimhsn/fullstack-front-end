@@ -99,7 +99,7 @@ export default function Register() {
   return (
     <>
       {success ? (
-        <Navigate to="/home"></Navigate>
+        <Navigate to="/"></Navigate>
       ) : (
         <>
           <ChakraProvider>

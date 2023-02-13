@@ -133,7 +133,25 @@ export default function Shops() {
                   >
                     Démarrer la visite
                   </Button>
-                </Link>
+                </Link>{" "}
+                {auth.role !== "ADMIN" && auth.role !== "USER" ? (
+                  <Link to="/register">
+                    <Button
+                      fontWeight="extrabold"
+                      rounded={"full"}
+                      size={"lg"}
+                      px={9}
+                      colorScheme={"white"}
+                      bgGradient="linear(to-r, blue.400,blue.400)"
+                      _hover={{
+                        bgGradient: "linear(to-r, blue.500,blue.500)",
+                        boxShadow: "xl",
+                      }}
+                    >
+                      Se connecter
+                    </Button>
+                  </Link>
+                ) : null}
               </Stack>
             </Stack>
             <Flex
