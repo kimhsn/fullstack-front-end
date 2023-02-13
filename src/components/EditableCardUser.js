@@ -21,7 +21,6 @@ export default function EditableCardUser({
   setPrenom,
   setRole,
 }) {
-  console.log(item.item);
   return (
     <ChakraProvider>
       <Center py={6}>
@@ -96,9 +95,8 @@ export default function EditableCardUser({
               placeholder="Rôle"
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value={"ADMIN"}>Admin</option>
-              <option value={"MANAGER"}>Manager</option>;
-              <option value={"USER"}>Utilisateur</option>;
+              <option value={"ADMIN"}>Administrateur</option>
+              <option value={"Vendeur-Livreur"}>Vendeur-Livreur</option>;
             </Select>
             <Stack mt={5} direction={"row"} justify={"center"} spacing={6}>
               <Stack spacing={0} align={"center"}>

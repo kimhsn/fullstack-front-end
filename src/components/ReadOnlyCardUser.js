@@ -14,7 +14,7 @@ import {
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 
-export default function ReadOnlyCardUser({ item, deleteShop, setIdShop }) {
+export default function ReadOnlyCardUser({ item, deleteUser, setIdShop }) {
   return (
     <ChakraProvider>
       <Center py={6}>
@@ -80,7 +80,7 @@ export default function ReadOnlyCardUser({ item, deleteShop, setIdShop }) {
                   cursor="pointer"
                   size={"40px"}
                   right={"0px"}
-                  onClick={() => deleteShop(item.id)}
+                  onClick={() => deleteUser(item.id)}
                   rounded={"full"}
                   color="red"
                 />

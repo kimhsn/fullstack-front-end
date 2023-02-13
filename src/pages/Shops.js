@@ -117,7 +117,6 @@ export default function Shops() {
       { from: "14:00", to: "19:00" },
     ],
   };
-
   const getData = async () => {
     const response = await axios.get(
       `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
@@ -135,6 +134,10 @@ export default function Shops() {
   var dateTime = date + "T" + time;
 
   useEffect(() => {
+    if (dateAfter == "//" || dateBefore == "//") {
+      setDateAfter("");
+      setDateBefore("");
+    }
     getData();
   }, [SortBy, enConge, dateBefore, dateAfter]);
   useEffect(() => {
@@ -445,11 +448,18 @@ export default function Shops() {
                               <TabPanel>
                                 <FormControl display="flex" alignItems="center">
                                   <FormLabel htmlFor="email-alerts" mb="0">
-                                    Boutique en congé ?
+                                    Boutiques en congé?
                                   </FormLabel>
-                                  <Switch
-                                    onChange={() => setEnConge(!enConge)}
-                                  />
+                                  <Select
+                                    rounded={"200px"}
+                                    bgGradient="linear(to-r, blue.200,pink.200)"
+                                    placeholder="Type"
+                                    onChange={(e) => setEnConge(e.target.value)}
+                                    width={"95px"}
+                                  >
+                                    <option value="false">En congé</option>
+                                    <option value="true">En activité</option>
+                                  </Select>
                                 </FormControl>
                               </TabPanel>
                               <TabPanel>

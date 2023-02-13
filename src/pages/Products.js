@@ -34,7 +34,7 @@ import Paginate from "../components/Paginate";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Dashboard.css";
 
-const URL = "http://localhost:8080/shops/produits";
+const URL = "http://localhost:8080/shops";
 
 export default function Products() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -69,20 +69,20 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const getProducts = async () => {
-    const response = await axios.get(`http://localhost:8080/shops/produits`, {
+    const response = await axios.get(`${URL}/produits`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setProducts(response.data);
   };
 
   const getShops = async () => {
-    const response = await axios.get(`http://localhost:8080/shops/boutiques`, {
+    const response = await axios.get(`${URL}/boutiques`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setShops(response.data);
   };
   const getCategories = async () => {
-    const response = await axios.get(`http://localhost:8080/shops/categories`, {
+    const response = await axios.get(`${URL}/categories`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setCategories(response.data);

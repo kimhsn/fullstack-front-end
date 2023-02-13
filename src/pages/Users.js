@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, Fragment } from "react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
 
-import axios from "axios";
 import {
   ChakraProvider,
   FormLabel,
@@ -13,62 +12,51 @@ import {
 import EditableCardUser from "../components/EditableCardUser";
 import ReadOnlyCardUser from "../components/ReadOnlyCardUser";
 import "./Dashboard.css";
-import PopupAddShop from "../components/PopupAddShop";
+import PopupAddUser from "../components/PopupAddUser";
 import * as fc from "react-icons/fc";
+import axios from "axios";
 import Paginate from "../components/Paginate";
+
 const URL = "http://localhost:8080/shops/users";
 
 export default function Users() {
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [shops, setShops] = useState([]);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [shopsPerPage] = useState(6);
-  const indexOfLastPost = currentPage * shopsPerPage;
-  const indexOfFirstPost = indexOfLastPost - shopsPerPage;
-  const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
+  const [usersPerPage] = useState(6);
+  const indexOfLastPost = currentPage * usersPerPage;
+  const indexOfFirstPost = indexOfLastPost - usersPerPage;
+  const currentusers = users.slice(indexOfFirstPost, indexOfLastPost);
   //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [creationData, setCreationData] = useState("");
-  const [horaire, setHoraire] = useState("");
-  const [conge, setConge] = useState("");
-  const [shopName, setShopName] = useState("");
-  const [shopTime, setShopTime] = useState("");
-  const [shopprenom, setShopprenom] = useState(null);
-  const [shopCode, setShopCode] = useState(null);
-  const [shopInVacation, setShopInVacation] = useState(false);
+  const [userFirstName, setUserFirstName] = useState("");
+  const [userLastName, setUserLastName] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [userMDP, setUserMDP] = useState(null);
+
   const [errorPopup, setErrorPopup] = useState("");
-  const [inVacations, setInVacations] = useState("");
-  //filtre+sort
-  const [SortBy, setSortBy] = useState("");
-  const [enConge, setEnConge] = useState("");
-  const [dateBefore, setDateBefore] = useState("");
-  const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
     const response = await axios.get(`${URL}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
-    setShops(response.data);
+    setUsers(response.data);
     console.log(response.data);
   };
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + "T" + time;
+
+  useEffect(() => {
+    setErrorPopup("");
+  }, [userFirstName]);
 
   useEffect(() => {
     getData();
-  }, [SortBy, enConge, dateBefore, dateAfter]);
-  useEffect(() => {
-    setErrorPopup("");
-  }, [shopName, shopTime]);
+  }, []);
 
   const setTrue = async (id) => {
     setIdShop(id);
@@ -78,9 +66,6 @@ export default function Users() {
     setNom(response.data.nom);
     setPrenom(response.data.prenom);
     setEmail(response.data.email);
-    setCreationData(response.data.creationData);
-    setHoraire(response.data.horaire);
-    setInVacations(response.data.conge);
   };
 
   const updateUser = async (id) => {
@@ -102,59 +87,73 @@ export default function Users() {
     getData();
   };
 
-  const deleteShop = async (id) => {
+  const deleteUser = async (id) => {
     const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
   };
 
-  const searchShop = async (name) => {
-    let newShops = [];
-    const response = await axios.get(
-      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
-      {
-        headers: { Authorization: `Bearer ${auth.accesToken}` },
-      }
-    );
+  const searchUser = async (name) => {
+    let newusers = [];
+    const response = await axios.get(`${URL}`, {
+      headers: { Authorization: `Bearer ${auth.accesToken}` },
+    });
     response.data.map((shop) => {
       if (name.length == 0) {
-        setShops(response.data);
+        setUsers(response.data);
       } else if (name.length < 3) {
-        setShops([]);
+        setUsers([]);
       } else {
         if (shop.prenom == name) {
-          newShops.unshift(shop);
+          newusers.unshift(shop);
         } else if (shop.nom.includes(name)) {
-          newShops.push(shop);
+          newusers.push(shop);
         }
 
-        setShops(newShops);
+        setUsers(newusers);
       }
     });
   };
-  const addShop = async () => {
-    if (shopName === "") {
+  const addUser = async () => {
+    if (
+      userFirstName === " " ||
+      userLastName === " " ||
+      userEmail === "" ||
+      userMDP === "" ||
+      userRole === ""
+    ) {
       setErrorPopup("Veuillez remplir tous les champs");
       return false;
     } else {
-      const response = await axios.post(
-        `${URL}`,
-        {
-          prenom: shopprenom,
-          nom: shopName,
-          conge: shopInVacation,
-          user: auth.prenom + " " + auth.nom,
-        },
-        {
-          headers: { Authorization: `Bearer ${auth.accesToken}` },
-        }
-      );
-      setIdShop(null);
-      setShopprenom(null);
-      setShopCode(null);
+      userRole === "ADMIN"
+        ? await axios.post(
+            `${URL}/addNewAdmin`,
+            {
+              prenom: userLastName,
+              nom: userFirstName,
+              email: userEmail,
+              mdp: userMDP,
+            },
+            {
+              headers: { Authorization: `Bearer ${auth.accesToken}` },
+            }
+          )
+        : await axios.post(
+            `${URL}/addNewManager`,
+            {
+              prenom: userLastName,
+              nom: userFirstName,
+              email: userEmail,
+              mdp: userMDP,
+            },
+            {
+              headers: { Authorization: `Bearer ${auth.accesToken}` },
+            }
+          );
 
-      setShopInVacation(false);
+      const response = setIdShop(null);
+      setUserLastName(null);
 
       getData();
       return true;
@@ -171,7 +170,7 @@ export default function Users() {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(shops.length / shopsPerPage)) {
+    if (currentPage !== Math.ceil(users.length / usersPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -179,16 +178,15 @@ export default function Users() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        <PopupAddShop
-          setErrorPopup={setErrorPopup}
+        <PopupAddUser
+          setUserMDP={setUserMDP}
           errorPopup={errorPopup}
-          shopInVacation={shopInVacation}
-          setShopName={setShopName}
-          setShopTime={setShopTime}
-          setShopInVacation={setShopInVacation}
-          addShop={addShop}
-          setShopCode={setShopCode}
-          setShopprenom={setShopprenom}
+          setUserFirstName={setUserFirstName}
+          addUser={addUser}
+          setUserLastName={setUserLastName}
+          setUserEmail={setUserEmail}
+          setUserRole={setUserRole}
+          setErrorPopup={setErrorPopup}
         />
 
         <div className="wrapper">
@@ -218,7 +216,7 @@ export default function Users() {
                   bg={"#585AFC"}
                   color={"white"}
 
-                  //onClick={searchShop}
+                  //onClick={searchUser}
                 >
                   <fc.FcSearch
                     style={{ marginLeft: "32px", marginTop: "14px" }}
@@ -239,13 +237,13 @@ export default function Users() {
                     borderColor: "#7B61FF",
                   }}
                   placeholder="Entrez au moins 3 caractères pour rechercher"
-                  onChange={(e) => searchShop(e.target.value)}
+                  onChange={(e) => searchUser(e.target.value)}
                 />
               </InputGroup>
 
               <div className="cards">
-                {shops ? (
-                  currentShops.map((element) => {
+                {users ? (
+                  currentusers.map((element) => {
                     return (
                       <Fragment>
                         {idShop === element.id ? (
@@ -257,12 +255,13 @@ export default function Users() {
                             setPrenom={setPrenom}
                             setEmail={setEmail}
                             setRole={setRole}
+                            setUserRole={setUserRole}
                           />
                         ) : (
                           <ReadOnlyCardUser
                             item={element}
                             setIdShop={setTrue}
-                            deleteShop={deleteShop}
+                            deleteUser={deleteUser}
                           />
                         )}{" "}
                       </Fragment>
@@ -366,10 +365,10 @@ export default function Users() {
                 )}
               </div>
             </ChakraProvider>
-            {currentShops.length > 0 && (
+            {currentusers.length > 0 && (
               <Paginate
-                elementsPerPage={shopsPerPage}
-                totalElements={shops.length}
+                elementsPerPage={usersPerPage}
+                totalElements={users.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}
