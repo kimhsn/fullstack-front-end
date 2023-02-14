@@ -96,7 +96,7 @@ export default function ReadOnlyProductCard({
                 <Text color={"gray.500"}>{item.creationData}</Text>
               </Stack>
               {/*<PopupAssignation />*/}
-              {role == "ADMIN" || role == "USER" ? (
+              {role == "ADMIN" || role == "VENDEUR_LIVREUR" ? (
                 <>
                   <fi.FiEdit
                     cursor="pointer"

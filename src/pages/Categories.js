@@ -50,9 +50,7 @@ export default function Categories() {
   const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
-    const response = await axios.get(`${URL}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(`${URL}`);
     setShops(response.data);
   };
 
@@ -174,7 +172,7 @@ export default function Categories() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        {auth.role == "ADMIN" || auth.role == "USER" ? (
+        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
           <PopupAddCategory
             setErrorPopup={setErrorPopup}
             errorPopup={errorPopup}

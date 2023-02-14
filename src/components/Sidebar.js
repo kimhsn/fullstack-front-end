@@ -140,7 +140,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         ))
       ) : (
         <>
-          {auth.role === "USER" ? (
+          {auth.role === "VENDEUR_LIVREUR" ? (
             LinkItemsSeller.map((link) => (
               <NavItem path={link.path} key={link.name} icon={link.icon}>
                 {link.name}
@@ -232,7 +232,7 @@ const MobileNav = ({ firstname, lastname, role, onOpen, ...rest }) => {
       {...rest}
     >
       {" "}
-      {auth.role === "ADMIN" || auth.role === "USER" ? (
+      {auth.role === "ADMIN" || auth.role === "VENDEUR_LIVREUR" ? (
         <>
           <IconButton
             display={{ base: "flex", md: "none" }}

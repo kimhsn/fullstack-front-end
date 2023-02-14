@@ -48,9 +48,7 @@ const DetailsShop = () => {
     getData();
   }, []);
   const getData = async () => {
-    const response = await axios.get(`${URL}/${id}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(`${URL}/${id}`);
     setShop(response.data);
     setCategories(response.data.categories);
     setProducts(shop.data.produits);

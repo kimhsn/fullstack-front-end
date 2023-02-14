@@ -109,7 +109,7 @@ export default function ReadOnlyCardCategory({
                   </Text>
                 </Link>{" "}
               </Stack>{" "}
-              {role == "ADMIN" || role == "USER" ? (
+              {role == "ADMIN" ? (
                 <>
                   <PopupAssignation />
 
@@ -121,6 +121,19 @@ export default function ReadOnlyCardCategory({
                     rounded={"full"}
                     color="#0000CD"
                   />
+
+                  <ai.AiFillDelete
+                    cursor="pointer"
+                    size={"60px"}
+                    right={"0px"}
+                    onClick={() => deleteCategory(item.id)}
+                    rounded={"full"}
+                    color="red"
+                  />
+                </>
+              ) : role == "VENDEUR_LIVREUR" ? (
+                <>
+                  <PopupAssignation />
 
                   <ai.AiFillDelete
                     cursor="pointer"

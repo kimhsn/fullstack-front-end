@@ -69,24 +69,23 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const getProducts = async () => {
-    const response = await axios.get(`${URL}/produits`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(
+      `${URL}/produits?idBoutique=${selectedShop}&idCategorie=${selectedCategory}`
+    );
     setProducts(response.data);
   };
 
   const getShops = async () => {
-    const response = await axios.get(`${URL}/boutiques`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(`${URL}/boutiques`);
     setShops(response.data);
   };
   const getCategories = async () => {
-    const response = await axios.get(`${URL}/categories`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(`${URL}/categories`);
     setCategories(response.data);
   };
+  useEffect(() => {
+    getProducts();
+  }, [selectedShop, selectedCategory]);
 
   useEffect(() => {
     getProducts();
@@ -203,7 +202,7 @@ export default function Products() {
         role={auth.role}
         minH={"230vh"}
       >
-        {auth.role == "ADMIN" || auth.role == "USER" ? (
+        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
           <PopupAddProduct
             setProductCode={setProductCode}
             errorPopup={errorPopup}

@@ -119,10 +119,7 @@ export default function Shops() {
   };
   const getData = async () => {
     const response = await axios.get(
-      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
-      {
-        headers: { Authorization: `Bearer ${auth.accesToken}` },
-      }
+      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`
     );
     setShops(response.data);
   };
@@ -304,7 +301,7 @@ export default function Shops() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        {auth.role == "ADMIN" || auth.role == "USER" ? (
+        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
           <PopupAddShop
             setErrorPopup={setErrorPopup}
             errorPopup={errorPopup}
@@ -457,8 +454,8 @@ export default function Shops() {
                                     onChange={(e) => setEnConge(e.target.value)}
                                     width={"95px"}
                                   >
-                                    <option value="false">En congé</option>
-                                    <option value="true">En activité</option>
+                                    <option value="true">En congé</option>
+                                    <option value="false">En activité</option>
                                   </Select>
                                 </FormControl>
                               </TabPanel>
