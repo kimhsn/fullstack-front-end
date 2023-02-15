@@ -10,10 +10,7 @@ import {
   AlertDialogFooter,
   ChakraProvider,
   useDisclosure,
-  Stack,
-  CheckboxGroup,
-  Box,
-  Checkbox,
+  Select,
 } from "@chakra-ui/react";
 import * as si from "react-icons/si";
 import axios from "axios";
@@ -22,7 +19,7 @@ import AuthContext from "../pages/context/AuthProvider";
 
 export default function PopupAssignationProductToCategory({ idCategory }) {
   const { auth, setAuth } = useContext(AuthContext);
-  const [productsId, setProductsId] = useState("");
+  const [productId, setProductId] = useState(0);
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -33,16 +30,20 @@ export default function PopupAssignationProductToCategory({ idCategory }) {
     setProducts(response.data);
     onOpen();
   };
+  useEffect(() => {
+    const num = parseInt(productId);
+    setProductId(num);
+  }, [productId]);
   const assignProductsToCategory = async () => {
     console.log({
       idCategorie: idCategory,
-      idProduits: productsId,
+      idProduit: productId,
     });
     const response = await axios.post(
       `http://localhost:8080/shops/categories/addCategorieToProduits`,
       {
         idCategorie: idCategory,
-        idProduits: productsId,
+        idProduit: productId,
       },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -79,27 +80,17 @@ export default function PopupAssignationProductToCategory({ idCategory }) {
             Veuillez selectionnez le produit ou les produits que vous souhaitez
             assigner à cette categorie.
             <br />
-            <CheckboxGroup
-              colorScheme="blue"
-              // defaultValue={["naruto", "kakashi"]}
-              onChange={(values) => {
-                setProductsId(values);
-              }}
+            <Select
+              mt={"15px"}
+              rounded={"200px"}
+              bgGradient="linear(to-r, gray.200 ,pink.100)"
+              placeholder="Produits à assigner"
+              onChange={(e) => setProductId(e.target.value)}
             >
-              <Stack spacing={[1, 9]} direction={["column"]}>
-                <Box overflowY="auto" maxHeight="500px" maxWidth="700px">
-                  {products.map((product) => (
-                    <>
-                      {" "}
-                      <Checkbox marginBottom={"8px"} value={"" + product.prix}>
-                        {product.nom}
-                      </Checkbox>
-                      <br />
-                    </>
-                  ))}
-                </Box>{" "}
-              </Stack>
-            </CheckboxGroup>
+              {products.map((shop) => {
+                return <option value={shop.id}>{shop.nom}</option>;
+              })}
+            </Select>
             {/*}
             <Select
               mt={"15px"}

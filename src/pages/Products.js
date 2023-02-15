@@ -99,7 +99,7 @@ export default function Products() {
 
   const setTrue = async (id) => {
     setIdShop(id);
-    const response = await axios.get(`${URL}/findById/${id}`, {
+    const response = await axios.get(`${URL}/produits/findById/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setNom(response.data.nom);
@@ -109,7 +109,7 @@ export default function Products() {
 
   const updateProduct = async (id) => {
     const response = await axios.put(
-      `${URL}/${id}`,
+      `${URL}/produits/${id}`,
       { prix: productPrice, nom: nom, description: description },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -120,7 +120,7 @@ export default function Products() {
   };
 
   const deleteProduct = async (id) => {
-    const response = await axios.delete(`${URL}/${id}`, {
+    const response = await axios.delete(`${URL}/produits/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getProducts();
@@ -128,7 +128,7 @@ export default function Products() {
 
   const searchProduct = async (name) => {
     let newproducts = [];
-    const response = await axios.get(`${URL}`, {
+    const response = await axios.get(`${URL}/produits`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     response.data.map((shop) => {
@@ -154,7 +154,7 @@ export default function Products() {
       setErrorPopup("Le prix doit être un nombre entier");
       return false;
     } else {
-      const response = await fetch(`${URL}`, {
+      const response = await fetch(`${URL}/produits`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${auth.accesToken}`,

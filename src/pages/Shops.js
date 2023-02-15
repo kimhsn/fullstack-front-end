@@ -122,12 +122,6 @@ export default function Shops() {
     );
     setShops(response.data);
   };
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + "T" + time;
 
   useEffect(() => {
     if (dateAfter == "//" || dateBefore == "//") {
@@ -507,6 +501,7 @@ export default function Shops() {
                             setIdShop={setTrue}
                             deleteShop={deleteShop}
                             role={auth.role}
+                            idUserAurh={auth.id}
                           />
                         )}{" "}
                       </Fragment>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import {
   AlertDialogBody,
   AlertDialogCloseButton,
@@ -20,7 +20,7 @@ import AuthContext from "../pages/context/AuthProvider";
 export default function PopupAssignation({ idBoutique }) {
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [productId, setProductId] = useState("");
+  const [productId, setProductId] = useState(0);
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -31,6 +31,11 @@ export default function PopupAssignation({ idBoutique }) {
     setProducts(response.data);
     onOpen();
   };
+
+  useEffect(() => {
+    const num = parseInt(productId);
+    setProductId(num);
+  }, [productId]);
   const assignProductToShop = async () => {
     console.log({
       idBoutique: idBoutique,

@@ -20,7 +20,13 @@ import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
 
-export default function ReadOnlyCard({ item, deleteShop, setIdShop, role }) {
+export default function ReadOnlyCard({
+  item,
+  deleteShop,
+  setIdShop,
+  role,
+  idUserAuth,
+}) {
   const formateDate = (date) => {
     const dateObj = new Date(date);
     const options = {
@@ -107,7 +113,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop, role }) {
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
               <Link to={`/detailsshop/${item.idBoutique}`}>
                 <Avatar
-                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+                  src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
                   alt={"Author"}
                 />
               </Link>{" "}
@@ -126,23 +132,27 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop, role }) {
               </Stack>
               {role == "ADMIN" || role == "VENDEUR_LIVREUR" ? (
                 <>
-                  <PopupAssignation idBoutique={item.idBoutique} />
-                  <fi.FiEdit
-                    cursor="pointer"
-                    size={"60px"}
-                    right={"0px"}
-                    onClick={() => setIdShop(item.idBoutique)}
-                    rounded={"full"}
-                    color="#0000CD"
-                  />
-                  <ai.AiFillDelete
-                    cursor="pointer"
-                    size={"60px"}
-                    right={"0px"}
-                    onClick={() => deleteShop(item.idBoutique)}
-                    rounded={"full"}
-                    color="red"
-                  />
+                  {item.idUser == idUserAuth && role == "VENDEUR_LIVREUR" ? (
+                    <>
+                      <PopupAssignation idBoutique={item.idBoutique} />
+                      <fi.FiEdit
+                        cursor="pointer"
+                        size={"60px"}
+                        right={"0px"}
+                        onClick={() => setIdShop(item.idBoutique)}
+                        rounded={"full"}
+                        color="#0000CD"
+                      />
+                      <ai.AiFillDelete
+                        cursor="pointer"
+                        size={"60px"}
+                        right={"0px"}
+                        onClick={() => deleteShop(item.idBoutique)}
+                        rounded={"full"}
+                        color="red"
+                      />
+                    </>
+                  ) : null}
                 </>
               ) : null}
             </Stack>

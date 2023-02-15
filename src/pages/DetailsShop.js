@@ -43,6 +43,7 @@ const DetailsShop = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("");
+  const [productCount, setProductCount] = useState(0);
   const [shop, setShop] = useState("");
   useEffect(() => {
     getData();

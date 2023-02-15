@@ -29,7 +29,6 @@ import {
   FiHome,
   FiTrendingUp,
   FiSettings,
-  FiBell,
   FiMenu,
   FiChevronDown,
 } from "react-icons/fi";
@@ -47,7 +46,6 @@ const LinkItemsAdmin = [
   { name: "Catégories", icon: FiTrendingUp, path: "/Categories" },
   { name: "Produits", icon: SiShopify, path: "/Products" },
   { name: "Utilisateurs", icon: ImUsers, path: "/Users" },
-
   { name: "Paramètres", icon: FiSettings, path: "/userprofile" },
 ];
 const LinkItemsSeller = [
@@ -250,12 +248,6 @@ const MobileNav = ({ firstname, lastname, role, onOpen, ...rest }) => {
             <Image marginLeft={"25px"} maxWidth={"55px"} src={Logo} />{" "}
           </Text>
           <HStack spacing={{ base: "0", md: "6" }}>
-            <IconButton
-              size="lg"
-              variant="ghost"
-              aria-label="open menu"
-              icon={<FiBell />}
-            />
             <Flex alignItems={"center"}>
               <Menu>
                 <MenuButton
