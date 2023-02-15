@@ -134,7 +134,7 @@ export default function Shops() {
                     Démarrer la visite
                   </Button>
                 </Link>{" "}
-                {auth.role !== "ADMIN" && auth.role !== "USER" ? (
+                {auth.role !== "ADMIN" && auth.role !== "VENDEUR_LIVREUR" ? (
                   <Link to="/register">
                     <Button
                       fontWeight="extrabold"

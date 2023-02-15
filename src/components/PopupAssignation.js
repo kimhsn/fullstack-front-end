@@ -17,10 +17,10 @@ import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignation() {
+export default function PopupAssignation({ idBoutique }) {
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [productName, setProductName] = useState("");
+  const [productId, setProductId] = useState("");
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -31,6 +31,23 @@ export default function PopupAssignation() {
     setProducts(response.data);
     onOpen();
   };
+  const assignProductToShop = async () => {
+    console.log({
+      idBoutique: idBoutique,
+      idProduit: productId,
+    });
+    const response = await axios.post(
+      `http://localhost:8080/shops/boutiques/addProduitToBoutique`,
+      {
+        idBoutique: idBoutique,
+        idProduit: productId,
+      },
+      {
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
+      }
+    );
+  };
+
   return (
     <ChakraProvider>
       <si.SiShopify
@@ -64,7 +81,7 @@ export default function PopupAssignation() {
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               placeholder="Produits à assigner"
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={(e) => setProductId(e.target.value)}
             >
               {products.map((shop) => {
                 return <option value={shop.id}>{shop.nom}</option>;
@@ -84,7 +101,7 @@ export default function PopupAssignation() {
               rounded={"200px"}
               colorScheme="green"
               ml={3}
-              //onClick={(e) => addShop()}
+              onClick={(e) => assignProductToShop()}
             >
               Valider
             </Button>

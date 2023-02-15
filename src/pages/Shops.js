@@ -11,7 +11,6 @@ import {
   FormControl,
   Grid,
   GridItem,
-  Switch,
   PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
@@ -210,6 +209,31 @@ export default function Shops() {
       setErrorPopup("Veuillez remplir tous les champs");
       return false;
     } else {
+      const jsonStringHours = JSON.stringify({
+        lundi: {
+          matin: { de: mondayMorningFrom, à: mondayMorningTo },
+          aprèsmidi: { de: mondayAfternoonFrom, à: mondayAfternoonTo },
+        },
+        mardi: {
+          matin: { de: tuesdayMorningFrom, à: tuesdayMorningTo },
+          aprèsmidi: { de: tuesdayAfternoonFrom, à: tuesdayAfternoonTo },
+        },
+        mercredi: {
+          matin: { de: wednesdayMorningFrom, à: wednesdayMorningTo },
+          aprèsmidi: {
+            de: wednesdayAfternoonFrom,
+            à: wednesdayAfternoonTo,
+          },
+        },
+        jeudi: {
+          matin: { de: thursdayMorningFrom, à: thursdayMorningTo },
+          aprèsmidi: { de: thursdayAfternoonFrom, à: thursdayAfternoonTo },
+        },
+        vendredi: {
+          matin: { de: fridayMorningFrom, à: fridayMorningTo },
+          aprèsmidi: { de: fridayAfternoonFrom, à: fridayAfternoonTo },
+        },
+      });
       const response = await axios.post(
         `${URL}`,
         {
@@ -217,28 +241,7 @@ export default function Shops() {
           nom: shopName,
           conge: shopInVacation,
           user: auth.prenom + " " + auth.nom,
-          horraires: {
-            lundi: [
-              { from: mondayMorningFrom, to: mondayMorningTo },
-              { from: mondayAfternoonFrom, to: mondayAfternoonTo },
-            ],
-            mardi: [
-              { from: tuesdayMorningFrom, to: tuesdayMorningTo },
-              { from: tuesdayAfternoonFrom, to: tuesdayAfternoonTo },
-            ],
-            mercredi: [
-              { from: wednesdayMorningFrom, to: wednesdayMorningTo },
-              { from: wednesdayAfternoonFrom, to: wednesdayAfternoonTo },
-            ],
-            jeudi: [
-              { from: thursdayMorningFrom, to: thursdayMorningTo },
-              { from: thursdayAfternoonFrom, to: thursdayAfternoonTo },
-            ],
-            vendredi: [
-              { from: fridayMorningFrom, to: fridayMorningTo },
-              { from: fridayAfternoonFrom, to: fridayAfternoonTo },
-            ],
-          },
+          horaires: jsonStringHours,
         },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -256,28 +259,7 @@ export default function Shops() {
         nom: shopName,
         conge: shopInVacation,
         user: auth.prenom + " " + auth.nom,
-        horraires: {
-          lundi: [
-            { from: mondayMorningFrom, to: mondayMorningTo },
-            { from: mondayAfternoonFrom, to: mondayAfternoonTo },
-          ],
-          mardi: [
-            { from: tuesdayMorningFrom, to: tuesdayMorningTo },
-            { from: tuesdayAfternoonFrom, to: tuesdayAfternoonTo },
-          ],
-          mercredi: [
-            { from: wednesdayMorningFrom, to: wednesdayMorningTo },
-            { from: wednesdayAfternoonFrom, to: wednesdayAfternoonTo },
-          ],
-          jeudi: [
-            { from: thursdayMorningFrom, to: thursdayMorningTo },
-            { from: thursdayAfternoonFrom, to: thursdayAfternoonTo },
-          ],
-          vendredi: [
-            { from: fridayMorningFrom, to: fridayMorningTo },
-            { from: fridayAfternoonFrom, to: fridayAfternoonTo },
-          ],
-        },
+        horaires: jsonStringHours,
       });
       return true;
     }
