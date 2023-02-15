@@ -126,7 +126,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop, role }) {
               </Stack>
               {role == "ADMIN" || role == "VENDEUR_LIVREUR" ? (
                 <>
-                  <PopupAssignation />
+                  <PopupAssignation idBoutique={item.idBoutique} />
                   <fi.FiEdit
                     cursor="pointer"
                     size={"60px"}

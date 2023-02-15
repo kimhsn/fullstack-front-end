@@ -47,7 +47,6 @@ export default function Users() {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     setUsers(response.data);
-    console.log(response.data);
   };
 
   useEffect(() => {

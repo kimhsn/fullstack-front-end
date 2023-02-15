@@ -111,7 +111,7 @@ export default function ReadOnlyCardCategory({
               </Stack>{" "}
               {role == "ADMIN" ? (
                 <>
-                  <PopupAssignation />
+                  <PopupAssignation idCategory={item.id} />
 
                   <fi.FiEdit
                     cursor="pointer"
