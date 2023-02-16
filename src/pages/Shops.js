@@ -200,7 +200,7 @@ export default function Shops() {
   };
   const addShop = async () => {
     if (shopName === "") {
-      setErrorPopup("Veuillez remplir tous les champs");
+      setErrorPopup("Veuillez remplir tous les champs requis");
       return false;
     } else {
       const jsonStringHours = JSON.stringify({
@@ -234,7 +234,6 @@ export default function Shops() {
           description: shopDescription,
           nom: shopName,
           conge: shopInVacation,
-          user: auth.prenom + " " + auth.nom,
           horaires: jsonStringHours,
         },
         {
@@ -501,7 +500,7 @@ export default function Shops() {
                             setIdShop={setTrue}
                             deleteShop={deleteShop}
                             role={auth.role}
-                            idUserAurh={auth.id}
+                            idUserAuth={auth.id}
                           />
                         )}{" "}
                       </Fragment>

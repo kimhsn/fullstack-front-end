@@ -13,13 +13,13 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FcViewDetails, FcPaid } from "react-icons/fc";
-
+import PopupAssignationUserToShop from "./PopupAssignationUserToShop";
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
-
+import { FaUserAltSlash } from "react-icons/fa";
 export default function ReadOnlyCard({
   item,
   deleteShop,
@@ -28,6 +28,7 @@ export default function ReadOnlyCard({
   idUserAuth,
 }) {
   const formateDate = (date) => {
+    console.log(idUserAuth);
     const dateObj = new Date(date);
     const options = {
       day: "2-digit",
@@ -110,52 +111,96 @@ export default function ReadOnlyCard({
                 <Text color={"gray.500"}>{item.description}</Text>
               </Stack>
             </Link>
-            <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Link to={`/detailsshop/${item.idBoutique}`}>
-                <Avatar
-                  src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
-                  alt={"Author"}
-                />
-              </Link>{" "}
-              <Stack
-                direction={"column"}
-                spacing={0}
-                width={"100%"}
-                fontSize={"sm"}
-              >
+            {item.user == null ? (
+              <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
                 <Link to={`/detailsshop/${item.idBoutique}`}>
-                  <Text fontWeight={600}>{item.user}</Text>
-                  <Text size={2} color={"gray.500"}>
-                    {formateDate(item.creationData)}
-                  </Text>
+                  <FaUserAltSlash size={40} />
                 </Link>{" "}
+                <Stack
+                  direction={"column"}
+                  spacing={0}
+                  width={"100%"}
+                  fontSize={"sm"}
+                >
+                  <Link to={`/detailsshop/${item.idBoutique}`}>
+                    <Text fontWeight={600}>Boutique non assignée </Text>
+                    <Text size={2} color={"gray.500"}>
+                      {formateDate(item.creationData)}
+                    </Text>
+                  </Link>{" "}
+                </Stack>
+                {role == "ADMIN" ||
+                (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
+                  <>
+                    {" "}
+                    <PopupAssignationUserToShop idBoutique={item.idBoutique} />
+                    <PopupAssignation idBoutique={item.idBoutique} />
+                    <fi.FiEdit
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => setIdShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="#0000CD"
+                    />
+                    <ai.AiFillDelete
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => deleteShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="red"
+                    />
+                  </>
+                ) : null}
               </Stack>
-              {role == "ADMIN" || role == "VENDEUR_LIVREUR" ? (
-                <>
-                  {item.idUser == idUserAuth && role == "VENDEUR_LIVREUR" ? (
-                    <>
-                      <PopupAssignation idBoutique={item.idBoutique} />
-                      <fi.FiEdit
-                        cursor="pointer"
-                        size={"60px"}
-                        right={"0px"}
-                        onClick={() => setIdShop(item.idBoutique)}
-                        rounded={"full"}
-                        color="#0000CD"
-                      />
-                      <ai.AiFillDelete
-                        cursor="pointer"
-                        size={"60px"}
-                        right={"0px"}
-                        onClick={() => deleteShop(item.idBoutique)}
-                        rounded={"full"}
-                        color="red"
-                      />
-                    </>
-                  ) : null}
-                </>
-              ) : null}
-            </Stack>
+            ) : (
+              <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+                <Link to={`/detailsshop/${item.idBoutique}`}>
+                  <Avatar
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/428/428933.png"
+                    }
+                    alt={"Author"}
+                  />
+                </Link>{" "}
+                <Stack
+                  direction={"column"}
+                  spacing={0}
+                  width={"100%"}
+                  fontSize={"sm"}
+                >
+                  <Link to={`/detailsshop/${item.idBoutique}`}>
+                    <Text fontWeight={600}>{item.user}</Text>
+                    <Text size={2} color={"gray.500"}>
+                      {formateDate(item.creationData)}
+                    </Text>
+                  </Link>{" "}
+                </Stack>
+                {role == "ADMIN" ||
+                (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
+                  <>
+                    <PopupAssignation idBoutique={item.idBoutique} />
+                    <fi.FiEdit
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => setIdShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="#0000CD"
+                    />
+                    <ai.AiFillDelete
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => deleteShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="red"
+                    />
+                  </>
+                ) : null}
+              </Stack>
+            )}
           </Box>
         </Center>
       </GridItem>

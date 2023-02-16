@@ -92,7 +92,7 @@ export default function ReadOnlyCardCategory({
               <Link to={`/detailscategory/${item.id}`}>
                 {" "}
                 <Avatar
-                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+                  src={"https://cdn-icons-png.flaticon.com/512/428/428933.png"}
                   alt={"Author"}
                 />
               </Link>{" "}

@@ -38,11 +38,13 @@ const DetailsShop = () => {
   const [categoryName, setCategoryName] = useState("");
   const [productsTotal, setProductsTotal] = useState(0);
   const [categoriesTotal, setCategoriesTotal] = useState(0);
+  const [productsOfCategory, setProductsOfCategory] = useState([]);
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("");
+  const [item, setItem] = useState("");
   const [productCount, setProductCount] = useState(0);
   const [shop, setShop] = useState("");
   useEffect(() => {
@@ -50,9 +52,10 @@ const DetailsShop = () => {
   }, []);
   const getData = async () => {
     const response = await axios.get(`${URL}/${id}`);
+    setItem(response.data);
     setShop(response.data);
     setCategories(response.data.categories);
-    setProducts(shop.data.produits);
+    setProducts(response.data.produits);
   };
   const renderHeader = () => {
     let headerElements = ["Nom", "Prix", "Code produit", "Description"];
@@ -62,8 +65,8 @@ const DetailsShop = () => {
   };
   const renderBody = () => {
     return (
-      products &&
-      products.map((key) => {
+      productsOfCategory &&
+      productsOfCategory.map((key) => {
         return (
           <Fragment>
             <ReadOnlyRow product={key} />
@@ -288,7 +291,7 @@ const DetailsShop = () => {
                               setCategory(item);
                               setCategoryName(item.nom);
 
-                              setProducts(item.produits);
+                              setProductsOfCategory(item.produits);
                             }}
                           >
                             <Stack align={"center"}>
@@ -311,7 +314,7 @@ const DetailsShop = () => {
                   </SimpleGrid>
                 </Box>
               </Stack>
-              {products.length > 0 && (
+              {productsOfCategory.length > 0 && (
                 <Box
                   bg={"white"}
                   w="600px"
