@@ -14,7 +14,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
-
+import imageProduct from "../images/product.png";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 
@@ -23,6 +23,7 @@ export default function ReadOnlyProductCard({
   deleteProduct,
   setIdShop,
   role,
+  productsInEN,
 }) {
   return (
     <ChakraProvider>
@@ -45,12 +46,21 @@ export default function ReadOnlyProductCard({
               mb={80}
               pos={"relative"}
             >
-              <Image
-                h={"500px"}
-                w={"500px"}
-                src={item.urlPhoto}
-                layout={"fill"}
-              />
+              {item.urlPhoto === null ? (
+                <Image
+                  h={"500px"}
+                  w={"500px"}
+                  src={imageProduct}
+                  layout={"fill"}
+                />
+              ) : (
+                <Image
+                  h={"500px"}
+                  w={"500px"}
+                  src={item.urlPhoto}
+                  layout={"fill"}
+                />
+              )}
             </Box>{" "}
             <Grid templateColumns="repeat(1, 1fr)">
               <Stack>
@@ -60,9 +70,15 @@ export default function ReadOnlyProductCard({
               </Stack>
             </Grid>
             <Stack>
-              <Text marginTop={3} color={"gray.500"}>
-                {item.description}
-              </Text>
+              {productsInEN ? (
+                <Text marginTop={3} color={"gray.500"}>
+                  {item.descriptionEN}
+                </Text>
+              ) : (
+                <Text marginTop={3} color={"gray.500"}>
+                  {item.description}
+                </Text>
+              )}
             </Stack>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
               <Tooltip

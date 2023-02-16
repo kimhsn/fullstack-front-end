@@ -40,7 +40,7 @@ export default function PopupAssignationProductToCategory({ idCategory }) {
       idProduit: productId,
     });
     const response = await axios.post(
-      `http://localhost:8080/shops/categories/addCategorieToProduits`,
+      `http://localhost:8080/shops/categories/addCategorieToProduits?idCategorie=${idCategory}&idProduit=${productId}`,
       {
         idCategorie: idCategory,
         idProduit: productId,

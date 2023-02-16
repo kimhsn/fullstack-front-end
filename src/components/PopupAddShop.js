@@ -172,7 +172,7 @@ export default function PopupAddShop({
                 </Checkbox>
                 {errorPopup && (
                   <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
-                    Un ou des champs obligatoires n'ont pas été remplis
+                    Un ou plusieurs champs requis n'ont pas été remplis.
                   </FormLabel>
                 )}
               </AlertDialogBody>

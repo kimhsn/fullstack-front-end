@@ -22,6 +22,7 @@ import {
 import detailsShop from "../images/detailsShop.jpg";
 import axios from "axios";
 import { TiShoppingCart } from "react-icons/ti";
+import Logo from "../images/Product2.png";
 
 const URL = "http://localhost:8080/shops/categories/findById";
 
@@ -56,11 +57,11 @@ const DetailsCategory = () => {
               <Image
                 rounded={"md"}
                 alt={"product image"}
-                src={detailsShop}
+                src={Logo}
                 fit={"cover"}
                 align={"center"}
                 w={"100%"}
-                h={{ base: "100%", sm: "400px", lg: "500px" }}
+                h={{ base: "100%", sm: "100px", lg: "350px" }}
               />
             </Flex>
             <Stack spacing={{ base: 6, md: 10 }}>

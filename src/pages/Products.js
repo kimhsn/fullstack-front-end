@@ -396,6 +396,7 @@ export default function Products() {
                         />
                       ) : (
                         <ReadOnlyProductCard
+                          productsInEN={productsInEN}
                           item={element}
                           setIdShop={setTrue}
                           deleteProduct={deleteProduct}
