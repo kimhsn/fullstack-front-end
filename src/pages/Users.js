@@ -210,7 +210,7 @@ export default function Users() {
               </FormLabel>
 
               <FormLabel mt={10} ml={20} color="black" fontSize="18">
-                Rechercher un utilisateur par prenom
+                Rechercher un utilisateur par nom
               </FormLabel>
               <InputGroup ml={20}>
                 <Box

@@ -164,7 +164,7 @@ export default function Categories() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
+        {auth.role == "ADMIN" ? (
           <PopupAddCategory
             setErrorPopup={setErrorPopup}
             errorPopup={errorPopup}

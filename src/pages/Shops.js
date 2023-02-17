@@ -244,7 +244,7 @@ export default function Shops() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
+        {auth.role == "ADMIN" ? (
           <PopupAddShop
             setErrorPopup={setErrorPopup}
             errorPopup={errorPopup}

@@ -202,7 +202,7 @@ export default function Products() {
         role={auth.role}
         minH={"230vh"}
       >
-        {auth.role == "ADMIN" || auth.role == "VENDEUR_LIVREUR" ? (
+        {auth.role == "ADMIN" ? (
           <PopupAddProduct
             setProductCode={setProductCode}
             errorPopup={errorPopup}

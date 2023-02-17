@@ -135,19 +135,6 @@ export default function ReadOnlyCardCategory({
                     color="red"
                   />
                 </>
-              ) : role == "VENDEUR_LIVREUR" ? (
-                <>
-                  <PopupAssignation />
-
-                  <ai.AiFillDelete
-                    cursor="pointer"
-                    size={"60px"}
-                    right={"0px"}
-                    onClick={() => deleteCategory(item.id)}
-                    rounded={"full"}
-                    color="red"
-                  />
-                </>
               ) : null}
             </Stack>
           </Box>

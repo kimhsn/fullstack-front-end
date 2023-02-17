@@ -28,7 +28,7 @@ const UserProfile = () => {
   const [email, setEmail] = useState(auth.email);
   const updateUser = async (id) => {
     const response = await axios.put(
-      `${URL}/update/${id}`,
+      `${URL}/${id}`,
       {
         nom: lastName,
         prenom: firstName,
@@ -206,21 +206,7 @@ const UserProfile = () => {
                 >
                   Annuler{" "}
                 </Button>
-              ) : (
-                <Button
-                  w={"full"}
-                  mt={4}
-                  bg={"red.700"}
-                  color={"white"}
-                  rounded={"60px"}
-                  _hover={{
-                    transform: "translateY(-2px)",
-                    boxShadow: "lg",
-                  }}
-                >
-                  Changer mon mot de passe
-                </Button>
-              )}
+              ) : null}
             </Box>
           </Box>
         </Center>

@@ -261,18 +261,6 @@ export default function SignUp() {
                           {emailError}
                         </FormLabel>
                       )}
-                      <Select
-                        color={"gray.500"}
-                        border={0}
-                        rounded={"200px"}
-                        bgGradient="linear(to-r, gray.200 ,pink.100)"
-                        placeholder="Rôle"
-                        onChange={(e) => setRole(e.target.value)}
-                      >
-                        <option value={"Admin"}>Admin</option>
-                        <option value={"Manager"}>Manager</option>;
-                        <option value={"Utilisateur"}>Utilisateur</option>;
-                      </Select>
                       <Input
                         rounded={"200px"}
                         placeholder="Mot de passe"

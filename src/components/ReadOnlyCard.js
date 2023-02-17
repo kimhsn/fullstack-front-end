@@ -181,10 +181,12 @@ export default function ReadOnlyCard({
                     </Text>
                   </Link>{" "}
                 </Stack>
+                {role == "ADMIN" && (
+                  <PopupAssignation idBoutique={item.idBoutique} />
+                )}
                 {role == "ADMIN" ||
                 (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
                   <>
-                    <PopupAssignation idBoutique={item.idBoutique} />
                     <fi.FiEdit
                       cursor="pointer"
                       size={"60px"}
