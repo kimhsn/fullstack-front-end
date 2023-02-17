@@ -43,23 +43,15 @@ export default function Categories() {
   const [shopInVacation, setShopInVacation] = useState(false);
   const [errorPopup, setErrorPopup] = useState("");
   const [inVacations, setInVacations] = useState("");
-  //filtre+sort
-  const [SortBy, setSortBy] = useState("");
-  const [enConge, setEnConge] = useState("");
-  const [dateBefore, setDateBefore] = useState("");
-  const [dateAfter, setDateAfter] = useState("");
 
   const getData = async () => {
     const response = await axios.get(`${URL}`);
-    setShops(response.data);
-  };
 
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + "T" + time;
+    let categoriesFiltered = response.data.filter(function (category) {
+      return category.nom !== "Plus de produits";
+    });
+    setShops(categoriesFiltered);
+  };
 
   useEffect(() => {
     getData();
@@ -251,12 +243,15 @@ export default function Categories() {
                             setCreationData={setCreationData}
                           />
                         ) : (
-                          <ReadOnlyCardCategory
-                            item={element}
-                            setIdShop={setTrue}
-                            deleteCategory={deleteCategory}
-                            role={auth.role}
-                          />
+                          element.nom != "Plus de produits" && (
+                            <ReadOnlyCardCategory
+                              getCategories={getData}
+                              item={element}
+                              setIdShop={setTrue}
+                              deleteCategory={deleteCategory}
+                              role={auth.role}
+                            />
+                          )
                         )}
                       </Fragment>
                     );

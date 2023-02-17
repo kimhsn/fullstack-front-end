@@ -42,7 +42,7 @@ export default function PopupAssignation({ idBoutique }) {
       idProduit: productId,
     });
     const response = await axios.post(
-      `http://localhost:8080/shops/boutiques/addProduitToBoutique?idBoutique=${idBoutique}&idProduit=${productId}`,
+      `http://localhost:8080/shops/boutiques/addProduitToBoutique`,
       {
         idBoutique: idBoutique,
         idProduit: productId,

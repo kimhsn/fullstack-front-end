@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, Fragment } from "react";
 import Sidebar from "../components/Sidebar";
 import AuthContext from "./context/AuthProvider";
-
 import {
   ChakraProvider,
   FormLabel,
@@ -79,6 +78,16 @@ export default function Users() {
         headers: {
           Authorization: `Bearer ${auth.accesToken}`,
         },
+      }
+    );
+    await axios.post(
+      `${URL}/changeRole`,
+      {
+        email: email,
+        roleName: role,
+      },
+      {
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
 

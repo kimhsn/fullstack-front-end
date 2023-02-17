@@ -95,8 +95,8 @@ export default function EditableCardUser({
               placeholder="Rôle"
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value={"ADMIN"}>Administrateur</option>
-              <option value={"Vendeur-Livreur"}>Vendeur-Livreur</option>;
+              <option value={"ADMIN"}>Administrateur </option>
+              <option value={"VENDEUR_LIVREUR"}>Vendeur Livreur</option>
             </Select>
             <Stack mt={5} direction={"row"} justify={"center"} spacing={6}>
               <Stack spacing={0} align={"center"}>
