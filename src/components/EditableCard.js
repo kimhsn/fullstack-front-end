@@ -6,7 +6,7 @@ import {
   Avatar,
   Image,
   GridItem,
-  IconButton,
+  Switch,
   ChakraProvider,
   Input,
 } from "@chakra-ui/react";
@@ -23,10 +23,11 @@ export default function EditableCard({
   setNom,
   setDescription,
   setCreationData,
+  setInVacations,
 }) {
   return (
     <ChakraProvider>
-      <GridItem key={item.id}>
+      <GridItem key={item.idBoutique}>
         <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
@@ -50,23 +51,34 @@ export default function EditableCard({
             <Stack>
               {item.conge == true ? (
                 <Text
-                  color={"red.500"}
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                  letterSpacing={1.1}
-                >
-                  En congé
-                </Text>
-              ) : (
-                <Text
                   color={"green.500"}
                   textTransform={"uppercase"}
                   fontWeight={800}
                   fontSize={"sm"}
                   letterSpacing={1.1}
                 >
-                  En activité
+                  {" "}
+                  En activité ?
+                  <Switch
+                    colorScheme="green"
+                    ml={4}
+                    onChange={() => setInVacations(!item.conge)}
+                  />
+                </Text>
+              ) : (
+                <Text
+                  color={"red.500"}
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                  letterSpacing={1.1}
+                >
+                  En congé ?
+                  <Switch
+                    colorScheme="red"
+                    ml={4}
+                    onChange={() => setInVacations(!item.conge)}
+                  />
                 </Text>
               )}
 
@@ -98,20 +110,10 @@ export default function EditableCard({
                 spacing={0}
                 fontSize={"sm"}
               >
-                <Input
-                  border={0}
-                  size={0}
-                  focusBorderColor={"transparent"}
-                  placeholder={item.codeBoutique}
-                  setCodeBoutique={(e) => setCodeBoutique(e.target.value)}
-                />
-                <Input
-                  border={0}
-                  size={0}
-                  focusBorderColor={"transparent"}
-                  placeholder={item.creationData}
-                  setCreationData={(e) => setCreationData(e.target.value)}
-                />
+                <Text fontWeight={600}>{item.user}</Text>
+                <Text size={2} color={"gray.500"}>
+                  {item.creationData}
+                </Text>
               </Stack>
 
               <ai.AiFillCheckCircle
@@ -119,7 +121,7 @@ export default function EditableCard({
                 color={"green"}
                 size={"60px"}
                 right={"0px"}
-                onClick={() => updateShop(item.id)}
+                onClick={() => updateShop(item.idBoutique)}
                 rounded={"full"}
               />
               <tb.TbArrowBack

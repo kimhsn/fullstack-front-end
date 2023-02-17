@@ -12,57 +12,50 @@ import {
   useDisclosure,
   Select,
 } from "@chakra-ui/react";
-import * as si from "react-icons/si";
+import * as ri from "react-icons/ri";
 import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignation({ idBoutique }) {
+export default function PopupAssignationUserToShop({ idBoutique, getShop }) {
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [productId, setProductId] = useState(0);
-  const [products, setProducts] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
+  const [users, setUsers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const getproducts = async () => {
-    const response = await axios.get(`http://localhost:8080/shops/produits`, {
+  const getUsers = async () => {
+    const response = await axios.get(`http://localhost:8080/shops/users`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
-    setProducts(response.data);
+    setUsers(response.data);
     onOpen();
   };
 
-  useEffect(() => {
-    const num = parseInt(productId);
-    setProductId(num);
-  }, [productId]);
   const assignProductToShop = async () => {
-    console.log({
-      idBoutique: idBoutique,
-      idProduit: productId,
-    });
     const response = await axios.post(
-      `http://localhost:8080/shops/boutiques/addProduitToBoutique`,
+      `http://localhost:8080/shops/boutiques/addUserToBoutique?emailUser=${userEmail}&idBoutique=${idBoutique}`,
       {
         idBoutique: idBoutique,
-        idProduit: productId,
+        emailUser: userEmail,
       },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
+    getShop();
   };
 
   return (
     <ChakraProvider>
-      <si.SiShopify
+      <ri.RiUserReceived2Fill
         cursor="pointer"
         size={"60px"}
         marginRight={0}
         right={"0px"}
         rounded={"full"}
-        color={"green"}
-        onClick={getproducts}
+        color={"purple"}
+        onClick={getUsers}
       />
       <AlertDialog
         motionPreset="slideInBottom"
@@ -75,21 +68,21 @@ export default function PopupAssignation({ idBoutique }) {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            Assigner un produit à cette boutique ?
+            Assigner un utilisateur à cette boutique ?
           </AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Veuillez selectionnez le produit que vous souhaitez assigner à cette
-            boutique.
+            Veuillez selectionnez l'utilisateur que vous souhaitez assigner à
+            cette boutique.
             <Select
               mt={"15px"}
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
-              placeholder="Produits à assigner"
-              onChange={(e) => setProductId(e.target.value)}
+              placeholder="Utilisateur à assigner"
+              onChange={(e) => setUserEmail(e.target.value)}
             >
-              {products.map((shop) => {
-                return <option value={shop.id}>{shop.nom}</option>;
+              {users.map((user) => {
+                return <option value={user.email}>{user.nom}</option>;
               })}
             </Select>
           </AlertDialogBody>

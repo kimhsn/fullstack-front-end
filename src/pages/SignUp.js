@@ -30,7 +30,6 @@ export default function SignUp() {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  console.log(role);
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -67,13 +66,8 @@ export default function SignUp() {
 
     try {
       let SIGNUP_URL;
-      if (role === "Admin") {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewAdmin";
-      } else if (role === "Manager") {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewManager";
-      } else {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewUser";
-      }
+
+      SIGNUP_URL = "http://localhost:8080/shops/users/addNewManager";
 
       const response = await axios.post(
         SIGNUP_URL,
@@ -262,18 +256,6 @@ export default function SignUp() {
                           {emailError}
                         </FormLabel>
                       )}
-                      <Select
-                        color={"gray.500"}
-                        border={0}
-                        rounded={"200px"}
-                        bgGradient="linear(to-r, gray.200 ,pink.100)"
-                        placeholder="Rôle"
-                        onChange={(e) => setRole(e.target.value)}
-                      >
-                        <option value={"Admin"}>Admin</option>
-                        <option value={"Manager"}>Manager</option>;
-                        <option value={"Utilisateur"}>Utilisateur</option>;
-                      </Select>
                       <Input
                         rounded={"200px"}
                         placeholder="Mot de passe"
@@ -335,7 +317,7 @@ export default function SignUp() {
                       </Text>
 
                       <Link
-                        href="http://localhost:4020/ "
+                        href="http://localhost:4200/register"
                         fontSize={{ base: "sm", sm: "md" }}
                         color={"blue.400"}
                       >

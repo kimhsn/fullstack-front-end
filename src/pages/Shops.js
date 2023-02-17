@@ -11,7 +11,6 @@ import {
   FormControl,
   Grid,
   GridItem,
-  Switch,
   PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
@@ -36,17 +35,18 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import PopupAddShop from "../components/PopupAddShop";
 import * as fc from "react-icons/fc";
 import Paginate from "../components/Paginate";
+
 const URL = "http://localhost:8080/shops/boutiques";
 
 export default function Shops() {
   const { auth, setAuth } = useContext(AuthContext);
+
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [shopsPerPage] = useState(6);
   const indexOfLastPost = currentPage * shopsPerPage;
   const indexOfFirstPost = indexOfLastPost - shopsPerPage;
   const currentShops = shops.slice(indexOfFirstPost, indexOfLastPost);
-
   //pagination state
   const [idShop, setIdShop] = useState(null);
   const [nom, setNom] = useState("");
@@ -61,30 +61,49 @@ export default function Shops() {
   const [shopCode, setShopCode] = useState(null);
   const [shopInVacation, setShopInVacation] = useState(false);
   const [errorPopup, setErrorPopup] = useState("");
-
+  const [inVacations, setInVacations] = useState("");
   //filtre+sort
   const [SortBy, setSortBy] = useState("");
   const [enConge, setEnConge] = useState("");
   const [dateBefore, setDateBefore] = useState("");
   const [dateAfter, setDateAfter] = useState("");
 
+  //horraires d'ouverture de la boutique
+  const [mondayMorningFrom, setMondayMorningFrom] = useState("");
+  const [mondayMorningTo, setMondayMorningTo] = useState("");
+  const [mondayAfternoonFrom, setMondayAfternoonFrom] = useState("");
+  const [mondayAfternoonTo, setMondayAfternoonTo] = useState("");
+  const [tuesdayMorningFrom, setTuesdayMorningFrom] = useState("");
+  const [tuesdayMorningTo, setTuesdayMorningTo] = useState("");
+  const [tuesdayAfternoonFrom, setTuesdayAfternoonFrom] = useState("");
+  const [tuesdayAfternoonTo, setTuesdayAfternoonTo] = useState("");
+  const [wednesdayMorningFrom, setWednesdayMorningFrom] = useState("");
+  const [wednesdayMorningTo, setWednesdayMorningTo] = useState("");
+  const [wednesdayAfternoonFrom, setWednesdayAfternoonFrom] = useState("");
+  const [wednesdayAfternoonTo, setWednesdayAfternoonTo] = useState("");
+  const [thursdayMorningFrom, setThursdayMorningFrom] = useState("");
+  const [thursdayMorningTo, setThursdayMorningTo] = useState("");
+  const [thursdayAfternoonFrom, setThursdayAfternoonFrom] = useState("");
+  const [thursdayAfternoonTo, setThursdayAfternoonTo] = useState("");
+  const [fridayMorningFrom, setFridayMorningFrom] = useState("");
+  const [fridayMorningTo, setFridayMorningTo] = useState("");
+  const [fridayAfternoonFrom, setFridayAfternoonFrom] = useState("");
+  const [fridayAfternoonTo, setFridayAfternoonTo] = useState("");
+
   const getData = async () => {
-    const response = await axios.get(`${URL}/read`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(
+      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`
+    );
     setShops(response.data);
   };
 
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + "T" + time;
-
   useEffect(() => {
+    if (dateAfter == "//" || dateBefore == "//") {
+      setDateAfter("");
+      setDateBefore("");
+    }
     getData();
-  }, []);
+  }, [SortBy, enConge, dateBefore, dateAfter]);
   useEffect(() => {
     setErrorPopup("");
   }, [shopName, shopTime]);
@@ -99,17 +118,17 @@ export default function Shops() {
     setCodeBoutique(response.data.codeBoutique);
     setCreationData(response.data.creationData);
     setHoraire(response.data.horaire);
-    setConge(response.data.conge);
+    setInVacations(response.data.conge);
   };
 
   const updateShop = async (id) => {
     const response = await axios.put(
-      `${URL}/update/${id}`,
+      `${URL}/${id}`,
       {
         nom: nom,
         description: description,
         horaire: horaire,
-        conge: conge,
+        conge: inVacations,
       },
       {
         headers: {
@@ -123,7 +142,7 @@ export default function Shops() {
   };
 
   const deleteShop = async (id) => {
-    const response = await axios.delete(`${URL}/delete/${id}`, {
+    const response = await axios.delete(`${URL}/${id}`, {
       headers: { Authorization: `Bearer ${auth.accesToken}` },
     });
     getData();
@@ -131,9 +150,12 @@ export default function Shops() {
 
   const searchShop = async (name) => {
     let newShops = [];
-    const response = await axios.get(`${URL}/read`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(
+      `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`,
+      {
+        headers: { Authorization: `Bearer ${auth.accesToken}` },
+      }
+    );
     response.data.map((shop) => {
       if (name.length == 0) {
         setShops(response.data);
@@ -145,20 +167,48 @@ export default function Shops() {
         } else if (shop.nom.includes(name)) {
           newShops.push(shop);
         }
+
         setShops(newShops);
       }
     });
   };
   const addShop = async () => {
     if (shopName === "") {
-      setErrorPopup("Veuillez remplir tous les champs");
+      setErrorPopup("Veuillez remplir tous les champs requis");
+      return false;
     } else {
+      const jsonStringHours = JSON.stringify({
+        lundi: {
+          matin: { de: mondayMorningFrom, à: mondayMorningTo },
+          aprèsmidi: { de: mondayAfternoonFrom, à: mondayAfternoonTo },
+        },
+        mardi: {
+          matin: { de: tuesdayMorningFrom, à: tuesdayMorningTo },
+          aprèsmidi: { de: tuesdayAfternoonFrom, à: tuesdayAfternoonTo },
+        },
+        mercredi: {
+          matin: { de: wednesdayMorningFrom, à: wednesdayMorningTo },
+          aprèsmidi: {
+            de: wednesdayAfternoonFrom,
+            à: wednesdayAfternoonTo,
+          },
+        },
+        jeudi: {
+          matin: { de: thursdayMorningFrom, à: thursdayMorningTo },
+          aprèsmidi: { de: thursdayAfternoonFrom, à: thursdayAfternoonTo },
+        },
+        vendredi: {
+          matin: { de: fridayMorningFrom, à: fridayMorningTo },
+          aprèsmidi: { de: fridayAfternoonFrom, à: fridayAfternoonTo },
+        },
+      });
       const response = await axios.post(
-        `${URL}/create`,
+        `${URL}`,
         {
           description: shopDescription,
           nom: shopName,
           conge: shopInVacation,
+          horaires: jsonStringHours,
         },
         {
           headers: { Authorization: `Bearer ${auth.accesToken}` },
@@ -169,13 +219,10 @@ export default function Shops() {
       setShopCode(null);
 
       setShopInVacation(false);
-      console.log({
-        description: shopDescription,
-        creationData: dateTime,
-        nom: shopName,
-        conge: shopInVacation,
-      });
+
       getData();
+
+      return true;
     }
   };
   const paginate = (pageNumber) => {
@@ -197,17 +244,39 @@ export default function Shops() {
   return (
     <ChakraProvider>
       <Sidebar firstName={auth.prenom} lastName={auth.nom} role={auth.role}>
-        <PopupAddShop
-          errorPopup={errorPopup}
-          shopInVacation={shopInVacation}
-          setShopName={setShopName}
-          setShopTime={setShopTime}
-          setShopInVacation={setShopInVacation}
-          addShop={addShop}
-          setShopCode={setShopCode}
-          setShopDescription={setShopDescription}
-        />
-
+        {auth.role == "ADMIN" ? (
+          <PopupAddShop
+            setErrorPopup={setErrorPopup}
+            errorPopup={errorPopup}
+            shopInVacation={shopInVacation}
+            setShopName={setShopName}
+            setShopTime={setShopTime}
+            setShopInVacation={setShopInVacation}
+            addShop={addShop}
+            setShopCode={setShopCode}
+            setShopDescription={setShopDescription}
+            setMondayAfternoonFrom={setMondayAfternoonFrom}
+            setMondayAfternoonTo={setMondayAfternoonTo}
+            setMondayMorningFrom={setMondayMorningFrom}
+            setMondayMorningTo={setMondayMorningTo}
+            setTuesdayAfternoonFrom={setTuesdayAfternoonFrom}
+            setTuesdayAfternoonTo={setTuesdayAfternoonTo}
+            setTuesdayMorningFrom={setTuesdayMorningFrom}
+            setTuesdayMorningTo={setTuesdayMorningTo}
+            setWednesdayAfternoonFrom={setWednesdayAfternoonFrom}
+            setWednesdayAfternoonTo={setWednesdayAfternoonTo}
+            setWednesdayMorningFrom={setWednesdayMorningFrom}
+            setWednesdayMorningTo={setWednesdayMorningTo}
+            setThursdayAfternoonFrom={setThursdayAfternoonFrom}
+            setThursdayAfternoonTo={setThursdayAfternoonTo}
+            setThursdayMorningFrom={setThursdayMorningFrom}
+            setThursdayMorningTo={setThursdayMorningTo}
+            setFridayAfternoonFrom={setFridayAfternoonFrom}
+            setFridayAfternoonTo={setFridayAfternoonTo}
+            setFridayMorningFrom={setFridayMorningFrom}
+            setFridayMorningTo={setFridayMorningTo}
+          />
+        ) : null}
         <div className="wrapper">
           <div className="page-container">
             <ChakraProvider>
@@ -234,8 +303,6 @@ export default function Shops() {
                   width={"100px"}
                   bg={"#585AFC"}
                   color={"white"}
-
-                  //onClick={searchShop}
                 >
                   <fc.FcSearch
                     style={{ marginLeft: "32px", marginTop: "14px" }}
@@ -270,9 +337,9 @@ export default function Shops() {
                     onChange={(e) => setSortBy(e.target.value)}
                     width={"185px"}
                   >
-                    <option value="name">Nom</option>
+                    <option value="nom">Nom</option>
                     <option value="creationDate">Date de création</option>
-                    <option value="productsum">Nombre de produit</option>
+                    <option value="nbProduits">Nombre de produit</option>
                   </Select>
                 </GridItem>
                 <GridItem ml={1}>
@@ -319,11 +386,18 @@ export default function Shops() {
                               <TabPanel>
                                 <FormControl display="flex" alignItems="center">
                                   <FormLabel htmlFor="email-alerts" mb="0">
-                                    Boutique en congé ?
+                                    Boutiques en congé?
                                   </FormLabel>
-                                  <Switch
-                                    onChange={() => setEnConge(!enConge)}
-                                  />
+                                  <Select
+                                    rounded={"200px"}
+                                    bgGradient="linear(to-r, blue.200,pink.200)"
+                                    placeholder="Type"
+                                    onChange={(e) => setEnConge(e.target.value)}
+                                    width={"95px"}
+                                  >
+                                    <option value="true">En congé</option>
+                                    <option value="false">En activité</option>
+                                  </Select>
                                 </FormControl>
                               </TabPanel>
                               <TabPanel>
@@ -333,9 +407,13 @@ export default function Shops() {
                                 <Input
                                   placeholder="Select Date and Time"
                                   size="md"
-                                  type="datetime-local"
+                                  type="date"
                                   onChange={(e) => {
-                                    setDateBefore(e.target.value);
+                                    const [year, month, day] =
+                                      e.target.value.split("-");
+
+                                    const db = [day, month, year].join("/");
+                                    setDateBefore(db);
                                   }}
                                 />
                                 <Devider label="-" />
@@ -345,9 +423,13 @@ export default function Shops() {
                                 <Input
                                   placeholder="Select Date and Time"
                                   size="md"
-                                  type="datetime-local"
+                                  type="date"
                                   onChange={(e) => {
-                                    setDateAfter(e.target.value);
+                                    const [year, month, day] =
+                                      e.target.value.split("-");
+
+                                    const db = [day, month, year].join("/");
+                                    setDateAfter(db);
                                   }}
                                 />
                               </TabPanel>
@@ -365,7 +447,7 @@ export default function Shops() {
                   currentShops.map((element) => {
                     return (
                       <Fragment>
-                        {idShop === element.id ? (
+                        {idShop === element.idBoutique ? (
                           <EditableCard
                             item={element}
                             setIdShop={setIdShop}
@@ -375,12 +457,17 @@ export default function Shops() {
                             setCodeBoutique={setCodeBoutique}
                             setCreationData={setCreationData}
                             setHoraire={setHoraire}
+                            setEnConge={setEnConge}
+                            setInVacations={setInVacations}
                           />
                         ) : (
                           <ReadOnlyCard
+                            getShop={getData}
                             item={element}
                             setIdShop={setTrue}
                             deleteShop={deleteShop}
+                            role={auth.role}
+                            idUserAuth={auth.id}
                           />
                         )}{" "}
                       </Fragment>
@@ -486,8 +573,8 @@ export default function Shops() {
             </ChakraProvider>
             {currentShops.length > 0 && (
               <Paginate
-                shopsPerPage={shopsPerPage}
-                totalShops={shops.length}
+                elementsPerPage={shopsPerPage}
+                totalElements={shops.length}
                 currentPage={currentPage}
                 paginate={paginate}
                 previousPage={previousPage}

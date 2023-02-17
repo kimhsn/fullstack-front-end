@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Center,
@@ -13,18 +12,40 @@ import {
   ChakraProvider,
   Icon,
 } from "@chakra-ui/react";
-import { FcViewDetails, FcPaid, FcInTransit } from "react-icons/fc";
-
+import { FcViewDetails, FcPaid } from "react-icons/fc";
+import PopupAssignationUserToShop from "./PopupAssignationUserToShop";
 import PopupAssignation from "./PopupAssignation";
 import * as ai from "react-icons/ai";
 import * as fi from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
-
-export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
+import { FaUserAltSlash } from "react-icons/fa";
+export default function ReadOnlyCard({
+  getShop,
+  item,
+  deleteShop,
+  setIdShop,
+  role,
+  idUserAuth,
+}) {
+  const formateDate = (date) => {
+    console.log(idUserAuth);
+    const dateObj = new Date(date);
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const formattedDate = dateObj
+      .toLocaleDateString("en-GB", options)
+      .replace(",", " ");
+    return formattedDate;
+  };
   return (
     <ChakraProvider>
-      <GridItem key={item.id}>
+      <GridItem key={item.idBoutique}>
         <Center py={6} cursor="pointer">
           <Box
             maxW={"435px"}
@@ -34,7 +55,7 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
             p={6}
             overflow={"hidden"}
           >
-            <Link to={`/detailsshop/${item.id}`}>
+            <Link to={`/detailsshop/${item.idBoutique}`}>
               <Box
                 h={"210px"}
                 bg={"gray.100"}
@@ -75,14 +96,12 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                   </Stack>
                 </GridItem>
                 <GridItem h="20">
-                  {" "}
                   <Feature
                     icon={<Icon as={FcViewDetails} w={10} h={10} />}
                     title={item.categories.length}
                   />
                 </GridItem>
                 <GridItem h="20">
-                  {" "}
                   <Feature
                     icon={<Icon as={FcPaid} w={10} h={10} />}
                     title={item.produits.length}
@@ -93,43 +112,101 @@ export default function ReadOnlyCard({ item, deleteShop, setIdShop }) {
                 <Text color={"gray.500"}>{item.description}</Text>
               </Stack>
             </Link>
-            <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Link to={`/detailsshop/${item.id}`}>
-                {" "}
-                <Avatar
-                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-                  alt={"Author"}
-                />
-              </Link>{" "}
-              <Stack
-                direction={"column"}
-                spacing={0}
-                width={"100%"}
-                fontSize={"sm"}
-              >
-                <Link to={`/detailsshop/${item.id}`}>
-                  <Text fontWeight={600}>{item.codeProduit}</Text>
-                  <Text color={"gray.500"}>{item.creationData}</Text>
+            {item.user == null ? (
+              <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+                <Link to={`/detailsshop/${item.idBoutique}`}>
+                  <FaUserAltSlash size={40} />
                 </Link>{" "}
+                <Stack
+                  direction={"column"}
+                  spacing={0}
+                  width={"100%"}
+                  fontSize={"sm"}
+                >
+                  <Link to={`/detailsshop/${item.idBoutique}`}>
+                    <Text fontWeight={600}>Boutique non assignée </Text>
+                    <Text size={2} color={"gray.500"}>
+                      {formateDate(item.creationData)}
+                    </Text>
+                  </Link>{" "}
+                </Stack>
+                {role == "ADMIN" ||
+                (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
+                  <>
+                    {" "}
+                    <PopupAssignationUserToShop
+                      idBoutique={item.idBoutique}
+                      getShop={getShop}
+                    />
+                    <PopupAssignation idBoutique={item.idBoutique} />
+                    <fi.FiEdit
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => setIdShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="#0000CD"
+                    />
+                    <ai.AiFillDelete
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => deleteShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="red"
+                    />
+                  </>
+                ) : null}
               </Stack>
-              <PopupAssignation />
-              <fi.FiEdit
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => setIdShop(item.id)}
-                rounded={"full"}
-                color="#0000CD"
-              />
-              <ai.AiFillDelete
-                cursor="pointer"
-                size={"60px"}
-                right={"0px"}
-                onClick={() => deleteShop(item.id)}
-                rounded={"full"}
-                color="red"
-              />
-            </Stack>
+            ) : (
+              <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+                <Link to={`/detailsshop/${item.idBoutique}`}>
+                  <Avatar
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/428/428933.png"
+                    }
+                    alt={"Author"}
+                  />
+                </Link>{" "}
+                <Stack
+                  direction={"column"}
+                  spacing={0}
+                  width={"100%"}
+                  fontSize={"sm"}
+                >
+                  <Link to={`/detailsshop/${item.idBoutique}`}>
+                    <Text fontWeight={600}>{item.user}</Text>
+                    <Text size={2} color={"gray.500"}>
+                      {formateDate(item.creationData)}
+                    </Text>
+                  </Link>{" "}
+                </Stack>
+                {role == "ADMIN" && (
+                  <PopupAssignation idBoutique={item.idBoutique} />
+                )}
+                {role == "ADMIN" ||
+                (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
+                  <>
+                    <fi.FiEdit
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => setIdShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="#0000CD"
+                    />
+                    <ai.AiFillDelete
+                      cursor="pointer"
+                      size={"60px"}
+                      right={"0px"}
+                      onClick={() => deleteShop(item.idBoutique)}
+                      rounded={"full"}
+                      color="red"
+                    />
+                  </>
+                ) : null}
+              </Stack>
+            )}
           </Box>
         </Center>
       </GridItem>

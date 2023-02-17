@@ -10,17 +10,22 @@ import {
   AlertDialogFooter,
   ChakraProvider,
   useDisclosure,
-  Select,
+  Stack,
+  CheckboxGroup,
+  Box,
+  Checkbox,
 } from "@chakra-ui/react";
 import * as si from "react-icons/si";
 import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignation({ idBoutique }) {
+export default function PopupAssignationProductToCategory({
+  idCategory,
+  getCategories,
+}) {
   const { auth, setAuth } = useContext(AuthContext);
-
-  const [productId, setProductId] = useState(0);
+  const [productsId, setProductsId] = useState("");
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -32,25 +37,22 @@ export default function PopupAssignation({ idBoutique }) {
     onOpen();
   };
 
-  useEffect(() => {
-    const num = parseInt(productId);
-    setProductId(num);
-  }, [productId]);
-  const assignProductToShop = async () => {
+  const assignProductsToCategory = async () => {
     console.log({
-      idBoutique: idBoutique,
-      idProduit: productId,
+      idCategorie: idCategory,
+      idProduit: productsId,
     });
     const response = await axios.post(
-      `http://localhost:8080/shops/boutiques/addProduitToBoutique`,
+      `http://localhost:8080/shops/categories/addCategorieToProduits`,
       {
-        idBoutique: idBoutique,
-        idProduit: productId,
+        idCategorie: idCategory,
+        idProduits: productsId,
       },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
+    getCategories();
   };
 
   return (
@@ -75,23 +77,45 @@ export default function PopupAssignation({ idBoutique }) {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            Assigner un produit à cette boutique ?
+            Assigner un/des produit(s) à cette categorie ?
           </AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Veuillez selectionnez le produit que vous souhaitez assigner à cette
-            boutique.
+            Veuillez selectionnez le produit ou les produits que vous souhaitez
+            assigner à cette categorie.
+            <br />
+            <CheckboxGroup
+              colorScheme="blue"
+              onChange={(values) => {
+                setProductsId(values);
+              }}
+            >
+              <Stack spacing={[1, 9]} direction={["column"]}>
+                <Box overflowY="auto" maxHeight="500px" maxWidth="700px">
+                  {products.map((product) => (
+                    <>
+                      {" "}
+                      <Checkbox marginBottom={"8px"} value={"" + product.id}>
+                        {product.nom}
+                      </Checkbox>
+                      <br />
+                    </>
+                  ))}
+                </Box>{" "}
+              </Stack>
+            </CheckboxGroup>
+            {/*}
             <Select
               mt={"15px"}
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               placeholder="Produits à assigner"
-              onChange={(e) => setProductId(e.target.value)}
+              onChange={(e) => setProductName(e.target.value)}
             >
               {products.map((shop) => {
                 return <option value={shop.id}>{shop.nom}</option>;
               })}
-            </Select>
+            </Select>*/}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button
@@ -106,7 +130,7 @@ export default function PopupAssignation({ idBoutique }) {
               rounded={"200px"}
               colorScheme="green"
               ml={3}
-              onClick={(e) => assignProductToShop()}
+              onClick={(e) => assignProductsToCategory()}
             >
               Valider
             </Button>

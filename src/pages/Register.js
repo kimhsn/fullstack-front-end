@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -20,7 +21,6 @@ import Devider from "../components/Devider";
 import axios from "axios";
 import Diamond from "../images/LogoBG.png";
 import AuthContext from "../pages/context/AuthProvider";
-import Home from "./Home";
 
 const LOGIN_URL = "http://localhost:8080/shops/auth/authenticate";
 
@@ -57,10 +57,11 @@ export default function Register() {
           headers: { Authorization: `Bearer ${accesToken}` },
         }
       );
+      console.log(responseUser.data);
+
       if (response?.status === 200) {
         //console.log(response?.data.user.id);
         //console.log(email, password);
-
         let id = responseUser?.data.id;
         let email = responseUser?.data.email;
         let nom = responseUser?.data.nom;
@@ -98,7 +99,7 @@ export default function Register() {
   return (
     <>
       {success ? (
-        <Home />
+        <Navigate to="/"></Navigate>
       ) : (
         <>
           <ChakraProvider>
@@ -275,7 +276,7 @@ export default function Register() {
                       </Text>
 
                       <Link
-                        href="http://localhost:4020/signup "
+                        href="http://localhost:4200/signup"
                         fontSize={{ base: "sm", sm: "md" }}
                         color={"blue.400"}
                       >

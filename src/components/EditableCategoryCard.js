@@ -1,26 +1,26 @@
 import {
   Box,
   Center,
-  Text,
   Stack,
+  Avatar,
   Image,
   GridItem,
   ChakraProvider,
   Input,
-  Tooltip,
-  Icon,
-  chakra,
 } from "@chakra-ui/react";
 import * as ai from "react-icons/ai";
 import * as tb from "react-icons/tb";
-import { FiShoppingCart } from "react-icons/fi";
-export default function EditableProductCard({
+
+import Logo from "../images/Product2.png";
+
+export default function EditableCategoryCard({
   item,
-  updateProduct,
+  updateCategory,
   setIdShop,
+  setCodeBoutique,
   setNom,
   setDescription,
-  setProductPrice,
+  setCreationData,
 }) {
   return (
     <ChakraProvider>
@@ -29,7 +29,7 @@ export default function EditableProductCard({
           <Box
             maxW={"435px"}
             w={"full"}
-            bg={"white"}
+            // bg={useColorModeValue("white", "gray.900")}
             boxShadow={"2xl"}
             rounded={"md"}
             p={6}
@@ -40,15 +40,10 @@ export default function EditableProductCard({
               bg={"gray.100"}
               mt={-6}
               mx={-6}
-              mb={80}
+              mb={6}
               pos={"relative"}
             >
-              <Image
-                h={"500px"}
-                w={"500px"}
-                src={item.urlPhoto}
-                layout={"fill"}
-              />
+              <Image src={Logo} layout={"fill"} />
             </Box>
             <Stack>
               <Input
@@ -68,54 +63,44 @@ export default function EditableProductCard({
                 placeholder={item.description}
               />
             </Stack>
-            <Stack mt={4} direction={"row"} spacing={4} align={"center"}>
+            <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+              <Avatar
+                src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+                alt={"Author"}
+              />
               <Stack
                 direction={"column"}
                 width={"100%"}
                 spacing={0}
                 fontSize={"sm"}
               >
-                <Tooltip
-                  label="Produit en stock"
-                  bg="white"
-                  placement={"top"}
-                  color={"gray.800"}
-                  fontSize={"1.2em"}
-                >
-                  <chakra.a href={"#"} display={"flex"}>
-                    <Icon
-                      color={"blue.600"}
-                      as={FiShoppingCart}
-                      h={7}
-                      w={7}
-                      alignSelf={"center"}
-                    />
-                  </chakra.a>
-                </Tooltip>{" "}
-                <Text color="blue.600" fontSize="2xl">
-                  <Input
-                    border={0}
-                    size={0}
-                    color="blue.600"
-                    focusBorderColor={"transparent"}
-                    onChange={(e) => setProductPrice(e.target.value)}
-                    placeholder={item.prix}
-                  />
-                  €
-                </Text>
+                <Input
+                  border={0}
+                  size={0}
+                  focusBorderColor={"transparent"}
+                  placeholder={item.codeBoutique}
+                  setCodeBoutique={(e) => setCodeBoutique(e.target.value)}
+                />
+                <Input
+                  border={0}
+                  size={0}
+                  focusBorderColor={"transparent"}
+                  placeholder={item.creationData}
+                  setCreationData={(e) => setCreationData(e.target.value)}
+                />
               </Stack>
 
               <ai.AiFillCheckCircle
                 cursor="pointer"
                 color={"green"}
-                size={"40px"}
+                size={"60px"}
                 right={"0px"}
-                onClick={() => updateProduct(item.id)}
+                onClick={() => updateCategory(item.id)}
                 rounded={"full"}
               />
               <tb.TbArrowBack
                 cursor="pointer"
-                size={"40px"}
+                size={"60px"}
                 right={"0px"}
                 onClick={() => setIdShop(null)}
                 rounded={"full"}

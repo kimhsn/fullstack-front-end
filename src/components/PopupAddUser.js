@@ -13,19 +13,20 @@ import {
   ChakraProvider,
   useDisclosure,
   FormLabel,
-  Textarea,
+  Select,
 } from "@chakra-ui/react";
 import * as si from "react-icons/si";
 import "./PopupAddShop.css";
 
-export default function PopupAddProduct({
-  setProductCode,
-  setProductDescription,
-  errorPopup,
-  setProductName,
-  setProductPrice,
-  addProduct,
+export default function PopupAddUser({
+  setUserFirstName,
+  setUserLastName,
+  setUserEmail,
+  setUserRole,
+  setUserMDP,
   setErrorPopup,
+  addUser,
+  errorPopup,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -45,8 +46,10 @@ export default function PopupAddProduct({
         right="65px"
         top={"490"}
         onClick={(e) => {
-          setProductName("");
-          setProductPrice("");
+          setUserFirstName("");
+          setUserLastName("");
+          setUserEmail("");
+          setUserRole("");
           setErrorPopup("");
           onOpen();
         }}
@@ -64,16 +67,16 @@ export default function PopupAddProduct({
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Ajouter un produit ?</AlertDialogHeader>
+          <AlertDialogHeader>Ajouter un utilisateur ?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Veuillez renseigner les informations du produit .
+            Veuillez renseigner les informations de l'utilisateur.
             <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"gray"}>
-              Les champs marqués d'un <label className="label">*</label> sont
-              obligatoires.
+              Le champ marqué d'un <label className="label">*</label> est
+              obligatoire.
             </FormLabel>
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Nom du produit <label className="label">*</label>
+              Nom <label className="label">*</label>
             </FormLabel>
             <Input
               required={true}
@@ -83,13 +86,13 @@ export default function PopupAddProduct({
               border={0}
               color={"gray.500"}
               type="text"
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={(e) => setUserLastName(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
             />{" "}
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Prix du produit <label className="label">*</label>
+              Prénom <label className="label">*</label>
             </FormLabel>
             <Input
               required={true}
@@ -99,44 +102,60 @@ export default function PopupAddProduct({
               border={0}
               color={"gray.500"}
               type="text"
-              onChange={(e) => setProductPrice(e.target.value)}
+              onChange={(e) => setUserFirstName(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
             />{" "}
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Code du produit
+              Rôle <label className="label">*</label>
+            </FormLabel>
+            <Select
+              color={"gray.500"}
+              border={0}
+              rounded={"200px"}
+              bgGradient="linear(to-r, gray.200 ,pink.100)"
+              placeholder="Rôle"
+              onChange={(e) => setUserRole(e.target.value)}
+            >
+              <option value={"ADMIN"}>Administrateur</option>
+              <option value={"Vendeur-Livreur"}>Vendeur-Livreur</option>;
+            </Select>
+            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
+              Email <label className="label">*</label>
             </FormLabel>
             <Input
-              required
+              required={true}
+              mt={0}
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               border={0}
               color={"gray.500"}
-              type="int"
-              onChange={(e) => setProductCode(e.target.value)}
+              type="email"
+              onChange={(e) => setUserEmail(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
-            />{" "}
+            />
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Description du produit
+              Mot de passe <label className="label">*</label>
             </FormLabel>
-            <Textarea
+            <Input
+              required={true}
               mt={0}
-              rounded={"30"}
+              rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               border={0}
               color={"gray.500"}
-              type="text"
-              onChange={(e) => setProductDescription(e.target.value)}
+              type="password"
+              onChange={(e) => setUserMDP(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
             />
             {errorPopup && (
               <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
-                {errorPopup}
+                Un champ obligatoire n'a pas été rempli
               </FormLabel>
             )}
           </AlertDialogBody>
@@ -154,7 +173,7 @@ export default function PopupAddProduct({
               colorScheme="green"
               ml={3}
               onClick={(e) => {
-                const isAdded = addProduct();
+                const isAdded = addUser();
                 isAdded
                   .then((res) => {
                     res && onClose();

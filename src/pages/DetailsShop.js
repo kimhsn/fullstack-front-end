@@ -14,13 +14,11 @@ import {
   Image,
   Flex,
   VStack,
-  Button,
   Heading,
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  List,
-  ListItem,
+  Square,
   Thead,
   Tbody,
   Tr,
@@ -34,30 +32,93 @@ import { MdLocalShipping } from "react-icons/md";
 import axios from "axios";
 import { BiCategory } from "react-icons/bi";
 import { TiShoppingCart } from "react-icons/ti";
-import { GoLocation } from "react-icons/go";
 const URL = "http://localhost:8080/shops/boutiques/findById";
 
 const DetailsShop = () => {
-  const [categoryName, setCategoryName] = useState("");
+  const [categoryName, setCategoryName] = useState({});
   const [productsTotal, setProductsTotal] = useState(0);
   const [categoriesTotal, setCategoriesTotal] = useState(0);
+  const [productsOfCategory, setProductsOfCategory] = useState([]);
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("");
+  const [item, setItem] = useState("");
+  const [productCount, setProductCount] = useState(0);
   const [shop, setShop] = useState("");
+  const [deMatinLundi, setDeMatinLundi] = useState("");
+  const [àMatinLundi, setÀMatinLundi] = useState("");
+  const [deaprèsmidiLundi, setDeaprèsmidiLundi] = useState("");
+  const [àaprèsmidiLundi, setÀaprèsmidiLundi] = useState("");
+  const [deMatinMardi, setDeMatinMardi] = useState("");
+  const [àMatinMardi, setÀMatinMardi] = useState("");
+  const [deaprèsmidiMardi, setDeaprèsmidiMardi] = useState("");
+  const [àaprèsmidiMardi, setÀaprèsmidiMardi] = useState("");
+  const [deMatinMercredi, setDeMatinMercredi] = useState("");
+  const [àMatinMercredi, setÀMatinMercredi] = useState("");
+  const [deaprèsmidiMercredi, setDeaprèsmidiMercredi] = useState("");
+  const [àaprèsmidiMercredi, setÀaprèsmidiMercredi] = useState("");
+  const [deMatinJeudi, setDeMatinJeudi] = useState("");
+  const [àMatinJeudi, setÀMatinJeudi] = useState("");
+  const [deaprèsmidiJeudi, setDeaprèsmidiJeudi] = useState("");
+  const [àaprèsmidiJeudi, setÀaprèsmidiJeudi] = useState("");
+  const [deMatinVendredi, setDeMatinVendredi] = useState("");
+  const [àMatinVendredi, setÀMatinVendredi] = useState("");
+  const [deaprèsmidiVendredi, setDeaprèsmidiVendredi] = useState("");
+  const [àaprèsmidiVendredi, setÀaprèsmidiVendredi] = useState("");
+
   useEffect(() => {
     getData();
   }, []);
+
   const getData = async () => {
-    const response = await axios.get(`${URL}/${id}`, {
-      headers: { Authorization: `Bearer ${auth.accesToken}` },
-    });
+    const response = await axios.get(`${URL}/${id}`);
+    setItem(response.data);
     setShop(response.data);
     setCategories(response.data.categories);
-    setProductsTotal(response.data.produits.length);
-    setCategoriesTotal(response.data.categories.length);
+    setProducts(response.data.produits);
+    const parser = JSON.parse(response.data.horaire);
+    const deMatinLundi = parser.lundi.matin.de;
+    const àMatinLundi = parser.lundi.matin.à;
+    const deaprèsmidiLundi = parser.lundi.aprèsmidi.de;
+    const àaprèsmidiLundi = parser.lundi.aprèsmidi.à;
+    const deMatinMardi = parser.mardi.matin.de;
+    const àMatinMardi = parser.mardi.matin.à;
+    const deaprèsmidiMardi = parser.mardi.aprèsmidi.de;
+    const àaprèsmidiMardi = parser.mardi.aprèsmidi.à;
+    const deMatinMercredi = parser.mercredi.matin.de;
+    const àMatinMercredi = parser.mercredi.matin.à;
+    const deaprèsmidiMercredi = parser.mercredi.aprèsmidi.de;
+    const àaprèsmidiMercredi = parser.mercredi.aprèsmidi.à;
+    const deMatinJeudi = parser.jeudi.matin.de;
+    const àMatinJeudi = parser.jeudi.matin.à;
+    const deaprèsmidiJeudi = parser.jeudi.aprèsmidi.de;
+    const àaprèsmidiJeudi = parser.jeudi.aprèsmidi.à;
+    const deMatinVendredi = parser.vendredi.matin.de;
+    const àMatinVendredi = parser.vendredi.matin.à;
+    const deaprèsmidiVendredi = parser.vendredi.aprèsmidi.de;
+    const àaprèsmidiVendredi = parser.vendredi.aprèsmidi.à;
+    setDeMatinLundi(deMatinLundi);
+    setÀMatinLundi(àMatinLundi);
+    setDeaprèsmidiLundi(deaprèsmidiLundi);
+    setÀaprèsmidiLundi(àaprèsmidiLundi);
+    setDeMatinMardi(deMatinMardi);
+    setÀMatinMardi(àMatinMardi);
+    setDeaprèsmidiMardi(deaprèsmidiMardi);
+    setÀaprèsmidiMardi(àaprèsmidiMardi);
+    setDeMatinMercredi(deMatinMercredi);
+    setÀMatinMercredi(àMatinMercredi);
+    setDeaprèsmidiMercredi(deaprèsmidiMercredi);
+    setÀaprèsmidiMercredi(àaprèsmidiMercredi);
+    setDeMatinJeudi(deMatinJeudi);
+    setÀMatinJeudi(àMatinJeudi);
+    setDeaprèsmidiJeudi(deaprèsmidiJeudi);
+    setÀaprèsmidiJeudi(àaprèsmidiJeudi);
+    setDeMatinVendredi(deMatinVendredi);
+    setÀMatinVendredi(àMatinVendredi);
+    setDeaprèsmidiVendredi(deaprèsmidiVendredi);
+    setÀaprèsmidiVendredi(àaprèsmidiVendredi);
   };
   const renderHeader = () => {
     let headerElements = ["Nom", "Prix", "Code produit", "Description"];
@@ -67,8 +128,8 @@ const DetailsShop = () => {
   };
   const renderBody = () => {
     return (
-      products &&
-      products.map((key) => {
+      productsOfCategory &&
+      productsOfCategory.map((key) => {
         return (
           <Fragment>
             <ReadOnlyRow product={key} />
@@ -169,13 +230,13 @@ const DetailsShop = () => {
                     >
                       <StatsShop
                         title={"Catégories"}
-                        stat={categoriesTotal}
+                        stat={categories.length}
                         icon={<BiCategory size={"3em"} />}
                       />
 
                       <StatsShop
                         title={"Produits"}
-                        stat={productsTotal}
+                        stat={products.length}
                         icon={<TiShoppingCart size={"3em"} />}
                       />
                     </SimpleGrid>
@@ -193,18 +254,95 @@ const DetailsShop = () => {
                     Horraires d'ouverture
                   </Text>
 
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <List spacing={2}>
-                      <ListItem>Chronograph</ListItem>
-                      <ListItem>Master Chronometer Certified</ListItem>{" "}
-                      <ListItem>Tachymeter</ListItem>
-                    </List>
-                    <List spacing={2}>
-                      <ListItem>Anti‑magnetic</ListItem>
-                      <ListItem>Chronometer</ListItem>
-                      <ListItem>Small seconds</ListItem>
-                    </List>
-                  </SimpleGrid>
+                  <Square marginRight={"400px"}>
+                    <Box>
+                      <Text fontWeight="bold">Lundi</Text>
+                      <Box>
+                        <Text as="span" mr="2">
+                          Matin :
+                        </Text>
+                        <Text as="span">
+                          {deMatinLundi} - {àMatinLundi}
+                        </Text>
+                      </Box>
+                      <Box mb={1}>
+                        <Text as="span" mr="2">
+                          Après-midi :
+                        </Text>
+                        <Text as="span">
+                          {deaprèsmidiLundi} - {àaprèsmidiLundi}
+                        </Text>
+                      </Box>
+                      <Text fontWeight="bold">Mardi</Text>
+                      <Box>
+                        <Text as="span" mr="2">
+                          Matin :
+                        </Text>
+                        <Text as="span">
+                          {deMatinMardi} - {àMatinMardi}{" "}
+                        </Text>
+                      </Box>
+                      <Box mb={1}>
+                        <Text as="span" mr="2">
+                          Après-midi :
+                        </Text>
+                        <Text as="span">
+                          {deaprèsmidiMardi} - {àaprèsmidiMardi}{" "}
+                        </Text>
+                      </Box>
+                      <Text fontWeight="bold">Mercredi</Text>
+                      <Box>
+                        <Text as="span" mr="2">
+                          Matin :
+                        </Text>
+                        <Text as="span">
+                          {deMatinMercredi} - {àMatinMercredi}{" "}
+                        </Text>
+                      </Box>
+                      <Box mb={1}>
+                        <Text as="span" mr="2">
+                          Après-midi :
+                        </Text>
+                        <Text as="span">
+                          {deaprèsmidiMercredi} - {àaprèsmidiMercredi}{" "}
+                        </Text>
+                      </Box>
+                      <Text fontWeight="bold">Jeudi</Text>
+                      <Box>
+                        <Text as="span" mr="2">
+                          Matin :
+                        </Text>
+                        <Text as="span">
+                          {deMatinJeudi} - {àMatinJeudi}{" "}
+                        </Text>
+                      </Box>
+                      <Box mb={1}>
+                        <Text as="span" mr="2">
+                          Après-midi :
+                        </Text>
+                        <Text as="span">
+                          {deaprèsmidiJeudi} - {àaprèsmidiJeudi}{" "}
+                        </Text>
+                      </Box>
+                      <Text fontWeight="bold">Vendredi</Text>
+                      <Box>
+                        <Text as="span" mr="2">
+                          Matin :
+                        </Text>
+                        <Text as="span">
+                          {deMatinVendredi} - {àMatinVendredi}{" "}
+                        </Text>
+                      </Box>
+                      <Box mb={1}>
+                        <Text as="span" mr="2">
+                          Après-midi :
+                        </Text>
+                        <Text as="span">
+                          {deaprèsmidiVendredi} - {àaprèsmidiVendredi}{" "}
+                        </Text>
+                      </Box>
+                    </Box>
+                  </Square>
                 </Box>
                 <Box>
                   <Text
@@ -236,7 +374,7 @@ const DetailsShop = () => {
                               setCategory(item);
                               setCategoryName(item.nom);
 
-                              setProducts(item.produits);
+                              setProductsOfCategory(item.produits);
                             }}
                           >
                             <Stack align={"center"}>
@@ -259,7 +397,7 @@ const DetailsShop = () => {
                   </SimpleGrid>
                 </Box>
               </Stack>
-              {products.length > 0 && (
+              {productsOfCategory.length > 0 && (
                 <Box
                   bg={"white"}
                   w="600px"

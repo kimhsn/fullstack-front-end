@@ -19,13 +19,14 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
+import BG2 from "../images/BG2.webp";
 const testimonials = [
   {
     name: "Brandon P.",
-    role: "Chief Marketing Officer",
+    role: "Directeur de marketing",
     content:
-      "It really saves me time and effort. It is exactly what our business has been lacking. EEZY is the most valuable business resource we have EVER purchased. After using EEZY my business skyrocketed!",
+      "Cela me fait vraiment gagner du temps et des efforts. C'est exactement ce qui nous manquait. Online Shop est la ressource commerciale la plus précieuse que nous ayons JAMAIS eu. Après avoir utilisé Online Shop, mon entreprise a explosé !",
+
     avatar:
       "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
   },
@@ -33,23 +34,23 @@ const testimonials = [
     name: "Krysta B.",
     role: "Entrepreneur",
     content:
-      "I didn't even need training. We've used EEZY for the last five years. I have gotten at least 50 times the value from EEZY. I made back the purchase price in just 48 hours!",
+      "Super sympa ! Je suis très satisfaite d’avoir commandé chez Online Shop,je reste impressionné par la rapidité de ma commande, en ce qui concerne la qualité, elle est juste excellente ! Je recommande Online Shop à tous ceux qui veulent acheter des produits de qualité à des prix abordables.",
     avatar:
       "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
   },
   {
     name: "Darcy L.",
-    role: "Movie star",
+    role: "Star de cinéma",
     content:
-      "Thank you for making it painless, pleasant and most of all, hassle free! I'm good to go. No matter where you go, EEZY is the coolest, most happening thing around! I love EEZY!",
+      "J'ai été très impressionné par la qualité de votre produit. Je suis très satisfait de mon achat. Je recommande Online Shop à tous ceux qui veulent acheter des produits de qualité à des prix abordables de plus la livraison est très rapide.",
     avatar:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=334&q=80",
   },
   {
     name: "Daniel T.",
-    role: "Musician",
+    role: "Musicien",
     content:
-      "I am so pleased with this product. EEZY is both attractive and highly adaptable. Without EEZY, we would have gone bankrupt by now. Thank you for creating this product!",
+      "Parfait, rien à ajouter. J'ai été très satisfait du service de Online Shop lors de ma commande du 12 janvier dernier.. Tout s'est déroulé comme prévu, sans aucune fausse note.",
     avatar:
       "https://images.unsplash.com/photo-1606513542745-97629752a13b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
   },
@@ -80,6 +81,15 @@ export default function Shops() {
                 fontWeight={600}
                 fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
               >
+                {" "}
+                <Text
+                  bgGradient="linear(to-l, #7928CA, #FF0080)"
+                  bgClip="text"
+                  fontSize="5xl"
+                  fontWeight="extrabold"
+                >
+                  Online Shop
+                </Text>
                 <Text
                   as={"span"}
                   fontSize="5xl"
@@ -95,22 +105,14 @@ export default function Shops() {
                     zIndex: -1,
                   }}
                 >
-                  Soyez les bienvenus,
-                </Text>
-                <br />
-                <Text
-                  bgGradient="linear(to-l, #7928CA, #FF0080)"
-                  bgClip="text"
-                  fontSize="5xl"
-                  fontWeight="extrabold"
-                >
-                  Online Shop{" "}
+                  Soyez les bienvenus
                 </Text>
               </Heading>
               <Text color={"gray.500"}>
-                Snippy is a rich coding snippets app that lets you create your
-                own code snippets, categorize them, and even sync them in the
-                cloud so you can use them anywhere. All that is free!
+                Online Shop, promotion de produits de commerçants français,
+                place de marché associative sans but lucratif propose des
+                produits de marques. Découvrez nos offres Online shop : large
+                sélection de produits au meilleur prix !
               </Text>
               <Stack
                 spacing={{ base: 4, sm: 6 }}
@@ -131,7 +133,25 @@ export default function Shops() {
                   >
                     Démarrer la visite
                   </Button>
-                </Link>
+                </Link>{" "}
+                {auth.role !== "ADMIN" && auth.role !== "VENDEUR_LIVREUR" ? (
+                  <Link to="/register">
+                    <Button
+                      fontWeight="extrabold"
+                      rounded={"full"}
+                      size={"lg"}
+                      px={9}
+                      colorScheme={"white"}
+                      bgGradient="linear(to-r, blue.400,blue.400)"
+                      _hover={{
+                        bgGradient: "linear(to-r, blue.500,blue.500)",
+                        boxShadow: "xl",
+                      }}
+                    >
+                      Se connecter
+                    </Button>
+                  </Link>
+                ) : null}
               </Stack>
             </Stack>
             <Flex
@@ -152,7 +172,7 @@ export default function Shops() {
               />
               <Box
                 position={"relative"}
-                height={"300px"}
+                height={"370px"}
                 rounded={"2xl"}
                 boxShadow={"2xl"}
                 width={"full"}
@@ -175,9 +195,7 @@ export default function Shops() {
                   align={"center"}
                   w={"100%"}
                   h={"100%"}
-                  src={
-                    "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-                  }
+                  src={BG2}
                 />
               </Box>
             </Flex>
@@ -198,16 +216,16 @@ export default function Shops() {
               textTransform={"uppercase"}
               color={"purple.400"}
             >
-              People love us
+              Les gens nous aiment
             </chakra.h3>
             <chakra.h1
               py={5}
-              fontSize={48}
+              fontSize={35}
               fontFamily={"Work Sans"}
               fontWeight={"bold"}
               color={useColorModeValue("gray.700", "gray.50")}
             >
-              You're in good company
+              Vous êtes en bonne compagnie{" "}
             </chakra.h1>
             <chakra.h2
               margin={"auto"}
@@ -216,11 +234,11 @@ export default function Shops() {
               fontWeight={"medium"}
               color={useColorModeValue("gray.500", "gray.400")}
             >
-              See why over{" "}
+              Voyez pourquoi plus{" "}
               <chakra.strong color={useColorModeValue("gray.700", "gray.50")}>
                 150,000+
               </chakra.strong>{" "}
-              influencers use EEZY to manage their social media content!
+              de personnes utilisent notre plateforme chaque mois.
             </chakra.h2>
           </Box>
           <SimpleGrid

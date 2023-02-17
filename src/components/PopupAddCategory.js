@@ -18,14 +18,13 @@ import {
 import * as si from "react-icons/si";
 import "./PopupAddShop.css";
 
-export default function PopupAddProduct({
-  setProductCode,
-  setProductDescription,
-  errorPopup,
-  setProductName,
-  setProductPrice,
-  addProduct,
+export default function PopupAddCategory({
   setErrorPopup,
+  setShopCode,
+  setShopDescription,
+  errorPopup,
+  setShopName,
+  addShop,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -45,8 +44,9 @@ export default function PopupAddProduct({
         right="65px"
         top={"490"}
         onClick={(e) => {
-          setProductName("");
-          setProductPrice("");
+          setShopCode("");
+          setShopDescription("");
+          setShopName("");
           setErrorPopup("");
           onOpen();
         }}
@@ -64,32 +64,16 @@ export default function PopupAddProduct({
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Ajouter un produit ?</AlertDialogHeader>
+          <AlertDialogHeader>Ajouter une catégorie ?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Veuillez renseigner les informations du produit .
+            Veuillez renseigner les informations de la catégorie.
             <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"gray"}>
-              Les champs marqués d'un <label className="label">*</label> sont
-              obligatoires.
+              Le champ marqué d'un <label className="label">*</label> est
+              obligatoire.
             </FormLabel>
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Nom du produit <label className="label">*</label>
-            </FormLabel>
-            <Input
-              required={true}
-              mt={0}
-              rounded={"200px"}
-              bgGradient="linear(to-r, gray.200 ,pink.100)"
-              border={0}
-              color={"gray.500"}
-              type="text"
-              onChange={(e) => setProductName(e.target.value)}
-              _placeholder={{
-                color: "gray.500",
-              }}
-            />{" "}
-            <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Prix du produit <label className="label">*</label>
+              Nom de la catégorie <label className="label">*</label>
             </FormLabel>
             <Input
               required={true}
@@ -99,28 +83,29 @@ export default function PopupAddProduct({
               border={0}
               color={"gray.500"}
               type="text"
-              onChange={(e) => setProductPrice(e.target.value)}
+              onChange={(e) => setShopName(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
-            />{" "}
+            />
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Code du produit
+              Code de la catégorie
             </FormLabel>
             <Input
-              required
+              required={true}
+              mt={0}
               rounded={"200px"}
               bgGradient="linear(to-r, gray.200 ,pink.100)"
               border={0}
               color={"gray.500"}
-              type="int"
-              onChange={(e) => setProductCode(e.target.value)}
+              type="text"
+              onChange={(e) => setShopCode(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
-            />{" "}
+            />
             <FormLabel mt={"15px"} mb={0} fontSize={"15px"} color={"black"}>
-              Description du produit
+              Description
             </FormLabel>
             <Textarea
               mt={0}
@@ -129,14 +114,14 @@ export default function PopupAddProduct({
               border={0}
               color={"gray.500"}
               type="text"
-              onChange={(e) => setProductDescription(e.target.value)}
+              onChange={(e) => setShopDescription(e.target.value)}
               _placeholder={{
                 color: "gray.500",
               }}
             />
             {errorPopup && (
               <FormLabel mt={"10px"} mb={0} fontSize={"15px"} color={"red"}>
-                {errorPopup}
+                Un champ obligatoire n'a pas été rempli
               </FormLabel>
             )}
           </AlertDialogBody>
@@ -154,7 +139,7 @@ export default function PopupAddProduct({
               colorScheme="green"
               ml={3}
               onClick={(e) => {
-                const isAdded = addProduct();
+                const isAdded = addShop();
                 isAdded
                   .then((res) => {
                     res && onClose();
