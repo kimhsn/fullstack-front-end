@@ -10,16 +10,22 @@ import {
   AlertDialogFooter,
   ChakraProvider,
   useDisclosure,
-  Select,
+  Stack,
+  CheckboxGroup,
+  Box,
+  Checkbox,
 } from "@chakra-ui/react";
 import * as si from "react-icons/si";
 import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignationProductToCategory({ idCategory }) {
+export default function PopupAssignationProductToCategory({
+  idCategory,
+  getCategories,
+}) {
   const { auth, setAuth } = useContext(AuthContext);
-  const [productId, setProductId] = useState(0);
+  const [productsId, setProductsId] = useState("");
   const [products, setProducts] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -30,25 +36,23 @@ export default function PopupAssignationProductToCategory({ idCategory }) {
     setProducts(response.data);
     onOpen();
   };
-  useEffect(() => {
-    const num = parseInt(productId);
-    setProductId(num);
-  }, [productId]);
+
   const assignProductsToCategory = async () => {
     console.log({
       idCategorie: idCategory,
-      idProduit: productId,
+      idProduit: productsId,
     });
     const response = await axios.post(
-      `http://localhost:8080/shops/categories/addCategorieToProduits?idCategorie=${idCategory}&idProduit=${productId}`,
+      `http://localhost:8080/shops/categories/addCategorieToProduits`,
       {
         idCategorie: idCategory,
-        idProduit: productId,
+        idProduits: productsId,
       },
       {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
+    getCategories();
   };
 
   return (
@@ -80,17 +84,26 @@ export default function PopupAssignationProductToCategory({ idCategory }) {
             Veuillez selectionnez le produit ou les produits que vous souhaitez
             assigner à cette categorie.
             <br />
-            <Select
-              mt={"15px"}
-              rounded={"200px"}
-              bgGradient="linear(to-r, gray.200 ,pink.100)"
-              placeholder="Produits à assigner"
-              onChange={(e) => setProductId(e.target.value)}
+            <CheckboxGroup
+              colorScheme="blue"
+              onChange={(values) => {
+                setProductsId(values);
+              }}
             >
-              {products.map((shop) => {
-                return <option value={shop.id}>{shop.nom}</option>;
-              })}
-            </Select>
+              <Stack spacing={[1, 9]} direction={["column"]}>
+                <Box overflowY="auto" maxHeight="500px" maxWidth="700px">
+                  {products.map((product) => (
+                    <>
+                      {" "}
+                      <Checkbox marginBottom={"8px"} value={"" + product.id}>
+                        {product.nom}
+                      </Checkbox>
+                      <br />
+                    </>
+                  ))}
+                </Box>{" "}
+              </Stack>
+            </CheckboxGroup>
             {/*}
             <Select
               mt={"15px"}

@@ -17,7 +17,7 @@ import axios from "axios";
 import "./PopupAddShop.css";
 import AuthContext from "../pages/context/AuthProvider";
 
-export default function PopupAssignationUserToShop({ idBoutique }) {
+export default function PopupAssignationUserToShop({ idBoutique, getShop }) {
   const { auth, setAuth } = useContext(AuthContext);
 
   const [userEmail, setUserEmail] = useState("");
@@ -43,6 +43,7 @@ export default function PopupAssignationUserToShop({ idBoutique }) {
         headers: { Authorization: `Bearer ${auth.accesToken}` },
       }
     );
+    getShop();
   };
 
   return (

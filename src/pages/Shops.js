@@ -90,32 +90,6 @@ export default function Shops() {
   const [fridayAfternoonFrom, setFridayAfternoonFrom] = useState("");
   const [fridayAfternoonTo, setFridayAfternoonTo] = useState("");
 
-  let horaiere = {
-    lundi: [
-      { from: "08:00", to: "12:00" },
-      { from: "14:00", to: "18:00" },
-    ],
-    mardi: [
-      { from: "08:00", to: "12:00" },
-      { from: "14:00", to: "18:00" },
-    ],
-    mercredi: [
-      { from: "08:00", to: "12:00" },
-      { from: "14:00", to: "18:00" },
-    ],
-    jeudi: [
-      { from: "08:00", to: "12:00" },
-      { from: "14:00", to: "18:00" },
-    ],
-    vendredi: [
-      { from: "08:00", to: "12:00" },
-      { from: "14:00", to: "18:00" },
-    ],
-    samedi: [
-      { from: "10:00", to: "12:00" },
-      { from: "14:00", to: "19:00" },
-    ],
-  };
   const getData = async () => {
     const response = await axios.get(
       `${URL}?sort=${SortBy}&conge=${enConge}&dateAfter=${dateAfter}&dateBefore=${dateBefore}`
@@ -247,13 +221,7 @@ export default function Shops() {
       setShopInVacation(false);
 
       getData();
-      console.log({
-        description: shopDescription,
-        nom: shopName,
-        conge: shopInVacation,
-        user: auth.prenom + " " + auth.nom,
-        horaires: jsonStringHours,
-      });
+
       return true;
     }
   };
@@ -335,8 +303,6 @@ export default function Shops() {
                   width={"100px"}
                   bg={"#585AFC"}
                   color={"white"}
-
-                  //onClick={searchShop}
                 >
                   <fc.FcSearch
                     style={{ marginLeft: "32px", marginTop: "14px" }}
@@ -496,6 +462,7 @@ export default function Shops() {
                           />
                         ) : (
                           <ReadOnlyCard
+                            getShop={getData}
                             item={element}
                             setIdShop={setTrue}
                             deleteShop={deleteShop}

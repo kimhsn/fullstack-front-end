@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import Logo from "../images/a.jpg";
 import { FaUserAltSlash } from "react-icons/fa";
 export default function ReadOnlyCard({
+  getShop,
   item,
   deleteShop,
   setIdShop,
@@ -133,7 +134,10 @@ export default function ReadOnlyCard({
                 (item.idUser == idUserAuth && role == "VENDEUR_LIVREUR") ? (
                   <>
                     {" "}
-                    <PopupAssignationUserToShop idBoutique={item.idBoutique} />
+                    <PopupAssignationUserToShop
+                      idBoutique={item.idBoutique}
+                      getShop={getShop}
+                    />
                     <PopupAssignation idBoutique={item.idBoutique} />
                     <fi.FiEdit
                       cursor="pointer"

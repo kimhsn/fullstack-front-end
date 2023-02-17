@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import Logo from "../images/Product2.png";
 
 export default function ReadOnlyCardCategory({
+  getCategories,
   item,
   deleteCategory,
   setIdShop,
@@ -111,7 +112,10 @@ export default function ReadOnlyCardCategory({
               </Stack>{" "}
               {role == "ADMIN" ? (
                 <>
-                  <PopupAssignation idCategory={item.id} />
+                  <PopupAssignation
+                    idCategory={item.id}
+                    getCategories={getCategories}
+                  />
 
                   <fi.FiEdit
                     cursor="pointer"
