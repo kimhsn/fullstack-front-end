@@ -66,13 +66,8 @@ export default function SignUp() {
 
     try {
       let SIGNUP_URL;
-      if (role === "Admin") {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewAdmin";
-      } else if (role === "Manager") {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewManager";
-      } else {
-        SIGNUP_URL = "http://localhost:8080/shops/users/addNewUser";
-      }
+
+      SIGNUP_URL = "http://localhost:8080/shops/users/addNewManager";
 
       const response = await axios.post(
         SIGNUP_URL,
